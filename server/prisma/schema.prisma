@@ -7,16 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// User accounts for AI-powered ecommerce admin SaaS
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(ADMIN)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())                               // Unique user identifier
+  name      String                                                      // User's full name
+  email     String   @unique                                           // Unique email address
+  password  String                                                      // Hashed password
+  role      Role     @default(ADMIN)                                    // Role in the system
+  createdAt DateTime @default(now())                                    // Timestamp for creation
+  updatedAt DateTime @updatedAt                                         // Timestamp for last update
+
+  @@map("users")
+  @@index([email])
 }
 
+/// User roles for access control
 enum Role {
   ADMIN
   MANAGER
