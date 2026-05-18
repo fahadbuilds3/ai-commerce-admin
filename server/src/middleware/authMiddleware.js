@@ -1,61 +1,51 @@
 import jwt from "jsonwebtoken";
-
 import prisma from "../config/prisma.js";
-
 import ApiError from "../utils/ApiError.js";
 
-const protect = async (
-  req,
-  res,
-  next
-) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith(
-      "Bearer"
-    )
-  ) {
-    token =
-      req.headers.authorization.split(
-        " "
-      )[1];
-  }
-
-  if (!token) {
-    return next(
-      new ApiError(401, "Not authorized")
-    );
-  }
-
+/**
+ * Express middleware to authenticate requests using JWT (Bearer token).
+ * - Reads Bearer token from Authorization header.
+ * - Verifies token using JWT_SECRET.
+ * - Loads user from DB and attaches to req.user.
+ * - Rejects unauthorized or invalid tokens.
+ */
+const authMiddleware = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    const authHeader = req.headers.authorization || "";
+    let token = null;
 
-    const user =
-      await prisma.user.findUnique({
-        where: {
-          id: decoded.userId,
-        },
-      });
-
-    if (!user) {
-      return next(
-        new ApiError(401, "User not found")
-      );
+    // Parse Bearer token
+    if (authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7).trim();
     }
 
-    req.user = user;
+    if (!token) {
+      return next(new ApiError(401, "Authorization token missing"));
+    }
 
+    // Verify JWT
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return next(new ApiError(401, "Invalid or expired token"));
+    }
+
+    // Fetch user
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+    });
+
+    if (!user) {
+      return next(new ApiError(401, "User not found"));
+    }
+
+    // Attach user to request
+    req.user = user;
     next();
-  } catch (error) {
-    next(
-      new ApiError(401, "Invalid token")
-    );
+  } catch (err) {
+    next(new ApiError(500, "Authentication failed"));
   }
 };
 
-export default protect;
+export default authMiddleware;

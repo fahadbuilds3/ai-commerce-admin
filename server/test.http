@@ -1,0 +1,42 @@
+###
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin2@example.com",
+  "password": "Admin123"
+}
+
+###
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin2@example.com",
+  "password": "Admin123"
+}
+
+###
+GET http://localhost:5000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXA5bGZuaTAwMDAwcHVsc25tOG1zbWl1IiwiaWF0IjoxNzc5MTEwNjMyLCJleHAiOjE3Nzk3MTU0MzJ9.MYQ0CBljm4EcrqggHI0g_ONKYAlvRQjuX-fWCq6j_9g
+###
+POST http://localhost:5000/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXA5bGZuaTAwMDAwcHVsc25tOG1zbWl1IiwiaWF0IjoxNzc5MTEwNjMyLCJleHAiOjE3Nzk3MTU0MzJ9.MYQ0CBljm4EcrqggHI0g_ONKYAlvRQjuX-fWCq6j_9g
+Content-Type: application/json
+
+{
+  "name": "MacBook Pro M3",
+  "slug": "macbook-pro-m3",
+  "description": "Professional laptop",
+  "price": 2499,
+  "stock": 12,
+  "sku": "MBP-M3-001",
+  "category": "Laptops",
+  "status": "ACTIVE",
+  "imageUrl": "https://example.com/image.jpg"
+}
+
+###
+GET http://localhost:5000/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXA5bGZuaTAwMDAwcHVsc25tOG1zbWl1IiwiaWF0IjoxNzc5MTEwNjMyLCJleHAiOjE3Nzk3MTU0MzJ9.MYQ0CBljm4EcrqggHI0g_ONKYAlvRQjuX-fWCq6j_9g

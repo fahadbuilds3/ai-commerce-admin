@@ -1,19 +1,35 @@
-import API from "./axios";
+import apiClient from "./axios";
 
-export const loginUser = async (data) => {
-  const response = await API.post("/auth/login", data);
+/**
+ * Auth API Service - Handles user authentication requests.
+ * Functions are individually exported for modular consumption.
+ */
 
+/**
+ * Log in a user.
+ * @param {Object} credentials - User login data (e.g. email, password)
+ * @returns {Promise<Object>} - Auth and user data
+ */
+export const loginUser = async (credentials) => {
+  const response = await apiClient.post("/auth/login", credentials);
   return response.data;
 };
 
-export const registerUser = async (data) => {
-  const response = await API.post("/auth/register", data);
-
+/**
+ * Register a new user.
+ * @param {Object} userData - Registration data (e.g. name, email, password)
+ * @returns {Promise<Object>} - User and auth data
+ */
+export const registerUser = async (userData) => {
+  const response = await apiClient.post("/auth/register", userData);
   return response.data;
 };
 
-export const fetchMe = async () => {
-  const response = await API.get("/auth/me");
-
+/**
+ * Fetch the current authenticated user's info.
+ * @returns {Promise<Object>} - User data
+ */
+export const fetchCurrentUser = async () => {
+  const response = await apiClient.get("/auth/me");
   return response.data;
 };

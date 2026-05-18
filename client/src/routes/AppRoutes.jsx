@@ -1,33 +1,34 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import Login from "../pages/auth/Login";
+import DashboardHome from "../pages/dashboard/DashboardHome";
+import ProductsPage from "../pages/products/ProductsPage";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
-const Dashboard = () => {
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white p-10">
-      Dashboard
-    </div>
-  );
-};
+/**
+ * AppRoutes - Organizes all routes for the admin dashboard in a clean, scalable structure.
+ * - Authentication routes remain public.
+ * - Protected dashboard section supports nested structure.
+ */
+const DashboardRoutes = () => (
+  <ProtectedRoute>
+    <Outlet />
+  </ProtectedRoute>
+);
 
-const AppRoutes = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
-  );
-};
+const AppRoutes = () => (
+  <BrowserRouter>
+    <Routes>
+      {/* Public Auth Route */}
+      <Route path="/login" element={<Login />} />
+      {/* Protected Dashboard Routes - nest future dashboard screens here */}
+      <Route path="/" element={<DashboardRoutes />}>
+        <Route index element={<DashboardHome />} />
+        <Route path="products" element={<ProductsPage />} />
+        {/* Example: <Route path="users" element={<UsersPage />} /> */}
+      </Route>
+    </Routes>
+  </BrowserRouter>
+);
 
 export default AppRoutes;

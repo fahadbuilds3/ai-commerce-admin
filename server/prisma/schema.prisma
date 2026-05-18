@@ -11,7 +11,7 @@ datasource db {
 model User {
   id        String   @id @default(cuid())                               // Unique user identifier
   name      String                                                      // User's full name
-  email     String   @unique                                           // Unique email address
+  email     String   @unique                                            // Unique email address
   password  String                                                      // Hashed password
   role      Role     @default(ADMIN)                                    // Role in the system
   createdAt DateTime @default(now())                                    // Timestamp for creation
@@ -21,8 +21,36 @@ model User {
   @@index([email])
 }
 
+/// Product catalog for scalable ecommerce
+model Product {
+  id          String         @id @default(cuid())                      // Unique product identifier
+  name        String                                                    // Product name
+  slug        String         @unique                                   // Unique slug for URLs (seo-friendly)
+  description String?                                                  // Product description (optional for flexibility)
+  price       Decimal                                                   // Product price
+  stock       Int                                                       // Available stock
+  sku         String         @unique                                   // Stock Keeping Unit, unique
+  category    String                                                    // Product category (simple string, can be normalized later)
+  status      ProductStatus  @default(ACTIVE)                          // Product status, see enum below
+  imageUrl    String?                                                   // Image URL for product (optional)
+  createdAt   DateTime       @default(now())                            // Timestamp for creation
+  updatedAt   DateTime       @updatedAt                                 // Timestamp for last update
+
+  @@map("products")
+  @@index([slug])
+  @@index([sku])
+  @@index([category])
+}
+
 /// User roles for access control
 enum Role {
   ADMIN
   MANAGER
+}
+
+/// Status options for a product in the catalog
+enum ProductStatus {
+  ACTIVE
+  DRAFT
+  OUT_OF_STOCK
 }

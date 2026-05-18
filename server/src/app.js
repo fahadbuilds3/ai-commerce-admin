@@ -5,36 +5,45 @@ import compression from "compression";
 import morgan from "morgan";
 
 import authRoutes from "./routes/authRoutes.js";
-
+import productRoutes from "./routes/productRoutes.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 const app = express();
 
+// Core middlewares for SaaS production readiness
 app.use(cors());
-
+app.use(helmet());
+app.use(compression());
 app.use(express.json());
 
-app.use(helmet());
-
-app.use(compression());
-
-if (
-  process.env.NODE_ENV ===
-  "development"
-) {
+// HTTP request logging (development only)
+if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.get("/", (req, res) => {
-  res.json({
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({
     success: true,
-    message:
-      "AI Commerce Admin API Running",
+    message: "Healthy",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
   });
 });
 
-app.use("/api/auth", authRoutes);
+// Friendly root endpoint
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "AI Commerce Admin API Running",
+  });
+});
 
+// API routes (organized for scalability)
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+
+// Centralized error handling
 app.use(errorMiddleware);
 
 export default app;
