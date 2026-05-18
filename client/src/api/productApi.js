@@ -1,6 +1,10 @@
 import apiClient from "./axios";
 
-// Get all products
+/**
+ * Fetch all products with optional query parameters.
+ * @param {Object} params
+ * @returns {Promise<any>}
+ */
 export async function getProducts(params = {}) {
   try {
     const response = await apiClient.get("/products", { params });
@@ -10,7 +14,11 @@ export async function getProducts(params = {}) {
   }
 }
 
-// Get single product by ID
+/**
+ * Fetch a single product by ID.
+ * @param {string} productId
+ * @returns {Promise<any>}
+ */
 export async function getProductById(productId) {
   try {
     const response = await apiClient.get(`/products/${productId}`);
@@ -20,20 +28,26 @@ export async function getProductById(productId) {
   }
 }
 
-// Create new product
-export const createProduct = async (
-  productData
-) => {
-  const response =
-    await apiClient.post(
-      "/products",
-      productData
-    );
+/**
+ * Create a new product.
+ * @param {Object} productData
+ * @returns {Promise<any>}
+ */
+export async function createProduct(productData) {
+  try {
+    const response = await apiClient.post("/products", productData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
 
-  return response.data;
-};
-
-// Update existing product by ID
+/**
+ * Update a product by ID.
+ * @param {string} productId
+ * @param {Object} updateData
+ * @returns {Promise<any>}
+ */
 export async function updateProduct(productId, updateData) {
   try {
     const response = await apiClient.put(`/products/${productId}`, updateData);
@@ -43,7 +57,11 @@ export async function updateProduct(productId, updateData) {
   }
 }
 
-// Delete a product by ID
+/**
+ * Delete a product by ID.
+ * @param {string} productId
+ * @returns {Promise<any>}
+ */
 export async function deleteProduct(productId) {
   try {
     const response = await apiClient.delete(`/products/${productId}`);

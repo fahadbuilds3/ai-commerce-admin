@@ -1,9 +1,9 @@
-import { createContext, useEffect, useState, useCallback } from "react";
+import { createContext, useEffect, useState, useCallback, useRef } from "react";
 import { fetchCurrentUser } from "../api/authApi";
 
 /**
- * AuthContext - Provides authentication state and utilities.
- * Ensures a production-grade, scalable architecture for modern SaaS dashboards.
+ * AuthContext - Centralized authentication state and utilities for scalable SaaS dashboards.
+ * Provides user info, loading state, and a robust logout that clears JWT and state.
  */
 export const AuthContext = createContext({
   user: null,
@@ -16,46 +16,53 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Ref to allow immediate effects (such as ProtectedRoute responding after logout)
+  const isMounted = useRef(true);
+
   /**
-   * Handles token invalidation and cleanup.
+   * Immediately remove JWT and clear user session.
+   * ProtectedRoute will respond instantly via context value.
    */
-  const handleTokenInvalidation = useCallback(() => {
-    localStorage.removeItem("token");
-    setUser(null);
+  const logout = useCallback(() => {
+    localStorage.removeItem("token"); // Remove JWT
+    setUser(null); // Clear user state
+    setLoading(false); // Ensure UI updates for route guards that use loading
   }, []);
 
   /**
-   * Load the current user as soon as the app initializes, if a token exists.
+   * On mount, fire initial authentication check.
    */
   useEffect(() => {
-    const initializeAuth = async () => {
+    isMounted.current = true;
+    const bootstrapAuth = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        setLoading(false);
-        setUser(null);
+        if (isMounted.current) {
+          setUser(null);
+          setLoading(false);
+        }
         return;
       }
       try {
         const userData = await fetchCurrentUser();
-        setUser(userData.user || null);
-      } catch (error) {
-        // On authentication failure or network error, remove invalid token.
-        handleTokenInvalidation();
+        if (isMounted.current) {
+          setUser(userData.user || null);
+        }
+      } catch (err) {
+        // If token invalid, clear everything using logout to keep logic DRY.
+        if (isMounted.current) {
+          logout();
+        }
       } finally {
-        setLoading(false);
+        if (isMounted.current) setLoading(false);
       }
     };
-    initializeAuth();
-    // No dependencies ensures it runs once on mount.
-    // handleTokenInvalidation reference is stable due to useCallback.
-  }, [handleTokenInvalidation]);
+    bootstrapAuth();
 
-  /**
-   * Logout - clears token and user state.
-   */
-  const logout = useCallback(() => {
-    handleTokenInvalidation();
-  }, [handleTokenInvalidation]);
+    return () => {
+      isMounted.current = false;
+    };
+  }, [logout]);
 
   return (
     <AuthContext.Provider

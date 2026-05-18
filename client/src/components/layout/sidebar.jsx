@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -9,8 +9,12 @@ import {
   Bot,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 import clsx from "clsx";
+import { useLocation, useNavigate } from "react-router-dom";
+// If using a custom AuthContext, make sure it looks like this:
+import { AuthContext } from "../../context/AuthContext";
 
 // Navigation config for scalability
 const navItems = [
@@ -19,7 +23,6 @@ const navItems = [
     icon: LayoutDashboard,
     to: "/dashboard",
   },
-  // Added navigation to /products
   {
     label: "Products",
     icon: Package,
@@ -52,16 +55,17 @@ const navItems = [
   },
 ];
 
-// Dummy current path for demonstration; replace with router logic in production
-const useCurrentPath = () => {
-  // You might use: import { useLocation } from "react-router-dom";
-  // return useLocation().pathname;
-  return window.location.pathname;
-};
-
 const Sidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const currentPath = useCurrentPath();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    // Remove JWT, clear user (handled by AuthContext logout), then navigate
+    logout(); // This should clear all auth state and rm JWT
+    navigate("/login", { replace: true });
+  };
 
   const NavItem = ({ label, icon: Icon, to, active }) => (
     <a
@@ -73,6 +77,7 @@ const Sidebar = () => {
           : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
       )}
       aria-current={active ? "page" : undefined}
+      tabIndex={0}
     >
       <Icon
         size={20}
@@ -85,7 +90,7 @@ const Sidebar = () => {
     </a>
   );
 
-  // Sidebar content for both desktop and mobile
+  // Sidebar content including the logout button
   const sidebarContent = (
     <nav className="flex flex-col gap-1 mt-6">
       {navItems.map(({ label, icon, to }) => (
@@ -94,9 +99,22 @@ const Sidebar = () => {
           label={label}
           icon={icon}
           to={to}
-          active={currentPath.startsWith(to)}
+          active={location.pathname.startsWith(to)}
         />
       ))}
+      {/* Logout Button */}
+      <button
+        type="button"
+        onClick={handleLogout}
+        className={clsx(
+          "mt-6 flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium transition-colors duration-200",
+          "text-zinc-400 hover:bg-zinc-900 hover:text-red-400"
+        )}
+        aria-label="Logout"
+      >
+        <LogOut size={20} className="text-red-400" />
+        <span>Logout</span>
+      </button>
     </nav>
   );
 

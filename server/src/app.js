@@ -6,6 +6,7 @@ import morgan from "morgan";
 
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -39,11 +40,12 @@ app.get("/", (req, res) => {
   });
 });
 
-// API routes (organized for scalability)
+// API routes (modular, production-ready structure)
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/upload", uploadRoutes);
 
-// Centralized error handling
+// Global, centralized error handling
 app.use(errorMiddleware);
 
 export default app;
