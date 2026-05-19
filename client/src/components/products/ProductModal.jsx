@@ -110,17 +110,17 @@ function ImageDropzone({
     setUploading(true);
 
     try {
-      await uploadImage(file, {
+      const url = await uploadImage(file, {
         onProgress: (percent) => setUploadProgress(percent),
-      }).then(({ url }) => {
-        // --- SYNC: set imageUrl directly to parent (ProductModal) form state ---
-        setImageUrl(url);
-        setUploading(false);
-        setUploadProgress(null);
-        // Debug – log the uploaded image URL
-        // eslint-disable-next-line no-console
-        console.log("Cloudinary uploaded imageUrl:", url);
       });
+      
+      setImageUrl(url);
+      
+      setUploading(false);
+      setUploadProgress(null);
+      
+      console.log("Cloudinary uploaded imageUrl:", url);
+      
     } catch (err) {
       setUploading(false);
       setUploadProgress(null);
@@ -209,7 +209,6 @@ function ImageDropzone({
           disabled={disabled}
           tabIndex={-1}
         />
-        {/* Preview logic: show imageUrl (server/field) if present, else localPreview, else UI pattern */}
         {previewUrl ? (
           <div className="flex flex-col items-center w-full">
             <img
@@ -404,20 +403,22 @@ const ProductModal = ({
     [form, mode, onCreate, loading, handleClose, uploadProgress, initialValues]
   );
 
-  // Smooth transition
+  // Responsive modal/layout styles using Tailwind CSS
+  // Scrollable modal content zone for mobile and overflow safety
   if (!open) return null;
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        className="fixed inset-0 z-[100] flex items-center justify-center"
+        className="fixed inset-0 z-[100] flex items-center justify-center touch-none"
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={overlayVariants}
         key="product-modal-overlay"
+        style={{ overscrollBehavior: "none" }}
       >
         <motion.div
-          className="absolute inset-0 bg-black/70 backdrop-blur-lg z-[101]"
+          className="absolute inset-0 bg-black/80 backdrop-blur-lg z-[101]"
           initial="hidden"
           animate="visible"
           exit="exit"
@@ -426,7 +427,22 @@ const ProductModal = ({
           aria-label="Close modal"
         />
         <motion.div
-          className="relative bg-zinc-900 rounded-xl shadow-2xl px-6 sm:px-8 py-8 w-[98vw] max-w-lg mx-auto border border-zinc-800 z-[102]"
+          className={`
+            relative z-[102]
+            bg-zinc-900
+            border border-zinc-800
+            shadow-2xl
+            rounded-t-2xl sm:rounded-xl
+            flex flex-col
+            w-full
+            sm:w-[500px]
+            md:w-[520px]
+            max-w-full
+            mx-auto
+            min-h-[60vh] max-h-[98dvh] sm:max-h-[90vh]
+            px-3 sm:px-7 py-6 sm:py-8
+            overflow-hidden
+          `}
           variants={modalVariants}
           initial="hidden"
           animate="visible"
@@ -438,7 +454,7 @@ const ProductModal = ({
         >
           <button
             onClick={handleClose}
-            className="absolute top-3 right-4 text-zinc-500 hover:text-zinc-300 transition"
+            className="absolute top-2.5 right-3 sm:top-4 sm:right-5 text-zinc-500 hover:text-zinc-300 transition"
             aria-label="Close"
             type="button"
             tabIndex={0}
@@ -446,215 +462,223 @@ const ProductModal = ({
           >
             <X className="w-5 h-5" />
           </button>
-          <h2 className="text-2xl font-bold mb-2 text-zinc-100">
-            {isEditMode ? "Edit Product" : "Create Product"}
-          </h2>
-          <p className="text-zinc-400 mb-6 text-sm">
-            {isEditMode
-              ? "Update details for this product."
-              : "Fill out the details of your new product."}
-          </p>
-          <form onSubmit={handleSubmit} autoComplete="off">
-            <div className="grid grid-cols-1 gap-4">
-              {/* Name */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-zinc-300 mb-1 text-sm font-medium"
-                >
-                  Name<span className="ml-1 text-red-500">*</span>
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoFocus
-                  disabled={loading || submitting || (uploadProgress !== null)}
-                  className={`mt-1 w-full px-3 py-2 rounded-lg bg-zinc-800 border
-                    ${errors.name && touched.name
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-zinc-700 focus:border-emerald-500"}
-                    text-zinc-100 focus:ring-0 placeholder-zinc-500 transition`}
-                  value={form.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="e.g. T-shirt"
-                />
-                {errors.name && touched.name && (
-                  <span className="text-xs text-red-500 mt-1 block">
-                    {errors.name}
-                  </span>
-                )}
-              </div>
-              {/* Description */}
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-zinc-300 mb-1 text-sm font-medium"
-                >
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  rows="3"
-                  disabled={loading || submitting || (uploadProgress !== null)}
-                  className="mt-1 w-full px-3 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-100 focus:border-emerald-500 focus:ring-0 placeholder-zinc-500 transition"
-                  value={form.description}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="Product description"
-                />
-              </div>
-              {/* Price */}
-              <div>
-                <label
-                  htmlFor="price"
-                  className="block text-zinc-300 mb-1 text-sm font-medium"
-                >
-                  Price ($)<span className="ml-1 text-red-500">*</span>
-                </label>
-                <input
-                  id="price"
-                  name="price"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  disabled={loading || submitting || (uploadProgress !== null)}
-                  className={`mt-1 w-full px-3 py-2 rounded-lg bg-zinc-800 border
-                    ${errors.price && touched.price
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-zinc-700 focus:border-emerald-500"}
-                    text-zinc-100 focus:ring-0 placeholder-zinc-500 transition`}
-                  value={form.price}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="19.99"
-                />
-                {errors.price && touched.price && (
-                  <span className="text-xs text-red-500 mt-1 block">{errors.price}</span>
-                )}
-              </div>
-              {/* Stock */}
-              <div>
-                <label
-                  htmlFor="stock"
-                  className="block text-zinc-300 mb-1 text-sm font-medium"
-                >
-                  Stock<span className="ml-1 text-red-500">*</span>
-                </label>
-                <input
-                  id="stock"
-                  name="stock"
-                  type="number"
-                  min="0"
-                  disabled={loading || submitting || (uploadProgress !== null)}
-                  className={`mt-1 w-full px-3 py-2 rounded-lg bg-zinc-800 border
-                    ${errors.stock && touched.stock
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-zinc-700 focus:border-emerald-500"}
-                    text-zinc-100 focus:ring-0 placeholder-zinc-500 transition`}
-                  value={form.stock}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="0"
-                />
-                {errors.stock && touched.stock && (
-                  <span className="text-xs text-red-500 mt-1 block">{errors.stock}</span>
-                )}
-              </div>
-              {/* SKU */}
-              <div>
-                <label
-                  htmlFor="sku"
-                  className="block text-zinc-300 mb-1 text-sm font-medium"
-                >
-                  SKU<span className="ml-1 text-red-500">*</span>
-                </label>
-                <input
-                  id="sku"
-                  name="sku"
-                  type="text"
-                  disabled={loading || submitting || (uploadProgress !== null)}
-                  className={`mt-1 w-full px-3 py-2 rounded-lg bg-zinc-800 border
-                    ${errors.sku && touched.sku
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-zinc-700 focus:border-emerald-500"}
-                    text-zinc-100 focus:ring-0 placeholder-zinc-500 transition`}
-                  value={form.sku}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="e.g. SKU-12345"
-                />
-                {errors.sku && touched.sku && (
-                  <span className="text-xs text-red-500 mt-1 block">{errors.sku}</span>
-                )}
-              </div>
-              {/* Category */}
-              <div>
-                <label
-                  htmlFor="category"
-                  className="block text-zinc-300 mb-1 text-sm font-medium"
-                >
-                  Category<span className="ml-1 text-red-500">*</span>
-                </label>
-                <input
-                  id="category"
-                  name="category"
-                  type="text"
-                  disabled={loading || submitting || (uploadProgress !== null)}
-                  className={`mt-1 w-full px-3 py-2 rounded-lg bg-zinc-800 border
-                    ${errors.category && touched.category
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-zinc-700 focus:border-emerald-500"}
-                    text-zinc-100 focus:ring-0 placeholder-zinc-500 transition`}
-                  value={form.category}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="e.g. Apparel"
-                />
-                {errors.category && touched.category && (
-                  <span className="text-xs text-red-500 mt-1 block">{errors.category}</span>
-                )}
-              </div>
-              {/* Modern Cloudinary Image Upload Dropzone */}
-              <ImageDropzone
-                imageUrl={form.imageUrl}
-                setImageUrl={handleImageUrlChange}
-                uploadProgress={uploadProgress}
-                setUploadProgress={setUploadProgress}
-                disabled={loading || submitting}
-                setTouched={setTouched}
-                error={touched.imageUrl && errors.imageUrl}
-              />
-              {/* Slug not shown in form, managed by submit logic */}
+          {/* Scroll zone for modal content */}
+          <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden
+                          sm:max-h-[82vh] max-h-[calc(98dvh-24px)]
+                          pr-1 touch-pan-y">
+            <div className="flex-shrink-0">
+              <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-zinc-100">
+                {isEditMode ? "Edit Product" : "Create Product"}
+              </h2>
+              <p className="text-zinc-400 mb-4 sm:mb-6 text-sm">
+                {isEditMode
+                  ? "Update details for this product."
+                  : "Fill out the details of your new product."}
+              </p>
             </div>
-            <div className="flex items-center justify-end mt-7 gap-3">
-              <button
-                type="button"
-                className="px-4 py-2 rounded-lg text-zinc-300 bg-zinc-800 hover:bg-zinc-700 focus:outline-none border border-zinc-600 transition font-semibold disabled:opacity-60"
-                onClick={handleClose}
-                disabled={loading || submitting || uploadProgress !== null}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="relative px-5 py-2 rounded-lg font-semibold text-zinc-100 bg-emerald-600 hover:bg-emerald-500 focus:outline-none transition disabled:opacity-50 flex items-center gap-2"
-                disabled={loading || submitting || uploadProgress !== null}
-              >
-                {(loading || submitting || uploadProgress !== null) && (
-                  <Loader2 className="animate-spin w-5 h-5" />
-                )}
-                {isEditMode ? "Update Product" : "Create Product"}
-              </button>
-            </div>
-            {submitAttempt > 0 && hasErrors && (
-              <div className="mt-4 text-xs text-red-400">
-                Please fix the highlighted errors above and resubmit.
+            <form onSubmit={handleSubmit} autoComplete="off" className="w-full flex flex-col flex-1">
+              <div className="grid grid-cols-1 gap-3 sm:gap-4">
+                {/* Name */}
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                  >
+                    Name<span className="ml-1 text-red-500">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoFocus
+                    disabled={loading || submitting || (uploadProgress !== null)}
+                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                      ${errors.name && touched.name
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-zinc-700 focus:border-emerald-500"}
+                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                    value={form.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="e.g. T-shirt"
+                    autoComplete="off"
+                  />
+                  {errors.name && touched.name && (
+                    <span className="text-xs text-red-500 mt-0.5 block">
+                      {errors.name}
+                    </span>
+                  )}
+                </div>
+                {/* Description */}
+                <div>
+                  <label
+                    htmlFor="description"
+                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows="3"
+                    disabled={loading || submitting || (uploadProgress !== null)}
+                    className="mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-100 focus:border-emerald-500 focus:ring-0 placeholder-zinc-500 transition text-base resize-none"
+                    value={form.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Product description"
+                  />
+                </div>
+                {/* Price */}
+                <div>
+                  <label
+                    htmlFor="price"
+                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                  >
+                    Price ($)<span className="ml-1 text-red-500">*</span>
+                  </label>
+                  <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    disabled={loading || submitting || (uploadProgress !== null)}
+                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                      ${errors.price && touched.price
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-zinc-700 focus:border-emerald-500"}
+                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                    value={form.price}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="19.99"
+                  />
+                  {errors.price && touched.price && (
+                    <span className="text-xs text-red-500 mt-0.5 block">{errors.price}</span>
+                  )}
+                </div>
+                {/* Stock */}
+                <div>
+                  <label
+                    htmlFor="stock"
+                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                  >
+                    Stock<span className="ml-1 text-red-500">*</span>
+                  </label>
+                  <input
+                    id="stock"
+                    name="stock"
+                    type="number"
+                    min="0"
+                    disabled={loading || submitting || (uploadProgress !== null)}
+                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                      ${errors.stock && touched.stock
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-zinc-700 focus:border-emerald-500"}
+                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                    value={form.stock}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="0"
+                  />
+                  {errors.stock && touched.stock && (
+                    <span className="text-xs text-red-500 mt-0.5 block">{errors.stock}</span>
+                  )}
+                </div>
+                {/* SKU */}
+                <div>
+                  <label
+                    htmlFor="sku"
+                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                  >
+                    SKU<span className="ml-1 text-red-500">*</span>
+                  </label>
+                  <input
+                    id="sku"
+                    name="sku"
+                    type="text"
+                    disabled={loading || submitting || (uploadProgress !== null)}
+                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                      ${errors.sku && touched.sku
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-zinc-700 focus:border-emerald-500"}
+                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                    value={form.sku}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="e.g. SKU-12345"
+                  />
+                  {errors.sku && touched.sku && (
+                    <span className="text-xs text-red-500 mt-0.5 block">{errors.sku}</span>
+                  )}
+                </div>
+                {/* Category */}
+                <div>
+                  <label
+                    htmlFor="category"
+                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                  >
+                    Category<span className="ml-1 text-red-500">*</span>
+                  </label>
+                  <input
+                    id="category"
+                    name="category"
+                    type="text"
+                    disabled={loading || submitting || (uploadProgress !== null)}
+                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                      ${errors.category && touched.category
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-zinc-700 focus:border-emerald-500"}
+                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                    value={form.category}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="e.g. Apparel"
+                  />
+                  {errors.category && touched.category && (
+                    <span className="text-xs text-red-500 mt-0.5 block">{errors.category}</span>
+                  )}
+                </div>
+                {/* Modern Cloudinary Image Upload Dropzone */}
+                <ImageDropzone
+                  imageUrl={form.imageUrl}
+                  setImageUrl={handleImageUrlChange}
+                  uploadProgress={uploadProgress}
+                  setUploadProgress={setUploadProgress}
+                  disabled={loading || submitting}
+                  setTouched={setTouched}
+                  error={touched.imageUrl && errors.imageUrl}
+                />
+                {/* Slug not shown in form, managed by submit logic */}
               </div>
-            )}
-          </form>
+              <div className="flex items-center justify-end mt-6 sm:mt-7 gap-2 sm:gap-3 pb-1 sm:pb-0">
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded-lg text-zinc-300 bg-zinc-800 hover:bg-zinc-700 focus:outline-none border border-zinc-600 transition font-semibold disabled:opacity-60"
+                  onClick={handleClose}
+                  disabled={loading || submitting || uploadProgress !== null}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="relative px-5 py-2 rounded-lg font-semibold text-zinc-100 bg-emerald-600 hover:bg-emerald-500 focus:outline-none transition disabled:opacity-50 flex items-center gap-2"
+                  disabled={loading || submitting || uploadProgress !== null}
+                >
+                  {(loading || submitting || uploadProgress !== null) && (
+                    <Loader2 className="animate-spin w-5 h-5" />
+                  )}
+                  {isEditMode ? "Update Product" : "Create Product"}
+                </button>
+              </div>
+              {submitAttempt > 0 && hasErrors && (
+                <div className="mt-3 sm:mt-4 text-xs text-red-400">
+                  Please fix the highlighted errors above and resubmit.
+                </div>
+              )}
+            </form>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

@@ -9,13 +9,14 @@ datasource db {
 
 /// User accounts for AI-powered ecommerce admin SaaS
 model User {
-  id        String   @id @default(cuid())                               // Unique user identifier
-  name      String                                                      // User's full name
-  email     String   @unique                                            // Unique email address
-  password  String                                                      // Hashed password
-  role      Role     @default(ADMIN)                                    // Role in the system
-  createdAt DateTime @default(now())                                    // Timestamp for creation
-  updatedAt DateTime @updatedAt                                         // Timestamp for last update
+  id        String     @id @default(cuid())                               // Unique user identifier
+  name      String                                                        // User's full name
+  email     String     @unique                                            // Unique email address
+  password  String                                                        // Hashed password
+  role      Role       @default(ADMIN)                                    // Role in the system
+  orders    Order[]                                                      // Orders placed by user
+  createdAt DateTime   @default(now())                                    // Timestamp for creation
+  updatedAt DateTime   @updatedAt                                         // Timestamp for last update
 
   @@map("users")
   @@index([email])
@@ -23,23 +24,61 @@ model User {
 
 /// Product catalog for scalable ecommerce
 model Product {
-  id          String         @id @default(cuid())                      // Unique product identifier
-  name        String                                                    // Product name
-  slug        String         @unique                                   // Unique slug for URLs (seo-friendly)
-  description String?                                                  // Product description (optional for flexibility)
-  price       Decimal                                                   // Product price
-  stock       Int                                                       // Available stock
-  sku         String         @unique                                   // Stock Keeping Unit, unique
-  category    String                                                    // Product category (simple string, can be normalized later)
-  status      ProductStatus  @default(ACTIVE)                          // Product status, see enum below
-  imageUrl    String?                                                   // Image URL for product (optional)
-  createdAt   DateTime       @default(now())                            // Timestamp for creation
-  updatedAt   DateTime       @updatedAt                                 // Timestamp for last update
+  id          String         @id @default(cuid())                         // Unique product identifier
+  name        String                                                        // Product name
+  slug        String         @unique                                       // Unique slug for URLs (seo-friendly)
+  description String?                                                       // Product description (optional)
+  price       Decimal                                                       // Product price
+  stock       Int                                                           // Available stock
+  sku         String         @unique                                       // Stock Keeping Unit, unique
+  category    String                                                        // Product category (simple string, can be normalized later)
+  status      ProductStatus  @default(ACTIVE)                              // Product status, see enum below
+  imageUrl    String?                                                       // Image URL for product (optional)
+  orderItems  OrderItem[]                                                  // OrderItems referencing this product
+  createdAt   DateTime       @default(now())                                // Timestamp for creation
+  updatedAt   DateTime       @updatedAt                                     // Timestamp for last update
 
   @@map("products")
   @@index([slug])
   @@index([sku])
   @@index([category])
+}
+
+/// Orders placed by customers (scalable & production-ready)
+model Order {
+  id               String        @id @default(cuid())                      // Unique order identifier
+  orderNumber      Int           @unique @default(autoincrement())         // Sequential order number for reference
+  userId           String                                                  // FK to User
+  user             User          @relation(fields: [userId], references: [id])
+  totalAmount      Decimal       @db.Decimal(12,2)                         // Total cost of order
+  status           OrderStatus   @default(PENDING)                         // Order status e.g. PENDING, PAID, SHIPPED
+  paymentStatus    PaymentStatus @default(PENDING)                         // Payment status e.g. PENDING, PAID, REFUNDED
+  shippingAddress  Json                                                      // Shipping address as JSON (support arbitrary fields)
+  orderItems       OrderItem[]                                             // Items in this order
+  createdAt        DateTime      @default(now())                           // Created time
+  updatedAt        DateTime      @updatedAt                                // Updated time
+
+  @@map("orders")
+  @@index([userId])
+  @@index([orderNumber])
+}
+
+/// Individual items within an order
+model OrderItem {
+  id              String   @id @default(cuid())                          // Unique OrderItem identifier
+  orderId         String                                               // FK to Order
+  order           Order    @relation(fields: [orderId], references: [id])
+  productId       String                                               // FK to Product (reference integrity)
+  product         Product  @relation(fields: [productId], references: [id])
+  quantity        Int                                                  // Quantity of this product in the order
+  unitPrice       Decimal  @db.Decimal(12,2)                            // Unit price at the time of ordering
+  productSnapshot Json                                                 // Product snapshot for anti-tampering / history (name, sku, etc.)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("order_items")
+  @@index([orderId])
+  @@index([productId])
 }
 
 /// User roles for access control
@@ -53,4 +92,23 @@ enum ProductStatus {
   ACTIVE
   DRAFT
   OUT_OF_STOCK
+}
+
+/// Status of an order in the system
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+/// Status of payment for an order
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
 }

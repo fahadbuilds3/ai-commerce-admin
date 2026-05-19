@@ -5,7 +5,7 @@ import apiClient from "./axios";
  * @param {Object} params
  * @returns {Promise<any>}
  */
-export async function getProducts(params = {}) {
+export async function fetchProducts(params = {}) {
   try {
     const response = await apiClient.get("/products", { params });
     return response.data;
