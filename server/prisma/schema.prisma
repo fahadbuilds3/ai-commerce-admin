@@ -28,7 +28,7 @@ model Product {
   name        String                                                        // Product name
   slug        String         @unique                                       // Unique slug for URLs (seo-friendly)
   description String?                                                       // Product description (optional)
-  price       Decimal                                                       // Product price
+  price       Float                                                       // Product price
   stock       Int                                                           // Available stock
   sku         String         @unique                                       // Stock Keeping Unit, unique
   category    String                                                        // Product category (simple string, can be normalized later)
@@ -37,6 +37,7 @@ model Product {
   orderItems  OrderItem[]                                                  // OrderItems referencing this product
   createdAt   DateTime       @default(now())                                // Timestamp for creation
   updatedAt   DateTime       @updatedAt                                     // Timestamp for last update
+  isDeleted   Boolean  @default(false)
 
   @@map("products")
   @@index([slug])
