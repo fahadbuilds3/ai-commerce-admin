@@ -4,16 +4,10 @@ import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom
 import Login from "../pages/auth/Login";
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import ProductsPage from "../pages/products/ProductsPage";
+import OrdersPage from "../pages/orders/OrdersPage";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 // --- TEMPORARY PLACEHOLDER PAGES FOR MISSING MODULES --- //
-const OrdersPage = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen text-zinc-400">
-    <h1 className="text-xl font-bold mb-2">Orders</h1>
-    <p>This is the Orders module. (Placeholder)</p>
-  </div>
-);
-
 const CustomersPage = () => (
   <div className="flex flex-col items-center justify-center min-h-screen text-zinc-400">
     <h1 className="text-xl font-bold mb-2">Customers</h1>

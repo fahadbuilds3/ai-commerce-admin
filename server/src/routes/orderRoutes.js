@@ -5,92 +5,65 @@ import authMiddleware from "../middleware/authMiddleware.js";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// GET /api/orders - Get all orders
+
+
 router.get(
   "/",
-  authMiddleware,
-  async (req, res, next) => {
+  // authMiddleware,
+  async (req, res) => {
     try {
       const orders = await prisma.order.findMany({
         include: {
-          user: true,
-          orderItems: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          orderItems: {
+            include: {
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  price: true,
+                  imageUrl: true,
+                },
+              },
+            },
+          },
         },
-        orderBy: { createdAt: "desc" },
-      });
-      res.json(orders);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-// GET /api/orders/:id - Get a single order by ID
-router.get(
-  "/:id",
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      const order = await prisma.order.findUnique({
-        where: { id: Number(req.params.id) },
-        include: {
-          user: true,
-          orderItems: true,
+        orderBy: {
+          createdAt: "desc",
         },
       });
 
-      if (!order) {
-        return res.status(404).json({ error: "Order not found" });
-      }
-      res.json(order);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+      const formattedOrders = orders.map((order) => {
+        const subtotal = Array.isArray(order.orderItems)
+          ? order.orderItems.reduce(
+              (sum, item) =>
+                sum + Number(item.unitPrice) * item.quantity,
+              0
+            )
+          : 0;
 
-// PATCH /api/orders/:id/status - Update order status
-router.patch(
-  "/:id/status",
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      const { status } = req.body;
-      if (!status) {
-        return res.status(400).json({ error: "Status is required" });
-      }
-
-      const updatedOrder = await prisma.order.update({
-        where: { id: Number(req.params.id) },
-        data: { status },
+        return {
+          ...order,
+          subtotal,
+          total: Number(order.totalAmount || subtotal),
+        };
       });
 
-      res.json(updatedOrder);
-    } catch (error) {
-      if (error.code === "P2025") {
-        // Prisma: Record not found
-        return res.status(404).json({ error: "Order not found" });
-      }
-      next(error);
-    }
-  }
-);
+      return res.status(200).json(formattedOrders);
 
-// DELETE /api/orders/:id - Delete order by ID
-router.delete(
-  "/:id",
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      await prisma.order.delete({
-        where: { id: Number(req.params.id) },
+    } catch (err) {
+      console.error("GET ORDERS ERROR:", err);
+
+      return res.status(500).json({
+        error: "Failed to fetch orders.",
+        details: err.message,
       });
-      res.status(204).end();
-    } catch (error) {
-      if (error.code === "P2025") {
-        return res.status(404).json({ error: "Order not found" });
-      }
-      next(error);
     }
   }
 );

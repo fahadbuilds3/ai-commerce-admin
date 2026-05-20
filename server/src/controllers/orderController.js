@@ -1,4 +1,4 @@
-// controllers/orderController.js
+ord// controllers/orderController.js
 
 // Assumes you have prisma client initialized and exported from prisma.js
 import prisma from '../prisma';
@@ -29,7 +29,7 @@ const orderService = {
 
   async getOrderById(id) {
     return prisma.order.findUnique({
-      where: { id: Number(id) },
+      where: { id },
       include: {
         user: {
           select: {
@@ -49,7 +49,7 @@ const orderService = {
 
   async updateOrderStatus(id, status) {
     return prisma.order.update({
-      where: { id: Number(id) },
+      where: { id },
       data: { status },
       include: {
         user: {
@@ -70,22 +70,42 @@ const orderService = {
 
   async deleteOrder(id) {
     return prisma.order.delete({
-      where: { id: Number(id) }
+      where: { id }
     });
   }
 };
 
 // Controllers
 
-export const getOrders = async (req, res, next) => {
+// export const getOrders = async (req, res, next) => {
+//   try {
+//     const orders = await orderService.getOrders();
+//     res.json(orders);
+//   } catch (error) {
+//     next({
+//       status: 500,
+//       message: "Failed to fetch orders",
+//       error
+//     });
+//   }
+// };
+
+export const getOrders = async (req, res) => {
   try {
+    console.log("GET ORDERS HIT");
+
     const orders = await orderService.getOrders();
-    res.json(orders);
+
+    console.log("ORDERS:", orders);
+
+    return res.status(200).json(orders);
+
   } catch (error) {
-    next({
-      status: 500,
+    console.error("GET ORDERS ERROR:", error);
+
+    return res.status(500).json({
       message: "Failed to fetch orders",
-      error
+      error: error.message,
     });
   }
 };
