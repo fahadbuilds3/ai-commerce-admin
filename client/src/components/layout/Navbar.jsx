@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { LogOut, Search, User, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -17,13 +17,13 @@ const Navbar = ({
 
   // Handles secure logout: remove JWT, clear auth state, and redirect.
   const handleLogout = () => {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token");
     if (typeof logout === "function") logout();
     navigate("/login", { replace: true });
   };
 
   return (
-    <nav className="sticky top-0 z-40 w-full bg-zinc-950 border-b border-zinc-800 shadow-sm">
+    <nav className="sticky top-0 z-30 w-full border-b border-zinc-800 bg-zinc-950/95 shadow-sm backdrop-blur">
       <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-2 sm:gap-4">
           {/* Mobile Sidebar Button */}
@@ -31,7 +31,7 @@ const Navbar = ({
             <button
               type="button"
               aria-label="Open Sidebar"
-              className="inline-flex items-center justify-center rounded-md text-zinc-400 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition sm:hidden"
+              className="inline-flex items-center justify-center rounded-md text-zinc-400 transition hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:hidden"
               onClick={onSidebarToggle}
             >
               <Menu size={26} />

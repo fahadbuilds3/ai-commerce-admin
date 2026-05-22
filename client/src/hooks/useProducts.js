@@ -27,6 +27,16 @@ function extractProducts(raw) {
   return []; // Fallback: always array
 }
 
+function getCachedProducts(old) {
+  return Array.isArray(old) ? old : extractProducts(old);
+}
+
+function setProductsQueriesData(queryClient, updater) {
+  queryClient.setQueriesData({ queryKey: PRODUCTS_KEY }, (old) =>
+    updater(getCachedProducts(old))
+  );
+}
+
 /**
  * useProducts
  * Fetches and returns just a products array. Always returns [] fallback.
@@ -57,16 +67,22 @@ export function useCreateProduct(options = {}) {
     onMutate: async (newProduct) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_KEY });
       const prev = queryClient.getQueryData(PRODUCTS_KEY);
+      const prevQueries = queryClient.getQueriesData({ queryKey: PRODUCTS_KEY });
+      const optimisticProduct = { ...newProduct, id: `temp-id-${Date.now()}` };
       queryClient.setQueryData(PRODUCTS_KEY, (old = []) => [
-        { ...newProduct, id: "temp-id-" + Date.now() },
-        ...old,
+        optimisticProduct,
+        ...getCachedProducts(old),
       ]);
-      return { prev };
+      setProductsQueriesData(queryClient, (old) => [optimisticProduct, ...old]);
+      return { prev, prevQueries };
     },
     onError: (_err, _newProduct, ctx) => {
       if (ctx?.prev) {
         queryClient.setQueryData(PRODUCTS_KEY, ctx.prev);
       }
+      ctx?.prevQueries?.forEach(([queryKey, value]) => {
+        queryClient.setQueryData(queryKey, value);
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: PRODUCTS_KEY });
@@ -87,15 +103,22 @@ export function useUpdateProduct(options = {}) {
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_KEY });
       const prev = queryClient.getQueryData(PRODUCTS_KEY);
+      const prevQueries = queryClient.getQueriesData({ queryKey: PRODUCTS_KEY });
       queryClient.setQueryData(PRODUCTS_KEY, (old = []) =>
+        getCachedProducts(old).map((prod) => (prod.id === id ? { ...prod, ...data } : prod))
+      );
+      setProductsQueriesData(queryClient, (old) =>
         old.map((prod) => (prod.id === id ? { ...prod, ...data } : prod))
       );
-      return { prev };
+      return { prev, prevQueries };
     },
     onError: (_err, _vars, ctx) => {
       if (ctx?.prev) {
         queryClient.setQueryData(PRODUCTS_KEY, ctx.prev);
       }
+      ctx?.prevQueries?.forEach(([queryKey, value]) => {
+        queryClient.setQueryData(queryKey, value);
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: PRODUCTS_KEY });
@@ -116,15 +139,22 @@ export function useDeleteProduct(options = {}) {
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_KEY });
       const prev = queryClient.getQueryData(PRODUCTS_KEY);
+      const prevQueries = queryClient.getQueriesData({ queryKey: PRODUCTS_KEY });
       queryClient.setQueryData(PRODUCTS_KEY, (old = []) =>
+        getCachedProducts(old).filter((prod) => prod.id !== id)
+      );
+      setProductsQueriesData(queryClient, (old) =>
         old.filter((prod) => prod.id !== id)
       );
-      return { prev };
+      return { prev, prevQueries };
     },
     onError: (_err, _id, ctx) => {
       if (ctx?.prev) {
         queryClient.setQueryData(PRODUCTS_KEY, ctx.prev);
       }
+      ctx?.prevQueries?.forEach(([queryKey, value]) => {
+        queryClient.setQueryData(queryKey, value);
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: PRODUCTS_KEY });

@@ -37,8 +37,17 @@ function buildUpdateProductPayload(payload) {
 }
 
 export const createProduct = async (data) => {
+  const payload = buildUpdateProductPayload(data);
+  if (!payload.slug && payload.name) {
+    payload.slug = payload.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+  }
+
   return await prisma.product.create({
-    data,
+    data: payload,
   });
 };
 
@@ -47,12 +56,18 @@ export const getProducts = async () => {
     where: {
       isDeleted: false,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 };
 
 export const getProductById = async (id) => {
-  return await prisma.product.findUnique({
-    where: { id },
+  return await prisma.product.findFirst({
+    where: {
+      id,
+      isDeleted: false,
+    },
   });
 };
 
@@ -94,7 +109,7 @@ export const updateProduct = async (id, payload) => {
 
   return prisma.product.update({
     where: { id },
-    data: payload,
+    data: buildUpdateProductPayload(payload),
   });
 };
 

@@ -1,69 +1,41 @@
-import React from "react";
+import { useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./sidebar";
 import Navbar from "./Navbar";
 
-/**
- * DashboardLayout - Production-ready SaaS dashboard layout for admin panel.
- * - Prevents horizontal scrolling/root overflow
- * - Sidebar + main content handle resizing responsively
- * - Mobile-first, modern flex architecture
- * - Sticky/fixed navbar supported
- * - Preserves sidebar animations; visually robust
- */
-const DashboardLayout = ({ title = "Dashboard", onLogout, children }) => {
+const routeTitles = {
+  "/dashboard": "Dashboard",
+  "/products": "Products",
+  "/orders": "Orders",
+  "/customers": "Customers",
+  "/analytics": "Analytics",
+};
+
+const DashboardLayout = () => {
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const location = useLocation();
+  const title = routeTitles[location.pathname] || "Dashboard";
+
   return (
-    <div
-      className="relative min-h-screen w-full bg-zinc-950 flex overflow-x-hidden"
-      style={{
-        // Prevents global horizontal scrolling
-        minWidth: 0,
-        width: "100vw",
-        maxWidth: "100vw",
-        overflowX: "hidden"
-      }}
-    >
-      {/* Sidebar: handles mobile/desktop display internally */}
-      <Sidebar />
+    <div className="min-h-screen w-full overflow-x-hidden bg-zinc-950 text-zinc-100">
+      <div className="flex min-h-screen w-full min-w-0">
+        <Sidebar
+          mobileOpen={mobileSidebarOpen}
+          onMobileClose={() => setMobileSidebarOpen(false)}
+        />
 
-      {/* Content Section */}
-      <div
-        className="flex flex-col flex-1 min-h-screen min-w-0 w-0"
-        style={{
-          // Ensures main content shrinks/grows properly and never overflows
-          minWidth: 0,
-          width: "100%",
-          overflow: "hidden"
-        }}
-      >
-        {/* Sticky Navbar Header */}
-        <div className="sticky top-0 z-30 w-full bg-zinc-950 bg-opacity-95 backdrop-blur supports-[backdrop-filter]:bg-opacity-85">
-          <Navbar title={title} onLogout={onLogout} />
+        <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+          <Navbar
+            title={title}
+            onSidebarToggle={() => setMobileSidebarOpen(true)}
+          />
+
+          <main className="min-w-0 flex-1 overflow-x-hidden px-4 py-4 sm:px-6 lg:px-8">
+            <div className="mx-auto w-full max-w-7xl min-w-0">
+              <Outlet />
+            </div>
+          </main>
         </div>
-
-        {/* Scrollable content area */}
-        <main
-          className="flex-1 relative overflow-y-auto"
-          style={{
-            // Prevent horizontal scroll within content
-            minWidth: 0,
-            width: "100%",
-            overflowX: "hidden",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            paddingTop: "1rem",
-            paddingBottom: "1rem"
-          }}
-        >
-          <div
-            className="mx-auto w-full h-full"
-            style={{
-              maxWidth: "80rem", // ~1280px, matches max-w-7xl (for fluid limiting)
-              minWidth: 0
-            }}
-          >
-            {children}
-          </div>
-        </main>
       </div>
     </div>
   );

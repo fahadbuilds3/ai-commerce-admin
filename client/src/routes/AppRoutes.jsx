@@ -1,22 +1,16 @@
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import production modules
 import Login from "../pages/auth/Login";
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import ProductsPage from "../pages/products/ProductsPage";
 import OrdersPage from "../pages/orders/OrdersPage";
+import CustomersPage from "../pages/customers/CustomersPage";
+import DashboardLayout from "../components/layout/DashboardLayout";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
-// --- TEMPORARY PLACEHOLDER PAGES FOR MISSING MODULES --- //
-const CustomersPage = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen text-zinc-400">
-    <h1 className="text-xl font-bold mb-2">Customers</h1>
-    <p>This is the Customers module. (Placeholder)</p>
-  </div>
-);
-
 const AnalyticsPage = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen text-zinc-400">
+  <div className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-950 p-6 text-zinc-400">
     <h1 className="text-xl font-bold mb-2">Analytics</h1>
     <p>This is the Analytics module. (Placeholder)</p>
   </div>
@@ -30,13 +24,6 @@ const NotFound = () => (
   </div>
 );
 
-// DashboardLayout keeps protected layout structure and preserves sidebar/navbar
-const DashboardLayout = () => (
-  <ProtectedRoute>
-    <Outlet />
-  </ProtectedRoute>
-);
-
 const AppRoutes = () => (
   <BrowserRouter>
     <Routes>
@@ -44,7 +31,13 @@ const AppRoutes = () => (
       <Route path="/login" element={<Login />} />
 
       {/* Protected admin dashboard & modules */}
-      <Route element={<DashboardLayout />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         {/* Redirect "/" to "/dashboard" for root access */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardHome />} />

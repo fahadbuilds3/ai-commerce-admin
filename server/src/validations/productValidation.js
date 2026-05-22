@@ -46,8 +46,9 @@ export const productValidationRules = [
     ),
 
   body("category")
-    .optional()
     .trim()
+    .notEmpty()
+    .withMessage("Category is required")
     .isLength({ max: 50 })
     .withMessage(
       "Category must be at most 50 characters"
