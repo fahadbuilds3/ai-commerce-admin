@@ -8,13 +8,7 @@ import OrdersPage from "../pages/orders/OrdersPage";
 import CustomersPage from "../pages/customers/CustomersPage";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
-
-const AnalyticsPage = () => (
-  <div className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-950 p-6 text-zinc-400">
-    <h1 className="text-xl font-bold mb-2">Analytics</h1>
-    <p>This is the Analytics module. (Placeholder)</p>
-  </div>
-);
+import AnalyticsPage from "../pages/analytics/AnalyticsPage";
 
 // Minimal NotFound for demonstration; customize as needed
 const NotFound = () => (

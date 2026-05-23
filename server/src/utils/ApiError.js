@@ -1,7 +1,7 @@
 /**
  * Custom error class for consistent API error handling in Express apps.
  */
-class ApiError extends Error {
+ export class ApiError extends Error {
   /**
    * @param {number} statusCode - HTTP status code (e.g. 400, 404, 500).
    * @param {string} message - Human-readable error message.
