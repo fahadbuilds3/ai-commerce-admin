@@ -27,13 +27,25 @@ export default function AiAssistantPage() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [conversationId, setConversationId] = useState(() => {
+    try {
+      return localStorage.getItem("conversationId") || null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [conversationList, setConversationList] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState(null);
 
   const chatScrollRef = useRef(null);
   const currentRequestIdRef = useRef(null);
-
+  const creatingNewConversationRef = useRef(false);
 
 
   const suggestions = useMemo(
+
     () => [
       "Draft a welcome email for new customers",
       "Summarize yesterday’s sales performance",
@@ -49,10 +61,31 @@ export default function AiAssistantPage() {
     return () => {};
   }, []);
 
+  const refreshConversationList = async () => {
+    setHistoryLoading(true);
+    setHistoryError(null);
+    try {
+      const res = await apiClient.get("/ai/conversations");
+      const list = res?.data?.conversations;
+      setConversationList(Array.isArray(list) ? list : []);
+    } catch {
+      setConversationList([]);
+      setHistoryError("Failed to load conversation history");
+    } finally {
+      setHistoryLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void refreshConversationList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   useEffect(() => {
     // Scroll to bottom whenever messages change
     const el = chatScrollRef.current;
+
     if (!el) return;
 
     // Defensive: avoid calling scroll if element is detached
@@ -68,12 +101,19 @@ export default function AiAssistantPage() {
     if (!text) return;
     if (loading) return;
 
+    // Defensive: avoid duplicate “new conversation” creation when user double-triggers send.
+    // (Backend already creates when conversationId is missing; this prevents us from repeatedly
+    // sending without updating local conversationId.)
+    if (!conversationId && creatingNewConversationRef.current) return;
+
     const userMessage = {
       id: uid(),
       role: "user",
       content: text,
       createdAt: Date.now(),
     };
+
+    if (!conversationId) creatingNewConversationRef.current = true;
 
     setLoading(true);
     setInput("");
@@ -85,11 +125,36 @@ export default function AiAssistantPage() {
     currentRequestIdRef.current = requestId;
 
     try {
-      const res = await apiClient.post("/ai/chat", { message: text });
+      const res = await apiClient.post("/ai/chat", {
+        message: text,
+        conversationId: conversationId || undefined,
+      });
+
+
+
       const reply =
         res?.data?.reply && typeof res.data.reply === "string"
           ? res.data.reply
           : "Sorry, I couldn't generate a reply.";
+
+      const returnedConversationId =
+        res?.data?.conversationId &&
+        typeof res.data.conversationId === "string"
+          ? res.data.conversationId
+          : null;
+
+      if (returnedConversationId) {
+        setConversationId(returnedConversationId);
+        try {
+          localStorage.setItem("conversationId", returnedConversationId);
+        } catch {
+          // ignore
+        }
+
+        // Keep sidebar in sync (sorted by updatedAt desc on backend).
+        void refreshConversationList();
+      }
+
 
       // Prevent out-of-order updates
       if (currentRequestIdRef.current !== requestId) return;
@@ -145,32 +210,135 @@ export default function AiAssistantPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-6 min-w-0">
-        {/* Left sidebar (history placeholder) */}
+        {/* Left sidebar (conversation history) */}
         <aside className="hidden lg:flex flex-col min-w-0">
           <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 shadow-sm p-4">
-            <div className="flex items-center gap-2">
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-2 text-indigo-300">
-                <Clock3 className="h-4 w-4" />
+              <div className="flex items-center gap-2">
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-2 text-indigo-300">
+                  <Clock3 className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-zinc-100">Conversation history</p>
+                  <p className="text-xs text-zinc-500">
+                    {historyLoading ? "Loading…" : conversationList?.length ? "" : "No conversations yet"}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (loading) return;
+                    creatingNewConversationRef.current = false;
+                    setConversationId(null);
+                    try {
+                      localStorage.removeItem("conversationId");
+                    } catch {
+                      // ignore
+                    }
+                    setMessages([]);
+                    setInput("");
+                  }}
+                  className="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-xs font-semibold text-zinc-100 hover:bg-zinc-900/55 hover:border-zinc-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                  disabled={loading}
+                >
+                  New Chat
+                </button>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-zinc-100">Conversation history</p>
-                <p className="text-xs text-zinc-500">Coming soon</p>
+
+            {historyError ? (
+              <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 px-3 py-3 text-sm text-red-200">
+                {historyError}
               </div>
-            </div>
+            ) : null}
 
             <div className="mt-4 space-y-2">
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900/40 px-3 py-2"
-                >
-                  <div className="h-3 w-3/4 animate-pulse rounded bg-zinc-800" />
-                  <div className="mt-2 h-2 w-1/2 animate-pulse rounded bg-zinc-800" />
+              {historyLoading ? (
+                Array.from({ length: 6 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-xl border border-zinc-800 bg-zinc-900/40 px-3 py-2"
+                  >
+                    <div className="h-3 w-3/4 animate-pulse rounded bg-zinc-800" />
+                    <div className="mt-2 h-2 w-1/2 animate-pulse rounded bg-zinc-800" />
+                  </div>
+                ))
+              ) : (conversationList ?? []).length ? (
+                <div className="space-y-2">
+                  {(conversationList ?? []).map((c) => {
+                    const isActive = c?.id && c.id === conversationId;
+                    const title = c?.title || "Untitled";
+                    const preview = c?.latestMessagePreview || "";
+
+                    return (
+                      <button
+                        key={c?.id}
+                        type="button"
+                        onClick={async () => {
+                          const nextId = c?.id;
+                          if (!nextId) return;
+                          if (nextId === conversationId) return;
+
+                          // Persist selection safely
+                          setConversationId(nextId);
+                          try {
+                            localStorage.setItem("conversationId", nextId);
+                          } catch {
+                            // ignore
+                          }
+
+                          // Load messages for selected conversation
+                          const reqId = uid();
+                          currentRequestIdRef.current = reqId;
+                          setLoading(true);
+                          try {
+                            const res = await apiClient.get(`/ai/conversations/${nextId}`);
+                            if (currentRequestIdRef.current !== reqId) return;
+
+                            const msgs = res?.data?.messages;
+                            setMessages(Array.isArray(msgs) ? msgs : []);
+                          } catch {
+                            if (currentRequestIdRef.current !== reqId) return;
+                            toast.error("Failed to load conversation");
+                            setMessages([]);
+                          } finally {
+                            if (currentRequestIdRef.current === reqId) {
+                              setLoading(false);
+                            }
+                          }
+                        }}
+                        className={
+                          "w-full rounded-xl border px-3 py-2 text-left transition " +
+                          (isActive
+                            ? "border-indigo-500/30 bg-indigo-500/10"
+                            : "border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900/55 hover:border-zinc-700")
+                        }
+                        aria-current={isActive ? "page" : undefined}
+                      >
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-zinc-100">
+                            {title}
+                          </p>
+                          {preview ? (
+                            <p className="mt-1 truncate text-xs text-zinc-400">
+                              {preview}
+                            </p>
+                          ) : (
+                            <p className="mt-1 text-xs text-zinc-500">No messages</p>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
+              ) : (
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 px-3 py-4 text-sm text-zinc-400">
+                  Start a conversation to see it appear here.
+                </div>
+              )}
             </div>
           </div>
         </aside>
+
 
         {/* Chat panel */}
         <section className="rounded-2xl border border-zinc-800 bg-zinc-950 shadow-sm min-w-0">
