@@ -2,14 +2,20 @@ import express from "express";
 
 import {
   chat,
+  chatStream,
   getConversations,
   getConversationById,
 } from "../controllers/aiController.js";
+
 
 const router = express.Router();
 
 // POST /api/ai/chat
 router.post("/chat", chat);
+
+// POST /api/ai/chat/stream
+router.post("/chat/stream", chatStream);
+
 
 // GET /api/ai/conversations
 router.get("/conversations", getConversations);

@@ -4,6 +4,11 @@ import asyncHandler from "../utils/asyncHandler.js";
 import prisma from "../config/prisma.js";
 
 import { generateReply } from "../services/aiService.js";
+import { generateReplyStream } from "../services/aiServiceStream.js";
+import {
+  ensureConversationAndAppendUserMessage,
+  appendAssistantMessage,
+} from "./aiStreamHelpers.js";
 
 function normalizeConversationId(value) {
   if (typeof value !== "string") return null;
@@ -43,7 +48,7 @@ export const chat = asyncHandler(async (req, res) => {
       console.log("[AI CONTROLLER] Sending empty reply fallback");
       return res.status(200).json({
         success: true,
-        reply: "I’m having trouble generating a reply right now. Please try again.",
+        reply: "Im having trouble generating a reply right now. Please try again.",
       });
     }
 
@@ -83,6 +88,116 @@ export const chat = asyncHandler(async (req, res) => {
 
     // Includes timeout/aborted/invalid response.
     throw new ApiError(500, "Failed to generate AI reply");
+  }
+});
+
+// @desc    Stream AI chat response (SSE)
+// @route   POST /api/ai/chat/stream
+// @access  Public (for now)
+export const chatStream = asyncHandler(async (req, res) => {
+  const body = req?.body;
+  const rawMessage = body?.message;
+  const rawConversationId = body?.conversationId;
+
+  const message = typeof rawMessage === "string" ? rawMessage.trim() : "";
+
+  if (!message) {
+    throw new ApiError(400, "`message` must be a non-empty string");
+  }
+
+  // SSE headers
+  res.status(200);
+  res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
+  res.setHeader("Cache-Control", "no-cache, no-transform");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
+
+  // Flush headers (Node/Express)
+  // eslint-disable-next-line no-underscore-dangle
+  res.flushHeaders?.();
+
+  const controller = new AbortController();
+  const timeoutMs = 15_000;
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  let clientDisconnected = false;
+  req.on("close", () => {
+    clientDisconnected = true;
+    try {
+      controller.abort();
+    } catch {
+      // ignore
+    }
+  });
+
+  let conversationId = null;
+  let assistantText = "";
+
+  try {
+    // Persist USER immediately (before any AI stream)
+    const ensured = await ensureConversationAndAppendUserMessage({
+      conversationId: rawConversationId,
+      message,
+    });
+    conversationId = ensured.conversationId;
+
+    // Tell client we have a conversationId for UI consistency.
+    res.write(`event: conversationId\ndata: ${JSON.stringify({ conversationId })}\n\n`);
+
+    let hasSentAnyToken = false;
+
+    // Stream tokens/chunks
+    for await (const chunk of generateReplyStream(message, { signal: controller.signal })) {
+      if (clientDisconnected) break;
+      const safeChunk = typeof chunk === "string" ? chunk : "";
+      if (!safeChunk) continue;
+
+      hasSentAnyToken = true;
+      assistantText += safeChunk;
+
+      // Send incremental update
+      res.write(`event: token\ndata: ${JSON.stringify({ chunk: safeChunk })}\n\n`);
+    }
+
+    // Defensive: if nothing streamed, still complete safely without persisting assistant.
+    const safeAssistant = assistantText.trim();
+    if (!clientDisconnected && hasSentAnyToken && safeAssistant) {
+      await appendAssistantMessage({ conversationId, reply: safeAssistant });
+    }
+
+    res.write(`event: done\ndata: ${JSON.stringify({ success: true })}\n\n`);
+  } catch (err) {
+    // Provider errors / aborts / timeouts
+    if (clientDisconnected || err?.name === "AbortError") {
+      // Do not persist assistant on interruption.
+      try {
+        res.write(
+          `event: done\ndata: ${JSON.stringify({ success: false, reason: "aborted" })}\n\n`
+        );
+      } catch {
+        // ignore
+      }
+      return;
+    }
+
+    const safeMsg =
+      err?.code === "MISSING_GROQ_API_KEY"
+        ? "AI service is not configured."
+        : "Failed to generate AI reply.";
+
+    try {
+      res.write(`event: error\ndata: ${JSON.stringify({ message: safeMsg })}\n\n`);
+      res.write(`event: done\ndata: ${JSON.stringify({ success: false })}\n\n`);
+    } catch {
+      // ignore
+    }
+  } finally {
+    clearTimeout(timeout);
+    try {
+      res.end();
+    } catch {
+      // ignore
+    }
   }
 });
 

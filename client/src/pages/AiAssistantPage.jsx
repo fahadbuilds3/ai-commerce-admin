@@ -3,6 +3,8 @@ import { Bot, Sparkles, Send, Clock3 } from "lucide-react";
 
 import apiClient from "../api/axios";
 import { toast } from "../utils/toast";
+import AiMarkdownMessage from "../components/ai/AiMarkdownMessage";
+
 
 
 const formatTime = (value) => {
@@ -27,6 +29,8 @@ export default function AiAssistantPage() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [streaming, setStreaming] = useState(false);
+
   const [conversationId, setConversationId] = useState(() => {
     try {
       return localStorage.getItem("conversationId") || null;
@@ -42,6 +46,10 @@ export default function AiAssistantPage() {
   const chatScrollRef = useRef(null);
   const currentRequestIdRef = useRef(null);
   const creatingNewConversationRef = useRef(false);
+
+  const abortStreamControllerRef = useRef(null);
+  const streamingAssistantIdRef = useRef(null);
+
 
 
   const suggestions = useMemo(
@@ -94,12 +102,14 @@ export default function AiAssistantPage() {
     } catch {
       // ignore
     }
-  }, [messages?.length, loading]);
+  }, [messages?.length, loading, streaming]);
+
 
   const onSubmit = async () => {
     const text = safeTrim(input);
     if (!text) return;
-    if (loading) return;
+    if (loading || streaming) return;
+
 
     // Defensive: avoid duplicate “new conversation” creation when user double-triggers send.
     // (Backend already creates when conversationId is missing; this prevents us from repeatedly
@@ -409,8 +419,9 @@ export default function AiAssistantPage() {
                           }
                         >
                           <div className="text-sm leading-relaxed text-zinc-100 whitespace-pre-wrap break-words">
-                            {content}
+                            {isUser ? content : <AiMarkdownMessage content={content} />}
                           </div>
+
                           {time ? (
                             <div
                               className={
