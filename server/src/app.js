@@ -9,7 +9,10 @@ import productRoutes from "./routes/productRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
+import inventoryRoutes from "./routes/inventoryRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
+
 
 const app = express();
 
@@ -48,6 +51,9 @@ app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/ai", aiRoutes);
+
 
 // Global, centralized error handling
 app.use(errorMiddleware);

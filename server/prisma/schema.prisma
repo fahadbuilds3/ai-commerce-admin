@@ -114,3 +114,36 @@ enum PaymentStatus {
   REFUNDED
   FAILED
 }
+
+/// AI conversation threads (normalized for persistence)
+model Conversation {
+  id        String    @id @default(cuid())
+  title     String?
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("conversations")
+  @@index([createdAt])
+}
+
+/// Messages within an AI conversation
+model Message {
+  id             String        @id @default(cuid())
+  role           MessageRole
+  content        String
+  createdAt      DateTime      @default(now())
+
+  conversationId String
+  conversation   Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+  @@index([conversationId])
+  @@index([createdAt])
+}
+
+enum MessageRole {
+  user
+  assistant
+}
+

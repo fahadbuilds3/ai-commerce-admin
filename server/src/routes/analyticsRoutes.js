@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get("/overview", getOverview);
 router.get("/revenue", getRevenue);

@@ -9,6 +9,8 @@ import CustomersPage from "../pages/customers/CustomersPage";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import AnalyticsPage from "../pages/analytics/AnalyticsPage";
+import InventoryPage from "../pages/inventory/InventoryPage";
+import AiAssistantPage from "../pages/AiAssistantPage";
 
 // Minimal NotFound for demonstration; customize as needed
 const NotFound = () => (
@@ -39,6 +41,8 @@ const AppRoutes = () => (
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/customers" element={<CustomersPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/inventory" element={<InventoryPage />} />
+        <Route path="ai-assistant" element={<AiAssistantPage />} />
       </Route>
 
       {/* Fallback 404 */}

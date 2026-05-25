@@ -20,7 +20,7 @@ import {
   X,
 } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "/api";
 const PAGE_SIZE = 10;
 const CUSTOMER_STATUSES = ["ACTIVE", "VIP", "BLOCKED", "INACTIVE"];
 
