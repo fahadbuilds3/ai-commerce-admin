@@ -1,12 +1,10 @@
-# TODO
+## TODO
 
-## Streaming AI Responses (Groq via SSE)
-- [x] Add backend SSE endpoint: POST /api/ai/chat/stream
-- [ ] Implement Groq streaming (stream:true) and chunk -> SSE events
-- [ ] Persist user message immediately; persist assistant message only after stream completes
-- [ ] Defensive handling: abort/disconnect/empty chunks/provider errors
-- [ ] Frontend: switch AiAssistantPage to stream assistant incrementally
-- [ ] Frontend: typing cursor/streaming indicator + disable duplicate sends while streaming
-- [ ] Frontend: auto-scroll during streaming; abort/cleanup on unmount or conversation switch
-
+- [ ] Apply compact “chat-first” UX refinement pass to `client/src/pages/AiAssistantPage.jsx`:
+  - [ ] Quick Actions: reduce padding/height/spacing and make cards denser
+  - [ ] Chat: tighten empty state and message bubble padding; reduce vertical dominance
+  - [ ] Sidebar: reduce row/header visual weight; improve truncation hierarchy and spacing
+  - [ ] Layout rhythm: tighten panel/chat padding; reduce dead-space spacer
+  - [ ] Verify scope: only edit `client/src/pages/AiAssistantPage.jsx` (no backend/layout changes)
+- [ ] Run client lint/build and do quick manual checks (drawer/streaming/markdown/prompt insertion).
 

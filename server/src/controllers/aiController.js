@@ -10,6 +10,41 @@ import {
   appendAssistantMessage,
 } from "./aiStreamHelpers.js";
 
+import { buildInventoryContextIfRelevant } from "../services/inventoryContextService.js";
+import { buildAnalyticsContextIfRelevant } from "../services/analyticsContextService.js";
+import { buildOrdersContextIfRelevant } from "../services/ordersContextService.js";
+
+function composePromptWithContexts({
+  userMessage,
+  analyticsContext,
+  inventoryContext,
+  ordersContext,
+}) {
+  const safeUserMessage = typeof userMessage === "string" ? userMessage.trim() : "";
+
+  const maxTotalChars = 3500;
+  const parts = [];
+
+  // Recommended order: analytics first, then inventory.
+  if (analyticsContext) parts.push(analyticsContext);
+  if (inventoryContext) parts.push(inventoryContext);
+
+  if (!parts.length) return safeUserMessage;
+
+  const contextPrefix = `${parts.join("\n\n")}\n\n`;
+  const combined = `${contextPrefix}${safeUserMessage}`;
+
+  if (combined.length <= maxTotalChars) return combined;
+
+  // Truncate context first; never truncate the user message.
+  const allowedContextLen = Math.max(0, maxTotalChars - (safeUserMessage.length + 2));
+  const combinedContext = parts.join("\n\n");
+  const truncatedContext = combinedContext.slice(0, allowedContextLen).trimEnd();
+
+  if (!truncatedContext) return safeUserMessage;
+  return `${truncatedContext}\n\n${safeUserMessage}`.trim();
+}
+
 function normalizeConversationId(value) {
   if (typeof value !== "string") return null;
   const v = value.trim();
@@ -21,6 +56,7 @@ function normalizeTitle(value) {
   const v = value.trim();
   return v.length ? v : null;
 }
+
 
 // @desc    AI chat response (Groq via OpenAI-compatible SDK)
 // @route   POST /api/ai/chat
@@ -39,16 +75,30 @@ export const chat = asyncHandler(async (req, res) => {
   }
 
   try {
-    const reply = await generateReply(message);
+    const [analyticsContext, inventoryContext, ordersContext] = await Promise.all([
+      buildAnalyticsContextIfRelevant(message),
+      buildInventoryContextIfRelevant(message),
+      buildOrdersContextIfRelevant(message),
+    ]);
+
+    const messageWithContext = composePromptWithContexts({
+      userMessage: message,
+      analyticsContext,
+      inventoryContext,
+      ordersContext,
+    });
+
+    const reply = await generateReply(messageWithContext);
 
     // Defensive: preserve contract even if provider returned junk.
-    const safeReply = typeof reply === "string" && reply.trim().length > 0 ? reply.trim() : "";
+    const safeReply =
+      typeof reply === "string" && reply.trim().length > 0 ? reply.trim() : "";
 
     if (!safeReply) {
       console.log("[AI CONTROLLER] Sending empty reply fallback");
       return res.status(200).json({
         success: true,
-        reply: "Im having trouble generating a reply right now. Please try again.",
+        reply: "I’m having trouble generating a reply right now. Please try again.",
       });
     }
 
@@ -146,9 +196,24 @@ export const chatStream = asyncHandler(async (req, res) => {
 
     let hasSentAnyToken = false;
 
+    // Build prompt with optional analytics/inventory/order contexts (read-only).
+    const [analyticsContext, inventoryContext, ordersContext] = await Promise.all([
+      buildAnalyticsContextIfRelevant(message),
+      buildInventoryContextIfRelevant(message),
+      buildOrdersContextIfRelevant(message),
+    ]);
+
+    const messageWithContext = composePromptWithContexts({
+      userMessage: message,
+      analyticsContext,
+      inventoryContext,
+      ordersContext,
+    });
+
     // Stream tokens/chunks
-    for await (const chunk of generateReplyStream(message, { signal: controller.signal })) {
+    for await (const chunk of generateReplyStream(messageWithContext, { signal: controller.signal })) {
       if (clientDisconnected) break;
+
       const safeChunk = typeof chunk === "string" ? chunk : "";
       if (!safeChunk) continue;
 
@@ -211,6 +276,7 @@ export const getConversations = asyncHandler(async (req, res) => {
       id: true,
       title: true,
       updatedAt: true,
+      createdAt: true,
       messages: {
         orderBy: { createdAt: "desc" },
         take: 1,
@@ -218,6 +284,7 @@ export const getConversations = asyncHandler(async (req, res) => {
       },
     },
   });
+
 
   const payload = (conversations ?? []).map((c) => {
     const latest = c?.messages?.[0];
@@ -228,9 +295,12 @@ export const getConversations = asyncHandler(async (req, res) => {
       id: c?.id,
       title: normalizeTitle(c?.title),
       updatedAt: c?.updatedAt,
+      createdAt: c?.createdAt,
       latestMessagePreview: latestPreview,
     };
   });
+
+
 
   res.status(200).json({
     success: true,
