@@ -32,6 +32,7 @@ function generateConversationTitleFromFirstMessage(firstUserMessage) {
 
 export async function ensureConversationAndAppendUserMessage({
   conversationId: rawConversationId,
+  userId,
   message,
 }) {
   const conversationId = normalizeConversationId(rawConversationId);
@@ -43,11 +44,18 @@ export async function ensureConversationAndAppendUserMessage({
     throw err;
   }
 
+  if (!userId) {
+    const err = new Error("Missing conversation owner");
+    err.code = "MISSING_USER_ID";
+    throw err;
+  }
+
   if (!conversationId) {
     const title = generateConversationTitleFromFirstMessage(safeMessage);
     const createdConversation = await prisma.conversation.create({
       data: {
         title: title ?? null,
+        userId,
       },
       select: { id: true },
     });
@@ -64,14 +72,14 @@ export async function ensureConversationAndAppendUserMessage({
   }
 
   // Defensive: ensure conversation exists before appending.
-  const existing = await prisma.conversation.findUnique({
-    where: { id: conversationId },
+  const existing = await prisma.conversation.findFirst({
+    where: { id: conversationId, userId },
     select: { id: true },
   });
 
   if (!existing) {
-    const err = new Error("Invalid conversationId");
-    err.code = "INVALID_CONVERSATION_ID";
+    const err = new Error("Conversation not found");
+    err.code = "CONVERSATION_NOT_FOUND";
     throw err;
   }
 
@@ -86,10 +94,27 @@ export async function ensureConversationAndAppendUserMessage({
   return { conversationId };
 }
 
-export async function appendAssistantMessage({ conversationId, reply }) {
+export async function appendAssistantMessage({ conversationId, userId, reply }) {
   if (typeof reply !== "string" || !reply.trim()) {
     const err = new Error("Empty AI reply");
     err.code = "EMPTY_REPLY";
+    throw err;
+  }
+
+  if (!userId) {
+    const err = new Error("Missing conversation owner");
+    err.code = "MISSING_USER_ID";
+    throw err;
+  }
+
+  const existing = await prisma.conversation.findFirst({
+    where: { id: conversationId, userId },
+    select: { id: true },
+  });
+
+  if (!existing) {
+    const err = new Error("Conversation not found");
+    err.code = "CONVERSATION_NOT_FOUND";
     throw err;
   }
 

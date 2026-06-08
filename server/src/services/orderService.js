@@ -12,7 +12,7 @@ const ORDER_SELECT = {
   updatedAt: true,
   total: true,
   // Customize relations needed for admin dashboard analytics/UI
-  user: {
+  customer: {
     select: {
       id: true,
       email: true,
@@ -44,16 +44,16 @@ const ORDER_SELECT = {
  *   - skip: number - offset
  *   - status: string - optional filter
  *   - tenantId: string|number - mandatory for SaaS
- *   - search: string - optional, search by user/product
+   *   - search: string - optional, search by customer/product
  */
 async function getOrders({ skip = 0, take = 20, status, tenantId, search } = {}) {
   const where = {};
   if (tenantId) where.tenantId = tenantId;
   if (status) where.status = status;
   if (search) {
-    // Example: simple search by user email or product (customize as needed)
+    // Example: simple search by customer email or product (customize as needed)
     where.OR = [
-      { user: { email: { contains: search, mode: 'insensitive' } } },
+      { customer: { email: { contains: search, mode: 'insensitive' } } },
       { items: { some: { product: { name: { contains: search, mode: 'insensitive' } } } } },
     ];
   }

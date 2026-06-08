@@ -1,11 +1,14 @@
 import bcrypt from "bcryptjs";
 import prisma from "./config/prisma.js";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@example.com";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "password123";
+const isProduction = process.env.NODE_ENV === "production";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || (isProduction ? null : "admin@example.com");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (isProduction ? null : "password123");
 const ADMIN_NAME = process.env.ADMIN_NAME || "Admin";
 
 export async function ensureAdminUser() {
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) return;
+
   // Only create if missing
   const existing = await prisma.user.findUnique({ where: { email: ADMIN_EMAIL } });
   if (existing) return;
@@ -18,7 +21,6 @@ export async function ensureAdminUser() {
       email: ADMIN_EMAIL,
       password: hashedPassword,
       role: "ADMIN",
-      customerStatus: "ACTIVE",
     },
   });
 }

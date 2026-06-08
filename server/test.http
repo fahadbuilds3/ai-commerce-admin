@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "name": "Admin User",
   "email": "admin2@example.com",
-  "password": "Admin123"
+  "password": "<password>"
 }
 
 ###
@@ -14,15 +14,16 @@ Content-Type: application/json
 
 {
   "email": "admin2@example.com",
-  "password": "Admin123"
+  "password": "<password>"
 }
 
 ###
 GET http://localhost:5000/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXA5bGZuaTAwMDAwcHVsc25tOG1zbWl1IiwiaWF0IjoxNzc5MTEwNjMyLCJleHAiOjE3Nzk3MTU0MzJ9.MYQ0CBljm4EcrqggHI0g_ONKYAlvRQjuX-fWCq6j_9g
+Authorization: Bearer <token>
+
 ###
 POST http://localhost:5000/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXA5bGZuaTAwMDAwcHVsc25tOG1zbWl1IiwiaWF0IjoxNzc5MTEwNjMyLCJleHAiOjE3Nzk3MTU0MzJ9.MYQ0CBljm4EcrqggHI0g_ONKYAlvRQjuX-fWCq6j_9g
+Authorization: Bearer <token>
 Content-Type: application/json
 
 {
@@ -39,4 +40,4 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5000/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXA5bGZuaTAwMDAwcHVsc25tOG1zbWl1IiwiaWF0IjoxNzc5MTEwNjMyLCJleHAiOjE3Nzk3MTU0MzJ9.MYQ0CBljm4EcrqggHI0g_ONKYAlvRQjuX-fWCq6j_9g
+Authorization: Bearer <token>

@@ -1,6 +1,7 @@
 import express from "express";
 
 import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoles from "../middleware/authorize.js";
 
 import {
   createProduct,
@@ -16,6 +17,7 @@ import {
 } from "../validations/productValidation.js";
 
 const router = express.Router();
+const requireAdminOrManager = authorizeRoles("ADMIN", "MANAGER");
 
 // GET all products
 router.get(
@@ -28,6 +30,7 @@ router.get(
 router.post(
   "/",
   authMiddleware,
+  requireAdminOrManager,
   productValidationRules,
   validateProduct,
   createProduct
@@ -44,6 +47,7 @@ router.get(
 router.put(
   "/:id",
   authMiddleware,
+  requireAdminOrManager,
   productValidationRules,
   validateProduct,
   updateProduct
@@ -53,6 +57,7 @@ router.put(
 router.delete(
   "/:id",
   authMiddleware,
+  requireAdminOrManager,
   deleteProduct
 );
 

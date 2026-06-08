@@ -43,6 +43,7 @@ function generateConversationTitleFromFirstMessage(firstUserMessage) {
 
 export async function ensureConversationAndAppendMessages({
   conversationId: rawConversationId,
+  userId,
   message,
   reply,
 }) {
@@ -62,6 +63,12 @@ export async function ensureConversationAndAppendMessages({
     throw err;
   }
 
+  if (!userId) {
+    const err = new Error("Missing conversation owner");
+    err.code = "MISSING_USER_ID";
+    throw err;
+  }
+
   try {
     if (!conversationId) {
       const title = generateConversationTitleFromFirstMessage(safeMessage);
@@ -69,6 +76,7 @@ export async function ensureConversationAndAppendMessages({
       const createdConversation = await prisma.conversation.create({
         data: {
           title: title ?? null,
+          userId,
         },
         select: { id: true },
       });
@@ -94,14 +102,14 @@ export async function ensureConversationAndAppendMessages({
     }
 
     // Defensive: ensure conversation exists before appending.
-    const existing = await prisma.conversation.findUnique({
-      where: { id: conversationId },
+    const existing = await prisma.conversation.findFirst({
+      where: { id: conversationId, userId },
       select: { id: true },
     });
 
     if (!existing) {
-      const err = new Error("Invalid conversationId");
-      err.code = "INVALID_CONVERSATION_ID";
+      const err = new Error("Conversation not found");
+      err.code = "CONVERSATION_NOT_FOUND";
       throw err;
     }
 
@@ -124,7 +132,8 @@ export async function ensureConversationAndAppendMessages({
     return { conversationId };
   } catch (err) {
     // Normalize Prisma errors into something the controller can map.
-    if (err?.code === "INVALID_CONVERSATION_ID") throw err;
+    if (err?.code === "CONVERSATION_NOT_FOUND") throw err;
+    if (err?.code === "MISSING_USER_ID") throw err;
     const e = err instanceof Error ? err : new Error("Failed to persist conversation");
     e.code = e.code || "DB_WRITE_FAILED";
     throw e;

@@ -1,9 +1,10 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../config/prisma.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoles from "../middleware/authorize.js";
 
 const router = express.Router();
-const prisma = new PrismaClient();
+const requireAdminOrManager = authorizeRoles("ADMIN", "MANAGER");
 
 const ADMIN_ORDER_STATUSES = new Set([
   "PENDING",
@@ -14,7 +15,7 @@ const ADMIN_ORDER_STATUSES = new Set([
 ]);
 
 const orderInclude = {
-  user: {
+  customer: {
     select: {
       id: true,
       name: true,
@@ -37,6 +38,7 @@ const orderInclude = {
 };
 
 function formatOrder(order) {
+  const customer = order?.customer ?? null;
   const subtotal = Array.isArray(order?.orderItems)
     ? order.orderItems.reduce(
         (sum, item) => sum + Number(item.unitPrice) * Number(item.quantity),
@@ -46,6 +48,8 @@ function formatOrder(order) {
 
   return {
     ...order,
+    customer,
+    user: customer,
     subtotal,
     total: Number(order?.totalAmount || subtotal),
   };
@@ -53,7 +57,7 @@ function formatOrder(order) {
 
 router.get(
   "/",
-  // authMiddleware,
+  authMiddleware,
   async (req, res) => {
     try {
       const orders = await prisma.order.findMany({
@@ -71,14 +75,13 @@ router.get(
       console.error("GET ORDERS ERROR:", err);
 
       return res.status(500).json({
-        error: "Failed to fetch orders.",
-        details: err.message,
+        message: "Internal server error",
       });
     }
   }
 );
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, requireAdminOrManager, async (req, res) => {
   try {
     const status = String(req.body?.status || "").toUpperCase();
 
@@ -116,12 +119,12 @@ router.put("/:id", async (req, res) => {
     }
 
     return res.status(500).json({
-      error: "Failed to update order status",
+      message: "Internal server error",
     });
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, requireAdminOrManager, async (req, res) => {
   try {
     await prisma.$transaction([
       prisma.orderItem.deleteMany({
@@ -148,7 +151,7 @@ router.delete("/:id", async (req, res) => {
     }
 
     return res.status(500).json({
-      error: "Failed to delete order",
+      message: "Internal server error",
     });
   }
 });

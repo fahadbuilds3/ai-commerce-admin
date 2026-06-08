@@ -25,8 +25,8 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import apiClient from "../../api/axios";
 
-const API_BASE = "/api";
 const PAGE_SIZE = 10;
 
 const ORDER_STATUSES = [
@@ -1073,12 +1073,8 @@ function OrdersPageContent() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE}/orders`);
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || data?.message || "Failed to fetch orders.");
-      }
+      const response = await apiClient.get("/orders");
+      const data = response.data;
 
       const list = Array.isArray(data)
         ? data
@@ -1095,7 +1091,12 @@ function OrdersPageContent() {
       setOrders(list.filter(Boolean));
     } catch (err) {
       setOrders([]);
-      setError(err?.message || "Failed to fetch orders.");
+      setError(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Failed to fetch orders."
+      );
     } finally {
       setLoading(false);
     }
@@ -1196,16 +1197,10 @@ function OrdersPageContent() {
     );
 
     try {
-      const response = await fetch(`${API_BASE}/orders/${orderId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+      const response = await apiClient.put(`/orders/${orderId}`, {
+        status: newStatus,
       });
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || data?.message || "Failed to update order status.");
-      }
+      const data = response.data;
 
       if (data && typeof data === "object" && data.id) {
         setOrders((current) =>
@@ -1216,7 +1211,12 @@ function OrdersPageContent() {
       toast.success(`Order marked ${formatStatusLabel(newStatus)}.`);
     } catch (err) {
       setOrders(previousOrders);
-      toast.error(err?.message || "Failed to update order status.");
+      toast.error(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Failed to update order status."
+      );
     } finally {
       setUpdatingOrderId(null);
     }
@@ -1236,19 +1236,17 @@ function OrdersPageContent() {
     }
 
     try {
-      const response = await fetch(`${API_BASE}/orders/${orderId}`, {
-        method: "DELETE",
-      });
-      const data = response.status === 204 ? null : await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || data?.message || "Failed to delete order.");
-      }
+      await apiClient.delete(`/orders/${orderId}`);
 
       toast.success("Order deleted.");
     } catch (err) {
       setOrders(previousOrders);
-      toast.error(err?.message || "Failed to delete order.");
+      toast.error(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Failed to delete order."
+      );
     } finally {
       setDeletingOrderId(null);
     }

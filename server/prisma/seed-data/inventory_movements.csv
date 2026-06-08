@@ -1,0 +1,336 @@
+id,productId,type,quantity,reason,createdAt
+inv_001,prod_091,STOCK_IN,71,launch inventory,2026-04-04T11:12:43.413Z
+inv_002,prod_071,STOCK_OUT,10,bundle allocation,2026-05-11T20:51:07.308Z
+inv_003,prod_047,STOCK_OUT,77,bundle allocation,2026-02-03T03:17:03.502Z
+inv_004,prod_050,RETURN,22,customer return,2026-02-13T15:45:10.605Z
+inv_005,prod_047,RETURN,21,quality review return,2025-12-17T22:08:53.237Z
+inv_006,prod_098,RETURN,63,carrier return,2025-12-09T00:55:53.338Z
+inv_007,prod_023,RETURN,57,carrier return,2026-04-20T07:37:22.045Z
+inv_008,prod_001,ADJUSTMENT,5,manual audit,2026-01-09T10:50:09.673Z
+inv_009,prod_067,STOCK_IN,27,warehouse transfer,2026-04-24T16:06:42.313Z
+inv_010,prod_045,STOCK_OUT,52,sample shipment,2025-12-29T10:28:04.846Z
+inv_011,prod_037,ADJUSTMENT,3,cycle count correction,2026-05-28T02:31:28.690Z
+inv_012,prod_050,STOCK_IN,75,supplier restock,2026-01-09T21:26:34.992Z
+inv_013,prod_028,STOCK_IN,20,warehouse transfer,2026-01-17T08:01:07.872Z
+inv_014,prod_049,ADJUSTMENT,11,cycle count correction,2026-04-23T19:46:22.397Z
+inv_015,prod_090,RETURN,14,customer return,2025-12-18T02:17:21.537Z
+inv_016,prod_054,RETURN,30,customer return,2026-05-29T21:07:13.183Z
+inv_017,prod_020,STOCK_IN,35,supplier restock,2026-02-10T17:20:16.328Z
+inv_018,prod_067,ADJUSTMENT,5,cycle count correction,2026-05-23T08:10:10.719Z
+inv_019,prod_058,STOCK_OUT,25,sample shipment,2025-12-24T02:28:56.039Z
+inv_020,prod_059,RETURN,28,carrier return,2026-01-20T07:46:14.289Z
+inv_021,prod_033,STOCK_IN,79,supplier restock,2026-05-05T16:49:02.422Z
+inv_022,prod_042,ADJUSTMENT,16,damaged unit adjustment,2026-04-22T13:39:18.786Z
+inv_023,prod_017,RETURN,15,carrier return,2026-06-05T08:25:12.260Z
+inv_024,prod_004,ADJUSTMENT,6,damaged unit adjustment,2026-01-29T06:47:27.482Z
+inv_025,prod_038,ADJUSTMENT,3,cycle count correction,2026-02-05T02:17:29.611Z
+inv_026,prod_090,STOCK_IN,51,warehouse transfer,2026-01-15T18:49:36.141Z
+inv_027,prod_086,ADJUSTMENT,14,damaged unit adjustment,2026-04-26T04:21:33.394Z
+inv_028,prod_062,STOCK_OUT,21,bundle allocation,2026-03-24T07:36:03.010Z
+inv_029,prod_010,STOCK_IN,63,supplier restock,2026-03-03T11:48:51.706Z
+inv_030,prod_017,STOCK_OUT,42,sample shipment,2026-04-25T20:19:25.476Z
+inv_031,prod_093,STOCK_OUT,51,bundle allocation,2026-02-15T21:38:15.533Z
+inv_032,prod_036,RETURN,20,quality review return,2026-04-03T06:48:40.406Z
+inv_033,prod_063,ADJUSTMENT,1,cycle count correction,2026-05-02T06:22:15.767Z
+inv_034,prod_008,STOCK_OUT,21,customer order,2025-12-29T17:02:11.464Z
+inv_035,prod_097,RETURN,62,quality review return,2026-01-18T20:01:08.677Z
+inv_036,prod_076,STOCK_IN,60,warehouse transfer,2026-03-30T07:17:02.936Z
+inv_037,prod_095,RETURN,31,quality review return,2026-01-09T16:25:06.242Z
+inv_038,prod_054,STOCK_OUT,39,sample shipment,2026-04-15T00:19:45.830Z
+inv_039,prod_026,ADJUSTMENT,13,cycle count correction,2026-02-13T04:29:29.005Z
+inv_040,prod_082,STOCK_OUT,39,sample shipment,2026-05-21T02:19:58.305Z
+inv_041,prod_056,ADJUSTMENT,2,manual audit,2026-04-19T10:30:10.356Z
+inv_042,prod_097,STOCK_OUT,25,bundle allocation,2026-02-11T17:31:48.684Z
+inv_043,prod_014,ADJUSTMENT,4,cycle count correction,2026-05-30T19:46:02.388Z
+inv_044,prod_093,STOCK_IN,38,supplier restock,2026-05-23T10:18:45.610Z
+inv_045,prod_001,STOCK_IN,38,warehouse transfer,2026-04-30T10:12:24.754Z
+inv_046,prod_024,ADJUSTMENT,8,manual audit,2026-02-11T07:56:06.099Z
+inv_047,prod_043,STOCK_IN,10,launch inventory,2026-02-23T12:44:19.154Z
+inv_048,prod_005,ADJUSTMENT,16,damaged unit adjustment,2026-04-27T20:51:08.544Z
+inv_049,prod_072,STOCK_IN,39,supplier restock,2026-04-25T03:40:23.389Z
+inv_050,prod_029,STOCK_IN,40,launch inventory,2026-05-11T10:34:43.937Z
+inv_051,prod_018,ADJUSTMENT,6,damaged unit adjustment,2026-02-16T21:08:00.106Z
+inv_052,prod_047,STOCK_OUT,6,customer order,2026-03-30T13:58:34.845Z
+inv_053,prod_029,STOCK_IN,78,launch inventory,2026-04-25T13:57:26.668Z
+inv_054,prod_025,STOCK_IN,39,supplier restock,2026-01-23T11:01:17.927Z
+inv_055,prod_052,STOCK_OUT,45,bundle allocation,2026-02-06T06:37:33.786Z
+inv_056,prod_010,ADJUSTMENT,4,manual audit,2026-04-09T09:22:02.005Z
+inv_057,prod_041,STOCK_IN,77,warehouse transfer,2026-02-22T18:27:31.834Z
+inv_058,prod_080,ADJUSTMENT,4,manual audit,2026-01-30T02:23:59.997Z
+inv_059,prod_010,RETURN,60,quality review return,2026-03-16T06:39:04.989Z
+inv_060,prod_019,STOCK_OUT,51,customer order,2026-02-15T19:01:09.218Z
+inv_061,prod_072,RETURN,20,quality review return,2026-01-29T03:40:44.613Z
+inv_062,prod_002,ADJUSTMENT,1,damaged unit adjustment,2026-03-18T07:59:40.847Z
+inv_063,prod_060,RETURN,21,carrier return,2026-05-18T19:10:14.532Z
+inv_064,prod_085,RETURN,34,quality review return,2026-01-15T04:31:55.585Z
+inv_065,prod_056,STOCK_OUT,14,bundle allocation,2026-04-01T19:33:32.106Z
+inv_066,prod_009,STOCK_IN,15,supplier restock,2026-05-17T16:33:48.781Z
+inv_067,prod_028,ADJUSTMENT,17,cycle count correction,2026-02-12T06:38:30.269Z
+inv_068,prod_074,STOCK_IN,10,supplier restock,2026-05-18T00:17:44.569Z
+inv_069,prod_030,STOCK_IN,3,supplier restock,2026-04-10T13:38:36.923Z
+inv_070,prod_044,ADJUSTMENT,20,damaged unit adjustment,2026-06-08T09:41:24.784Z
+inv_071,prod_042,RETURN,60,customer return,2026-03-05T09:26:29.355Z
+inv_072,prod_084,ADJUSTMENT,4,manual audit,2026-01-19T23:48:54.696Z
+inv_073,prod_066,ADJUSTMENT,17,damaged unit adjustment,2026-03-09T05:19:32.579Z
+inv_074,prod_027,STOCK_IN,17,launch inventory,2025-12-15T08:23:53.847Z
+inv_075,prod_028,ADJUSTMENT,10,manual audit,2026-06-03T10:59:31.762Z
+inv_076,prod_024,STOCK_IN,76,launch inventory,2026-05-19T06:25:36.508Z
+inv_077,prod_033,STOCK_OUT,14,customer order,2025-12-26T20:25:00.133Z
+inv_078,prod_063,ADJUSTMENT,6,cycle count correction,2026-06-05T06:16:52.552Z
+inv_079,prod_076,STOCK_OUT,49,customer order,2026-02-23T00:50:25.044Z
+inv_080,prod_025,STOCK_OUT,33,customer order,2026-02-26T13:39:15.767Z
+inv_081,prod_072,ADJUSTMENT,11,cycle count correction,2026-03-04T10:17:46.077Z
+inv_082,prod_035,STOCK_OUT,55,sample shipment,2026-01-16T04:23:52.892Z
+inv_083,prod_012,RETURN,33,customer return,2026-04-06T21:56:20.357Z
+inv_084,prod_026,ADJUSTMENT,13,cycle count correction,2026-05-21T04:27:22.908Z
+inv_085,prod_066,RETURN,19,quality review return,2026-03-28T15:53:21.481Z
+inv_086,prod_057,ADJUSTMENT,1,manual audit,2026-03-24T15:11:02.357Z
+inv_087,prod_021,RETURN,42,carrier return,2026-01-04T00:22:59.717Z
+inv_088,prod_032,STOCK_IN,53,launch inventory,2026-03-13T22:36:48.741Z
+inv_089,prod_037,RETURN,52,carrier return,2026-04-25T08:43:22.378Z
+inv_090,prod_061,ADJUSTMENT,6,manual audit,2026-04-25T10:37:40.255Z
+inv_091,prod_019,STOCK_OUT,49,sample shipment,2026-04-15T07:50:54.524Z
+inv_092,prod_012,RETURN,37,carrier return,2026-02-07T21:30:26.407Z
+inv_093,prod_007,STOCK_IN,72,warehouse transfer,2026-03-03T05:18:31.409Z
+inv_094,prod_052,STOCK_IN,66,supplier restock,2026-04-23T17:57:50.296Z
+inv_095,prod_066,ADJUSTMENT,15,cycle count correction,2026-01-10T10:58:55.320Z
+inv_096,prod_004,ADJUSTMENT,16,manual audit,2026-05-24T23:32:19.578Z
+inv_097,prod_097,RETURN,56,quality review return,2025-12-23T07:06:20.712Z
+inv_098,prod_056,STOCK_IN,70,launch inventory,2026-05-14T02:07:49.415Z
+inv_099,prod_069,STOCK_OUT,15,customer order,2025-12-16T21:59:52.810Z
+inv_100,prod_044,RETURN,16,carrier return,2026-02-03T07:26:16.912Z
+inv_101,prod_062,RETURN,13,customer return,2026-05-11T02:18:36.063Z
+inv_102,prod_024,ADJUSTMENT,18,cycle count correction,2026-03-09T02:14:32.854Z
+inv_103,prod_021,STOCK_IN,58,supplier restock,2026-05-30T16:43:30.126Z
+inv_104,prod_015,RETURN,78,carrier return,2025-12-24T08:42:52.754Z
+inv_105,prod_076,RETURN,68,quality review return,2026-04-24T13:43:22.265Z
+inv_106,prod_094,STOCK_IN,25,supplier restock,2026-03-15T17:19:55.491Z
+inv_107,prod_063,RETURN,39,carrier return,2026-04-19T06:21:26.341Z
+inv_108,prod_011,ADJUSTMENT,20,manual audit,2026-05-28T18:29:54.091Z
+inv_109,prod_016,STOCK_IN,26,supplier restock,2026-04-25T20:56:49.790Z
+inv_110,prod_007,RETURN,60,carrier return,2026-01-13T12:36:09.411Z
+inv_111,prod_076,STOCK_OUT,21,bundle allocation,2026-02-17T13:09:31.238Z
+inv_112,prod_044,STOCK_IN,3,launch inventory,2026-02-12T22:01:13.758Z
+inv_113,prod_016,STOCK_OUT,80,bundle allocation,2025-12-16T05:09:42.672Z
+inv_114,prod_036,STOCK_IN,32,warehouse transfer,2026-04-10T21:26:57.743Z
+inv_115,prod_041,STOCK_IN,42,supplier restock,2026-01-03T00:22:11.321Z
+inv_116,prod_046,STOCK_OUT,1,sample shipment,2026-01-20T01:59:09.882Z
+inv_117,prod_083,RETURN,71,customer return,2026-02-14T16:43:27.643Z
+inv_118,prod_074,ADJUSTMENT,7,cycle count correction,2026-05-21T18:29:44.733Z
+inv_119,prod_012,RETURN,61,customer return,2026-02-12T10:34:07.086Z
+inv_120,prod_038,STOCK_OUT,28,customer order,2026-02-17T08:05:11.597Z
+inv_121,prod_001,STOCK_OUT,67,customer order,2026-05-15T09:51:04.525Z
+inv_122,prod_084,STOCK_OUT,61,sample shipment,2026-01-12T18:53:42.073Z
+inv_123,prod_098,STOCK_OUT,60,customer order,2026-01-04T10:44:01.531Z
+inv_124,prod_081,STOCK_OUT,61,sample shipment,2026-03-16T21:54:10.986Z
+inv_125,prod_063,STOCK_OUT,9,customer order,2026-03-24T16:37:37.874Z
+inv_126,prod_011,RETURN,65,carrier return,2026-04-24T07:08:51.479Z
+inv_127,prod_061,STOCK_OUT,74,sample shipment,2026-05-21T10:15:39.927Z
+inv_128,prod_009,RETURN,12,customer return,2025-12-21T06:27:01.293Z
+inv_129,prod_100,RETURN,45,carrier return,2026-05-02T20:35:29.867Z
+inv_130,prod_014,ADJUSTMENT,1,cycle count correction,2026-01-08T06:41:03.521Z
+inv_131,prod_048,STOCK_OUT,5,sample shipment,2026-05-28T22:11:00.831Z
+inv_132,prod_033,STOCK_OUT,55,customer order,2026-03-20T13:36:41.370Z
+inv_133,prod_012,ADJUSTMENT,11,cycle count correction,2026-05-26T06:09:14.442Z
+inv_134,prod_061,ADJUSTMENT,18,damaged unit adjustment,2026-02-25T13:27:52.699Z
+inv_135,prod_036,ADJUSTMENT,15,cycle count correction,2026-01-24T01:50:38.350Z
+inv_136,prod_054,ADJUSTMENT,17,manual audit,2026-01-01T18:42:46.384Z
+inv_137,prod_006,RETURN,46,customer return,2026-02-14T00:05:12.694Z
+inv_138,prod_091,ADJUSTMENT,17,cycle count correction,2025-12-30T08:50:28.771Z
+inv_139,prod_055,ADJUSTMENT,6,damaged unit adjustment,2026-04-26T05:16:15.659Z
+inv_140,prod_018,RETURN,39,carrier return,2026-05-24T03:29:24.767Z
+inv_141,prod_008,RETURN,20,customer return,2026-05-05T05:20:49.508Z
+inv_142,prod_054,ADJUSTMENT,15,damaged unit adjustment,2026-04-17T14:56:24.333Z
+inv_143,prod_007,RETURN,53,customer return,2026-04-25T05:30:29.767Z
+inv_144,prod_016,ADJUSTMENT,4,cycle count correction,2026-01-18T04:41:41.422Z
+inv_145,prod_089,ADJUSTMENT,18,cycle count correction,2026-04-17T03:28:31.456Z
+inv_146,prod_062,RETURN,79,quality review return,2026-01-31T23:48:18.644Z
+inv_147,prod_012,ADJUSTMENT,15,manual audit,2026-02-21T17:08:47.531Z
+inv_148,prod_098,RETURN,8,customer return,2026-01-29T01:35:27.176Z
+inv_149,prod_033,RETURN,71,customer return,2025-12-15T21:49:25.935Z
+inv_150,prod_021,RETURN,23,carrier return,2025-12-12T03:33:37.710Z
+inv_151,prod_036,RETURN,31,quality review return,2026-03-06T15:18:32.922Z
+inv_152,prod_069,STOCK_OUT,75,bundle allocation,2026-03-22T07:35:34.478Z
+inv_153,prod_046,ADJUSTMENT,4,manual audit,2026-03-06T09:51:41.556Z
+inv_154,prod_034,STOCK_OUT,60,sample shipment,2025-12-20T04:50:10.605Z
+inv_155,prod_084,RETURN,30,customer return,2026-03-26T11:20:25.541Z
+inv_156,prod_062,ADJUSTMENT,19,damaged unit adjustment,2025-12-25T23:17:39.360Z
+inv_157,prod_055,ADJUSTMENT,13,damaged unit adjustment,2026-04-08T00:48:29.790Z
+inv_158,prod_082,RETURN,38,quality review return,2025-12-24T18:42:42.053Z
+inv_159,prod_071,STOCK_OUT,51,customer order,2026-04-25T11:26:50.386Z
+inv_160,prod_038,ADJUSTMENT,3,manual audit,2026-01-17T00:08:09.635Z
+inv_161,prod_071,ADJUSTMENT,6,damaged unit adjustment,2025-12-31T14:50:47.850Z
+inv_162,prod_033,RETURN,14,customer return,2026-02-02T17:25:21.257Z
+inv_163,prod_097,RETURN,74,quality review return,2025-12-15T04:32:38.863Z
+inv_164,prod_031,RETURN,13,customer return,2026-05-02T23:57:59.350Z
+inv_165,prod_015,ADJUSTMENT,17,damaged unit adjustment,2025-12-31T12:09:42.842Z
+inv_166,prod_027,ADJUSTMENT,13,cycle count correction,2026-04-12T21:05:06.974Z
+inv_167,prod_089,RETURN,28,carrier return,2026-02-25T17:33:01.057Z
+inv_168,prod_049,ADJUSTMENT,14,damaged unit adjustment,2026-05-05T03:44:29.492Z
+inv_169,prod_015,ADJUSTMENT,10,cycle count correction,2026-02-26T00:03:37.148Z
+inv_170,prod_044,STOCK_OUT,19,sample shipment,2026-05-31T21:41:08.845Z
+inv_171,prod_091,STOCK_IN,55,supplier restock,2026-03-04T00:23:29.245Z
+inv_172,prod_004,STOCK_IN,72,launch inventory,2026-04-10T10:36:54.941Z
+inv_173,prod_029,ADJUSTMENT,12,manual audit,2026-04-25T02:24:55.067Z
+inv_174,prod_061,RETURN,53,quality review return,2026-02-16T15:35:04.973Z
+inv_175,prod_007,RETURN,27,carrier return,2025-12-12T10:57:12.662Z
+inv_176,prod_013,STOCK_IN,75,launch inventory,2026-06-01T00:40:17.668Z
+inv_177,prod_065,RETURN,55,customer return,2026-02-24T19:41:30.710Z
+inv_178,prod_028,RETURN,45,carrier return,2026-03-13T23:47:15.753Z
+inv_179,prod_031,STOCK_OUT,30,customer order,2026-02-15T06:14:23.517Z
+inv_180,prod_024,STOCK_IN,54,launch inventory,2026-01-18T18:32:46.194Z
+inv_181,prod_086,RETURN,2,customer return,2026-03-14T23:47:57.138Z
+inv_182,prod_048,ADJUSTMENT,16,damaged unit adjustment,2026-02-16T15:13:53.946Z
+inv_183,prod_035,STOCK_OUT,1,sample shipment,2026-03-26T21:58:54.258Z
+inv_184,prod_031,RETURN,22,customer return,2026-01-02T23:11:21.291Z
+inv_185,prod_026,STOCK_OUT,43,customer order,2026-03-16T20:01:16.753Z
+inv_186,prod_026,STOCK_OUT,50,sample shipment,2026-04-19T20:20:11.009Z
+inv_187,prod_065,ADJUSTMENT,8,damaged unit adjustment,2026-03-24T22:57:06.086Z
+inv_188,prod_088,RETURN,69,customer return,2025-12-31T01:01:07.935Z
+inv_189,prod_060,STOCK_OUT,39,customer order,2026-01-10T04:16:32.937Z
+inv_190,prod_025,RETURN,63,quality review return,2026-02-25T14:04:19.675Z
+inv_191,prod_098,STOCK_IN,50,warehouse transfer,2026-03-17T14:13:48.726Z
+inv_192,prod_048,STOCK_OUT,77,sample shipment,2026-01-11T11:42:53.510Z
+inv_193,prod_003,ADJUSTMENT,20,manual audit,2025-12-29T15:57:02.945Z
+inv_194,prod_044,STOCK_IN,41,supplier restock,2026-01-08T23:47:32.778Z
+inv_195,prod_047,ADJUSTMENT,8,cycle count correction,2026-04-05T07:40:31.436Z
+inv_196,prod_077,ADJUSTMENT,3,manual audit,2026-04-17T15:54:12.258Z
+inv_197,prod_022,RETURN,35,customer return,2026-03-26T18:34:12.045Z
+inv_198,prod_002,ADJUSTMENT,15,cycle count correction,2026-04-29T17:04:58.334Z
+inv_199,prod_008,STOCK_IN,55,launch inventory,2025-12-29T01:50:45.279Z
+inv_200,prod_020,STOCK_IN,65,warehouse transfer,2026-02-05T17:58:55.986Z
+inv_201,prod_098,STOCK_OUT,14,bundle allocation,2026-01-21T00:32:08.907Z
+inv_202,prod_011,RETURN,25,quality review return,2025-12-27T00:52:30.868Z
+inv_203,prod_012,ADJUSTMENT,4,manual audit,2025-12-19T01:37:36.631Z
+inv_204,prod_023,STOCK_IN,76,launch inventory,2025-12-26T13:20:11.019Z
+inv_205,prod_063,ADJUSTMENT,6,cycle count correction,2026-03-18T04:12:02.248Z
+inv_206,prod_041,STOCK_IN,46,warehouse transfer,2026-01-14T07:04:38.989Z
+inv_207,prod_091,ADJUSTMENT,16,damaged unit adjustment,2026-04-26T19:48:31.955Z
+inv_208,prod_027,RETURN,7,carrier return,2026-04-29T09:11:41.399Z
+inv_209,prod_008,STOCK_OUT,49,customer order,2026-05-11T19:30:58.715Z
+inv_210,prod_033,STOCK_OUT,2,bundle allocation,2026-01-12T11:58:09.226Z
+inv_211,prod_007,STOCK_IN,71,supplier restock,2026-01-25T14:52:13.812Z
+inv_212,prod_007,STOCK_OUT,33,sample shipment,2026-04-25T16:22:38.343Z
+inv_213,prod_023,STOCK_OUT,72,sample shipment,2026-04-19T02:30:42.034Z
+inv_214,prod_015,STOCK_IN,65,supplier restock,2025-12-24T16:36:46.096Z
+inv_215,prod_073,ADJUSTMENT,13,cycle count correction,2026-02-11T19:12:48.124Z
+inv_216,prod_005,RETURN,26,carrier return,2026-05-27T17:10:55.942Z
+inv_217,prod_031,RETURN,55,carrier return,2026-01-10T02:50:53.396Z
+inv_218,prod_012,RETURN,1,quality review return,2026-02-24T23:31:48.440Z
+inv_219,prod_082,ADJUSTMENT,9,cycle count correction,2026-03-09T04:06:02.697Z
+inv_220,prod_085,STOCK_OUT,55,customer order,2026-04-25T22:39:53.118Z
+inv_221,prod_021,STOCK_OUT,6,bundle allocation,2025-12-20T12:42:13.097Z
+inv_222,prod_057,STOCK_IN,21,launch inventory,2026-03-27T16:53:42.000Z
+inv_223,prod_022,STOCK_IN,49,launch inventory,2025-12-31T23:32:56.980Z
+inv_224,prod_017,STOCK_IN,32,supplier restock,2025-12-21T08:33:21.824Z
+inv_225,prod_078,STOCK_IN,24,warehouse transfer,2026-03-13T01:14:03.431Z
+inv_226,prod_059,RETURN,7,quality review return,2025-12-16T17:29:28.241Z
+inv_227,prod_034,STOCK_OUT,28,bundle allocation,2026-02-22T15:25:23.084Z
+inv_228,prod_051,RETURN,70,carrier return,2026-03-11T11:04:21.500Z
+inv_229,prod_097,ADJUSTMENT,14,cycle count correction,2026-02-26T10:51:52.830Z
+inv_230,prod_076,ADJUSTMENT,20,manual audit,2026-05-16T07:41:09.437Z
+inv_231,prod_048,RETURN,19,customer return,2026-03-07T17:58:58.047Z
+inv_232,prod_056,RETURN,36,carrier return,2026-04-05T03:51:59.771Z
+inv_233,prod_092,STOCK_IN,20,warehouse transfer,2026-01-26T11:39:21.254Z
+inv_234,prod_083,STOCK_IN,6,warehouse transfer,2026-03-08T13:40:09.997Z
+inv_235,prod_006,RETURN,3,carrier return,2026-03-21T12:08:07.349Z
+inv_236,prod_025,RETURN,64,customer return,2025-12-23T05:21:59.408Z
+inv_237,prod_061,STOCK_OUT,52,bundle allocation,2026-03-26T14:00:06.832Z
+inv_238,prod_065,RETURN,77,customer return,2026-01-31T20:12:34.037Z
+inv_239,prod_053,STOCK_OUT,36,bundle allocation,2026-04-05T03:38:19.678Z
+inv_240,prod_073,STOCK_OUT,2,sample shipment,2026-01-06T13:45:31.524Z
+inv_241,prod_069,ADJUSTMENT,8,manual audit,2026-02-04T15:54:13.752Z
+inv_242,prod_056,ADJUSTMENT,20,cycle count correction,2026-03-15T05:10:19.218Z
+inv_243,prod_048,RETURN,80,quality review return,2026-04-02T11:30:32.945Z
+inv_244,prod_076,STOCK_IN,70,supplier restock,2025-12-25T02:51:35.029Z
+inv_245,prod_040,STOCK_OUT,76,customer order,2026-02-28T21:04:21.404Z
+inv_246,prod_091,STOCK_IN,22,launch inventory,2026-05-14T09:03:26.816Z
+inv_247,prod_044,STOCK_IN,66,warehouse transfer,2025-12-11T00:52:51.552Z
+inv_248,prod_039,STOCK_IN,19,warehouse transfer,2026-03-20T08:07:42.338Z
+inv_249,prod_092,STOCK_OUT,47,bundle allocation,2026-04-22T16:06:34.767Z
+inv_250,prod_073,STOCK_IN,65,launch inventory,2026-02-03T22:48:08.056Z
+inv_251,prod_024,ADJUSTMENT,16,cycle count correction,2026-03-16T02:34:14.904Z
+inv_252,prod_076,STOCK_OUT,3,bundle allocation,2026-01-06T08:04:11.315Z
+inv_253,prod_043,RETURN,7,quality review return,2026-04-15T23:00:56.051Z
+inv_254,prod_054,ADJUSTMENT,19,cycle count correction,2026-03-16T17:05:46.684Z
+inv_255,prod_099,ADJUSTMENT,6,damaged unit adjustment,2026-03-02T01:35:37.178Z
+inv_256,prod_044,ADJUSTMENT,19,cycle count correction,2026-01-18T14:16:43.485Z
+inv_257,prod_069,ADJUSTMENT,11,cycle count correction,2026-05-01T19:16:37.590Z
+inv_258,prod_078,RETURN,54,customer return,2026-03-27T16:27:57.801Z
+inv_259,prod_091,ADJUSTMENT,17,cycle count correction,2026-02-05T04:52:58.336Z
+inv_260,prod_082,ADJUSTMENT,15,damaged unit adjustment,2026-05-22T03:22:28.482Z
+inv_261,prod_018,STOCK_OUT,47,bundle allocation,2026-04-18T09:46:55.980Z
+inv_262,prod_044,STOCK_IN,2,warehouse transfer,2026-04-26T13:22:22.939Z
+inv_263,prod_089,STOCK_OUT,78,bundle allocation,2026-02-09T14:27:46.392Z
+inv_264,prod_017,STOCK_IN,4,supplier restock,2026-03-11T08:04:34.754Z
+inv_265,prod_072,ADJUSTMENT,9,manual audit,2026-01-17T18:48:47.469Z
+inv_266,prod_083,RETURN,64,customer return,2026-06-03T09:34:41.387Z
+inv_267,prod_017,STOCK_OUT,9,customer order,2026-05-14T04:19:30.929Z
+inv_268,prod_056,RETURN,79,quality review return,2026-03-15T00:40:06.514Z
+inv_269,prod_034,RETURN,23,quality review return,2026-04-24T22:22:04.601Z
+inv_270,prod_065,ADJUSTMENT,17,damaged unit adjustment,2026-05-30T04:01:17.772Z
+inv_271,prod_061,RETURN,57,quality review return,2026-02-19T11:15:27.860Z
+inv_272,prod_083,STOCK_OUT,64,customer order,2026-05-10T06:06:26.947Z
+inv_273,prod_090,RETURN,24,carrier return,2026-05-21T21:03:34.104Z
+inv_274,prod_061,RETURN,74,quality review return,2026-01-06T22:28:05.886Z
+inv_275,prod_066,ADJUSTMENT,13,cycle count correction,2026-02-13T05:52:35.449Z
+inv_276,prod_008,STOCK_IN,40,launch inventory,2026-05-30T06:01:07.660Z
+inv_277,prod_048,STOCK_IN,36,warehouse transfer,2026-03-10T09:50:36.029Z
+inv_278,prod_049,STOCK_OUT,13,sample shipment,2025-12-22T08:10:08.764Z
+inv_279,prod_066,ADJUSTMENT,9,cycle count correction,2026-02-15T14:06:41.573Z
+inv_280,prod_055,RETURN,21,quality review return,2026-02-15T22:50:04.384Z
+inv_281,prod_080,RETURN,20,customer return,2026-04-28T20:49:24.147Z
+inv_282,prod_024,RETURN,16,carrier return,2026-02-21T04:47:15.011Z
+inv_283,prod_036,STOCK_IN,36,launch inventory,2026-04-20T11:23:42.240Z
+inv_284,prod_078,STOCK_IN,71,launch inventory,2026-03-06T17:19:18.932Z
+inv_285,prod_096,STOCK_OUT,46,sample shipment,2026-05-27T19:23:07.581Z
+inv_286,prod_049,STOCK_OUT,21,sample shipment,2026-02-09T18:50:31.384Z
+inv_287,prod_059,STOCK_IN,16,launch inventory,2026-03-20T11:48:11.352Z
+inv_288,prod_048,ADJUSTMENT,15,cycle count correction,2026-01-27T12:45:07.398Z
+inv_289,prod_037,ADJUSTMENT,12,damaged unit adjustment,2025-12-25T21:54:33.704Z
+inv_290,prod_079,RETURN,66,carrier return,2026-05-21T16:54:51.617Z
+inv_291,prod_058,STOCK_OUT,7,bundle allocation,2026-04-07T18:24:01.725Z
+inv_292,prod_042,STOCK_IN,65,warehouse transfer,2026-01-01T06:57:34.613Z
+inv_293,prod_078,STOCK_IN,12,launch inventory,2026-02-27T23:18:32.276Z
+inv_294,prod_010,ADJUSTMENT,12,damaged unit adjustment,2026-05-20T20:52:21.497Z
+inv_295,prod_040,RETURN,25,carrier return,2025-12-15T17:02:17.348Z
+inv_296,prod_032,STOCK_IN,16,warehouse transfer,2026-02-22T13:32:34.841Z
+inv_297,prod_054,STOCK_OUT,45,sample shipment,2026-06-07T06:39:00.835Z
+inv_298,prod_069,ADJUSTMENT,2,damaged unit adjustment,2026-01-24T12:21:40.197Z
+inv_299,prod_038,STOCK_OUT,5,bundle allocation,2026-04-03T15:51:16.904Z
+inv_300,prod_055,RETURN,35,carrier return,2026-02-14T09:27:18.745Z
+inv_301,prod_060,ADJUSTMENT,4,cycle count correction,2026-02-09T07:05:51.338Z
+inv_302,prod_026,ADJUSTMENT,16,damaged unit adjustment,2026-03-21T17:48:17.853Z
+inv_303,prod_061,STOCK_OUT,76,bundle allocation,2026-05-11T00:43:48.535Z
+inv_304,prod_012,ADJUSTMENT,2,cycle count correction,2026-05-07T10:14:06.577Z
+inv_305,prod_100,ADJUSTMENT,5,manual audit,2026-02-11T22:26:18.051Z
+inv_306,prod_095,RETURN,78,carrier return,2025-12-25T13:10:49.387Z
+inv_307,prod_074,STOCK_OUT,69,sample shipment,2026-04-12T00:56:35.855Z
+inv_308,prod_023,STOCK_OUT,52,sample shipment,2026-03-23T02:07:47.641Z
+inv_309,prod_071,ADJUSTMENT,10,cycle count correction,2026-03-31T06:26:06.692Z
+inv_310,prod_074,STOCK_IN,34,launch inventory,2026-04-22T19:48:04.595Z
+inv_311,prod_087,RETURN,76,carrier return,2026-05-12T15:16:55.219Z
+inv_312,prod_041,ADJUSTMENT,17,damaged unit adjustment,2026-03-16T00:21:25.988Z
+inv_313,prod_003,RETURN,61,carrier return,2025-12-14T01:15:24.818Z
+inv_314,prod_013,ADJUSTMENT,13,cycle count correction,2026-04-03T06:22:14.464Z
+inv_315,prod_012,RETURN,17,quality review return,2026-05-28T16:51:24.236Z
+inv_316,prod_005,ADJUSTMENT,13,cycle count correction,2026-05-25T10:45:32.377Z
+inv_317,prod_014,ADJUSTMENT,18,cycle count correction,2025-12-16T21:14:13.468Z
+inv_318,prod_034,RETURN,29,carrier return,2026-01-24T16:32:53.758Z
+inv_319,prod_013,STOCK_IN,1,supplier restock,2026-03-16T02:52:01.534Z
+inv_320,prod_067,STOCK_OUT,37,sample shipment,2025-12-27T20:05:42.471Z
+inv_321,prod_031,RETURN,61,quality review return,2026-01-30T08:12:40.054Z
+inv_322,prod_024,STOCK_OUT,68,customer order,2026-02-20T17:16:59.842Z
+inv_323,prod_071,STOCK_IN,48,launch inventory,2025-12-19T19:34:17.780Z
+inv_324,prod_049,STOCK_OUT,14,bundle allocation,2026-05-28T08:13:41.295Z
+inv_325,prod_083,STOCK_OUT,8,customer order,2026-03-25T22:40:52.499Z
+inv_326,prod_087,ADJUSTMENT,9,manual audit,2026-02-11T07:09:47.765Z
+inv_327,prod_033,STOCK_IN,12,warehouse transfer,2026-03-10T08:42:37.942Z
+inv_328,prod_001,ADJUSTMENT,13,manual audit,2026-04-03T11:26:53.938Z
+inv_329,prod_089,RETURN,38,quality review return,2026-04-12T07:03:34.631Z
+inv_330,prod_030,STOCK_IN,52,warehouse transfer,2026-06-03T00:01:41.581Z
+inv_331,prod_014,STOCK_IN,16,warehouse transfer,2026-02-23T05:37:54.803Z
+inv_332,prod_058,STOCK_OUT,38,customer order,2026-03-18T14:11:22.504Z
+inv_333,prod_080,ADJUSTMENT,12,damaged unit adjustment,2026-01-01T05:14:22.820Z
+inv_334,prod_094,ADJUSTMENT,16,damaged unit adjustment,2026-04-16T15:06:01.932Z
+inv_335,prod_074,STOCK_IN,35,launch inventory,2026-05-15T07:22:13.731Z

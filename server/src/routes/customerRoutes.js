@@ -1,17 +1,13 @@
 import express from "express";
-import { Prisma } from "@prisma/client";
 import prisma from "../config/prisma.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoles from "../middleware/authorize.js";
 
 const router = express.Router();
+router.use(authMiddleware);
+router.use(authorizeRoles("ADMIN", "MANAGER"));
 
 const CUSTOMER_STATUSES = new Set(["ACTIVE", "VIP", "BLOCKED", "INACTIVE"]);
-
-async function ensureCustomerStatusColumn() {
-  await prisma.$executeRaw`
-    ALTER TABLE "users"
-    ADD COLUMN IF NOT EXISTS "customerStatus" TEXT NOT NULL DEFAULT 'ACTIVE'
-  `;
-}
 
 function formatOrder(order) {
   return {
@@ -24,20 +20,20 @@ function formatOrder(order) {
   };
 }
 
-function formatCustomer(user, status = "ACTIVE") {
-  const orders = Array.isArray(user?.orders) ? user.orders : [];
+function formatCustomer(customer, status = customer?.status || "ACTIVE") {
+  const orders = Array.isArray(customer?.orders) ? customer.orders : [];
   const totalSpent = orders.reduce(
     (sum, order) => sum + Number(order?.totalAmount || 0),
     0
   );
 
   return {
-    id: user?.id,
-    name: user?.name || "Unknown customer",
-    email: user?.email || "No email",
+    id: customer?.id,
+    name: customer?.name || "Unknown customer",
+    email: customer?.email || "No email",
     status: CUSTOMER_STATUSES.has(status) ? status : "ACTIVE",
-    createdAt: user?.createdAt,
-    updatedAt: user?.updatedAt,
+    createdAt: customer?.createdAt,
+    updatedAt: customer?.updatedAt,
     ordersCount: orders.length,
     totalSpent,
     recentOrders: orders
@@ -48,36 +44,14 @@ function formatCustomer(user, status = "ACTIVE") {
   };
 }
 
-async function readStatusesByUserId(userIds) {
-  if (!Array.isArray(userIds) || userIds.length === 0) return new Map();
-
-  try {
-    await ensureCustomerStatusColumn();
-    const rows = await prisma.$queryRaw`
-      SELECT id, "customerStatus"
-      FROM "users"
-      WHERE id IN (${Prisma.join(userIds)})
-    `;
-
-    return new Map(
-      rows.map((row) => [
-        row.id,
-        CUSTOMER_STATUSES.has(row.customerStatus) ? row.customerStatus : "ACTIVE",
-      ])
-    );
-  } catch (err) {
-    console.error("READ CUSTOMER STATUSES ERROR:", err);
-    return new Map();
-  }
-}
-
 router.get("/", async (_req, res) => {
   try {
-    const users = await prisma.user.findMany({
+    const customers = await prisma.customer.findMany({
       select: {
         id: true,
         name: true,
         email: true,
+        status: true,
         createdAt: true,
         updatedAt: true,
         orders: {
@@ -99,12 +73,9 @@ router.get("/", async (_req, res) => {
       },
     });
 
-    const statuses = await readStatusesByUserId(users.map((user) => user.id));
-    const customers = users.map((user) =>
-      formatCustomer(user, statuses.get(user.id) || "ACTIVE")
-    );
+    const payload = customers.map((customer) => formatCustomer(customer));
 
-    return res.status(200).json({ customers, totalCount: customers.length });
+    return res.status(200).json({ customers: payload, totalCount: payload.length });
   } catch (err) {
     console.error("GET CUSTOMERS ERROR:", err);
     return res.status(500).json({ error: "Failed to fetch customers." });
@@ -113,7 +84,7 @@ router.get("/", async (_req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
+    const customer = await prisma.customer.findUnique({
       where: {
         id: req.params.id,
       },
@@ -121,6 +92,7 @@ router.get("/:id", async (req, res) => {
         id: true,
         name: true,
         email: true,
+        status: true,
         createdAt: true,
         updatedAt: true,
         orders: {
@@ -139,12 +111,11 @@ router.get("/:id", async (req, res) => {
       },
     });
 
-    if (!user) {
+    if (!customer) {
       return res.status(404).json({ error: "Customer not found." });
     }
 
-    const statuses = await readStatusesByUserId([user.id]);
-    return res.status(200).json(formatCustomer(user, statuses.get(user.id)));
+    return res.status(200).json(formatCustomer(customer));
   } catch (err) {
     console.error("GET CUSTOMER ERROR:", err);
     return res.status(500).json({ error: "Failed to fetch customer." });
@@ -159,26 +130,18 @@ router.put("/:id", async (req, res) => {
       return res.status(400).json({ error: "Invalid customer status." });
     }
 
-    await ensureCustomerStatusColumn();
-
-    const updated = await prisma.$executeRaw`
-      UPDATE "users"
-      SET "customerStatus" = ${status}, "updatedAt" = NOW()
-      WHERE id = ${req.params.id}
-    `;
-
-    if (Number(updated) === 0) {
-      return res.status(404).json({ error: "Customer not found." });
-    }
-
-    const user = await prisma.user.findUnique({
+    const customer = await prisma.customer.update({
       where: {
         id: req.params.id,
+      },
+      data: {
+        status,
       },
       select: {
         id: true,
         name: true,
         email: true,
+        status: true,
         createdAt: true,
         updatedAt: true,
         orders: {
@@ -197,8 +160,12 @@ router.put("/:id", async (req, res) => {
       },
     });
 
-    return res.status(200).json(formatCustomer(user, status));
+    return res.status(200).json(formatCustomer(customer));
   } catch (err) {
+    if (err?.code === "P2025") {
+      return res.status(404).json({ error: "Customer not found." });
+    }
+
     console.error("UPDATE CUSTOMER ERROR:", err);
     return res.status(500).json({ error: "Failed to update customer." });
   }
@@ -206,51 +173,52 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
+    const dashboardUser = await prisma.user.findUnique({
       where: {
         id: req.params.id,
       },
       select: {
         id: true,
+        role: true,
       },
     });
 
-    if (!user) {
+    if (dashboardUser?.role === "ADMIN" || dashboardUser?.role === "MANAGER") {
+      return res.status(403).json({ error: "Dashboard users cannot be deleted from customer routes." });
+    }
+
+    if (dashboardUser?.id === req.user?.id) {
+      return res.status(403).json({ error: "You cannot delete your own account from customer routes." });
+    }
+
+    const customer = await prisma.customer.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      select: {
+        id: true,
+        _count: {
+          select: {
+            orders: true,
+          },
+        },
+      },
+    });
+
+    if (!customer) {
       return res.status(404).json({ error: "Customer not found." });
     }
 
-    await prisma.$transaction(async (tx) => {
-      const orders = await tx.order.findMany({
-        where: {
-          userId: req.params.id,
-        },
-        select: {
-          id: true,
-        },
+    if (customer._count.orders > 0) {
+      return res.status(400).json({
+        error: "Customer has existing orders and cannot be deleted.",
       });
-      const orderIds = orders.map((order) => order.id);
+    }
 
-      if (orderIds.length > 0) {
-        await tx.orderItem.deleteMany({
-          where: {
-            orderId: {
-              in: orderIds,
-            },
-          },
-        });
-      }
-
-      await tx.order.deleteMany({
-        where: {
-          userId: req.params.id,
-        },
-      });
-
-      await tx.user.delete({
-        where: {
-          id: req.params.id,
-        },
-      });
+    await prisma.customer.delete({
+      where: {
+        id: req.params.id,
+      },
     });
 
     return res.status(204).end();

@@ -19,8 +19,8 @@ import {
   UserRound,
   X,
 } from "lucide-react";
+import apiClient from "../../api/axios";
 
-const API_BASE = "/api";
 const PAGE_SIZE = 10;
 const CUSTOMER_STATUSES = ["ACTIVE", "VIP", "BLOCKED", "INACTIVE"];
 
@@ -858,17 +858,18 @@ export default function CustomersPage() {
     setError(null);
 
     try {
-      const response = await fetch(`${API_BASE}/customers`);
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || data?.message || "Failed to fetch customers.");
-      }
+      const response = await apiClient.get("/customers");
+      const data = response.data;
 
       setCustomers(normalizeCustomers(data));
     } catch (err) {
       setCustomers([]);
-      setError(err?.message || "Failed to fetch customers.");
+      setError(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Failed to fetch customers."
+      );
     } finally {
       setLoading(false);
     }
@@ -948,16 +949,10 @@ export default function CustomersPage() {
     );
 
     try {
-      const response = await fetch(`${API_BASE}/customers/${customerId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: nextStatus }),
+      const response = await apiClient.put(`/customers/${customerId}`, {
+        status: nextStatus,
       });
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || data?.message || "Failed to update customer.");
-      }
+      const data = response.data;
 
       const normalized = normalizeCustomers([data])[0];
       if (normalized) {
@@ -969,7 +964,12 @@ export default function CustomersPage() {
       toast.success(`Customer marked ${formatStatus(nextStatus)}.`);
     } catch (err) {
       setCustomers(previousCustomers);
-      toast.error(err?.message || "Failed to update customer.");
+      toast.error(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Failed to update customer."
+      );
     } finally {
       setUpdatingCustomerId(null);
     }
@@ -989,19 +989,17 @@ export default function CustomersPage() {
     }
 
     try {
-      const response = await fetch(`${API_BASE}/customers/${customerId}`, {
-        method: "DELETE",
-      });
-      const data = response.status === 204 ? null : await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.error || data?.message || "Failed to delete customer.");
-      }
+      await apiClient.delete(`/customers/${customerId}`);
 
       toast.success("Customer deleted.");
     } catch (err) {
       setCustomers(previousCustomers);
-      toast.error(err?.message || "Failed to delete customer.");
+      toast.error(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          "Failed to delete customer."
+      );
     } finally {
       setDeletingCustomerId(null);
     }

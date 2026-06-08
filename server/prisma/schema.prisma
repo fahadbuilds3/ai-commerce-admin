@@ -13,14 +13,29 @@ model User {
   name      String                                                        // User's full name
   email     String     @unique                                            // Unique email address
   password  String                                                        // Hashed password
-  role      Role       @default(ADMIN)                                    // Role in the system
-  customerStatus String   @default("ACTIVE")                              // Customer lifecycle status for admin CRM
-  orders    Order[]                                                      // Orders placed by user
+  role      Role       @default(USER)                                     // Role in the system
+  conversations Conversation[]                                            // AI conversations owned by user
   createdAt DateTime   @default(now())                                    // Timestamp for creation
   updatedAt DateTime   @updatedAt                                         // Timestamp for last update
 
   @@map("users")
   @@index([email])
+}
+
+/// Ecommerce customer profiles separate from dashboard/staff users
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  status    String   @default("ACTIVE")
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customers")
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
 }
 
 /// Product catalog for scalable ecommerce
@@ -50,8 +65,8 @@ model Product {
 model Order {
   id               String        @id @default(cuid())                      // Unique order identifier
   orderNumber      Int           @unique @default(autoincrement())         // Sequential order number for reference
-  userId           String                                                  // FK to User
-  user             User          @relation(fields: [userId], references: [id])
+  customerId       String                                                  // FK to Customer
+  customer         Customer      @relation(fields: [customerId], references: [id])
   totalAmount      Decimal       @db.Decimal(12,2)                         // Total cost of order
   status           OrderStatus   @default(PENDING)                         // Order status e.g. PENDING, PAID, SHIPPED
   paymentStatus    PaymentStatus @default(PENDING)                         // Payment status e.g. PENDING, PAID, REFUNDED
@@ -61,7 +76,7 @@ model Order {
   updatedAt        DateTime      @updatedAt                                // Updated time
 
   @@map("orders")
-  @@index([userId])
+  @@index([customerId])
   @@index([orderNumber])
 }
 
@@ -85,6 +100,7 @@ model OrderItem {
 
 /// User roles for access control
 enum Role {
+  USER
   ADMIN
   MANAGER
 }
@@ -120,10 +136,14 @@ model Conversation {
   id        String    @id @default(cuid())
   title     String?
   messages  Message[]
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   @@map("conversations")
+  @@index([userId])
+  @@index([userId, updatedAt])
   @@index([createdAt])
 }
 

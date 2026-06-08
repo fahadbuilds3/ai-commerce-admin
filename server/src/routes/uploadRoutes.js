@@ -3,8 +3,12 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../config/cloudinary.js"; // assumes the default export is the configured instance
 import { uploadImage } from "../controllers/uploadController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoles from "../middleware/authorize.js";
 
 const router = express.Router();
+router.use(authMiddleware);
+router.use(authorizeRoles("ADMIN", "MANAGER"));
 
 // Configure multer-storage-cloudinary
 const storage = new CloudinaryStorage({
@@ -39,19 +43,13 @@ const upload = multer({
  */
 router.post("/", (req, res) => {
   upload.single("image")(req, res, function (err) {
-    console.log("UPLOAD CALLBACK TRIGGERED");
-
     if (err) {
       console.error("MULTER/CLOUDINARY ERROR:", err);
 
       return res.status(500).json({
-        success: false,
-        error: err.message,
-        fullError: err,
+        message: "Internal server error",
       });
     }
-
-    console.log("REQ.FILE:", req.file);
 
     if (!req.file) {
       return res.status(400).json({

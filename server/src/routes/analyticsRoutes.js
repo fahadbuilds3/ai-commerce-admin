@@ -1,5 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoles from "../middleware/authorize.js";
 import {
   getOverview,
   getRevenue,
@@ -10,7 +11,8 @@ import {
 
 const router = express.Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
+router.use(authorizeRoles("ADMIN", "MANAGER"));
 
 router.get("/overview", getOverview);
 router.get("/revenue", getRevenue);

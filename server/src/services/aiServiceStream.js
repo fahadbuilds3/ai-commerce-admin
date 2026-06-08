@@ -1,7 +1,5 @@
 import OpenAI from "openai";
-import dotenv from "dotenv";
-
-dotenv.config();
+import "../config/env.js";
 
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
 const MODEL = "llama-3.1-8b-instant";

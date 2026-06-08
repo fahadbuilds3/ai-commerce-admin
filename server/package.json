@@ -5,7 +5,9 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "generate:csv": "node scripts/generateSeedCsv.js",
+    "seed:csv": "node prisma/seedCsv.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -16,6 +18,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-async-handler": "^1.2.0",
+    "express-rate-limit": "^8.5.2",
     "express-validator": "^7.3.2",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",

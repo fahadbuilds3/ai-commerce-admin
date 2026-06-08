@@ -1,0 +1,101 @@
+id,name,email,phone,address,city,country,totalOrders,totalSpent,createdAt,updatedAt
+cust_001,Demo Customer 001,customer.001@demo.test,+1-555-1001,101 Example Street,Sampleton,Canada,3,3006.63,2026-01-07T19:32:36.814Z,2026-02-02T19:32:36.814Z
+cust_002,Demo Customer 002,customer.002@mail.test,+1-555-1002,102 Example Street,Testville,United Kingdom,3,2126.19,2025-12-10T13:38:57.740Z,2026-01-09T13:38:57.740Z
+cust_003,Demo Customer 003,customer.003@example.com,+1-555-1003,103 Example Street,Mockford,United States,2,2537.22,2026-01-17T17:49:50.016Z,2026-02-02T17:49:50.016Z
+cust_004,Demo Customer 004,customer.004@demo.test,+1-555-1004,104 Example Street,Preview Bay,Canada,2,1229.04,2026-01-25T07:56:54.107Z,2026-02-13T07:56:54.107Z
+cust_005,Demo Customer 005,customer.005@mail.test,+1-555-1005,105 Example Street,Demoburg,Canada,4,1826.23,2026-04-14T22:26:38.979Z,2026-04-19T22:26:38.979Z
+cust_006,Demo Customer 006,customer.006@example.com,+1-555-1006,106 Example Street,Testville,Canada,3,845.86,2026-03-02T04:59:19.990Z,2026-03-19T04:59:19.990Z
+cust_007,Demo Customer 007,customer.007@demo.test,+1-555-1007,107 Example Street,Preview Bay,United States,4,2302.75,2026-05-23T08:23:53.031Z,2026-06-08T08:23:53.031Z
+cust_008,Demo Customer 008,customer.008@mail.test,+1-555-1008,108 Example Street,Testville,Canada,2,1807.32,2026-04-05T18:03:44.914Z,2026-04-28T18:03:44.914Z
+cust_009,Demo Customer 009,customer.009@example.com,+1-555-1009,109 Example Street,Mockford,Australia,1,380.66,2025-12-31T09:08:40.015Z,2026-01-26T09:08:40.015Z
+cust_010,Demo Customer 010,customer.010@demo.test,+1-555-1010,110 Example Street,Demoburg,Canada,3,1660.85,2026-03-10T23:47:23.167Z,2026-04-09T23:47:23.167Z
+cust_011,Demo Customer 011,customer.011@mail.test,+1-555-1011,111 Example Street,Preview Bay,United States,2,504.27,2026-02-23T18:36:18.793Z,2026-02-28T18:36:18.793Z
+cust_012,Demo Customer 012,customer.012@example.com,+1-555-1012,112 Example Street,Seed City,Australia,2,1040.62,2026-03-03T12:39:06.305Z,2026-03-15T12:39:06.305Z
+cust_013,Demo Customer 013,customer.013@demo.test,+1-555-1013,113 Example Street,Testville,United States,4,1919.54,2026-03-28T22:12:11.739Z,2026-04-20T22:12:11.739Z
+cust_014,Demo Customer 014,customer.014@mail.test,+1-555-1014,114 Example Street,Preview Bay,United Kingdom,5,1533.26,2026-05-22T00:31:15.649Z,2026-05-23T00:31:15.649Z
+cust_015,Demo Customer 015,customer.015@example.com,+1-555-1015,115 Example Street,Fixture Falls,Canada,3,2722.25,2026-01-06T12:53:37.245Z,2026-01-08T12:53:37.245Z
+cust_016,Demo Customer 016,customer.016@demo.test,+1-555-1016,116 Example Street,Preview Bay,Canada,2,1248.31,2026-02-18T01:11:34.785Z,2026-02-22T01:11:34.785Z
+cust_017,Demo Customer 017,customer.017@mail.test,+1-555-1017,117 Example Street,Testville,Canada,4,2101.85,2026-01-30T16:11:42.217Z,2026-02-27T16:11:42.217Z
+cust_018,Demo Customer 018,customer.018@example.com,+1-555-1018,118 Example Street,Testville,United States,2,1974.37,2025-12-12T07:55:02.066Z,2025-12-16T07:55:02.066Z
+cust_019,Demo Customer 019,customer.019@demo.test,+1-555-1019,119 Example Street,Mockford,United Kingdom,4,2561.32,2025-12-14T04:13:14.578Z,2026-01-12T04:13:14.578Z
+cust_020,Demo Customer 020,customer.020@mail.test,+1-555-1020,120 Example Street,Demoburg,Australia,2,593.25,2026-04-26T07:55:43.109Z,2026-05-14T07:55:43.109Z
+cust_021,Demo Customer 021,customer.021@example.com,+1-555-1021,121 Example Street,Mockford,United States,3,2169.84,2026-02-15T10:42:35.765Z,2026-03-04T10:42:35.765Z
+cust_022,Demo Customer 022,customer.022@demo.test,+1-555-1022,122 Example Street,Seed City,Canada,5,2616.45,2026-05-25T05:58:43.297Z,2026-05-26T05:58:43.297Z
+cust_023,Demo Customer 023,customer.023@mail.test,+1-555-1023,123 Example Street,Seed City,Australia,3,1552.41,2026-03-15T15:03:33.233Z,2026-04-06T15:03:33.233Z
+cust_024,Demo Customer 024,customer.024@example.com,+1-555-1024,124 Example Street,Fixture Falls,United Kingdom,2,657.76,2026-04-02T08:52:00.279Z,2026-04-11T08:52:00.279Z
+cust_025,Demo Customer 025,customer.025@demo.test,+1-555-1025,125 Example Street,Demoburg,United States,1,929.52,2026-01-09T03:21:12.950Z,2026-02-02T03:21:12.950Z
+cust_026,Demo Customer 026,customer.026@mail.test,+1-555-1026,126 Example Street,Mockford,Australia,2,809.85,2026-02-22T18:58:16.470Z,2026-03-21T18:58:16.470Z
+cust_027,Demo Customer 027,customer.027@example.com,+1-555-1027,127 Example Street,Demoburg,Australia,4,1573.89,2026-05-03T14:23:51.902Z,2026-06-02T14:23:51.902Z
+cust_028,Demo Customer 028,customer.028@demo.test,+1-555-1028,128 Example Street,Fixture Falls,Canada,6,3248.52,2026-05-09T12:46:51.549Z,2026-05-19T12:46:51.549Z
+cust_029,Demo Customer 029,customer.029@mail.test,+1-555-1029,129 Example Street,Demoburg,Australia,2,1313.78,2026-01-06T02:44:50.589Z,2026-01-23T02:44:50.589Z
+cust_030,Demo Customer 030,customer.030@example.com,+1-555-1030,130 Example Street,Seed City,United Kingdom,2,380.47,2026-01-03T00:25:34.964Z,2026-01-29T00:25:34.964Z
+cust_031,Demo Customer 031,customer.031@demo.test,+1-555-1031,131 Example Street,Preview Bay,Canada,6,4001.67,2026-04-10T22:44:25.526Z,2026-04-13T22:44:25.526Z
+cust_032,Demo Customer 032,customer.032@mail.test,+1-555-1032,132 Example Street,Preview Bay,Canada,4,2012.43,2025-12-18T22:12:38.425Z,2025-12-30T22:12:38.425Z
+cust_033,Demo Customer 033,customer.033@example.com,+1-555-1033,133 Example Street,Testville,United States,2,1854.69,2025-12-16T13:31:41.747Z,2025-12-25T13:31:41.747Z
+cust_034,Demo Customer 034,customer.034@demo.test,+1-555-1034,134 Example Street,Testville,Canada,2,1156.55,2026-03-25T10:08:28.409Z,2026-03-26T10:08:28.409Z
+cust_035,Demo Customer 035,customer.035@mail.test,+1-555-1035,135 Example Street,Faketown,United Kingdom,4,3010.04,2026-04-27T01:06:25.297Z,2026-05-22T01:06:25.297Z
+cust_036,Demo Customer 036,customer.036@example.com,+1-555-1036,136 Example Street,Testville,Canada,2,1778.25,2026-05-18T18:27:38.658Z,2026-05-31T18:27:38.658Z
+cust_037,Demo Customer 037,customer.037@demo.test,+1-555-1037,137 Example Street,Faketown,United Kingdom,3,2266.38,2026-05-11T21:20:55.740Z,2026-06-04T21:20:55.740Z
+cust_038,Demo Customer 038,customer.038@mail.test,+1-555-1038,138 Example Street,Testville,Canada,6,3612.75,2026-01-14T07:10:42.682Z,2026-01-17T07:10:42.682Z
+cust_039,Demo Customer 039,customer.039@example.com,+1-555-1039,139 Example Street,Fixture Falls,United Kingdom,3,1132.40,2026-03-10T04:01:58.655Z,2026-03-16T04:01:58.655Z
+cust_040,Demo Customer 040,customer.040@demo.test,+1-555-1040,140 Example Street,Faketown,United Kingdom,3,0.00,2026-05-17T18:36:06.254Z,2026-05-29T18:36:06.254Z
+cust_041,Demo Customer 041,customer.041@mail.test,+1-555-1041,141 Example Street,Preview Bay,Canada,2,1371.87,2026-05-29T01:52:38.137Z,2026-05-31T01:52:38.137Z
+cust_042,Demo Customer 042,customer.042@example.com,+1-555-1042,142 Example Street,Fixture Falls,Canada,0,0.00,2026-02-24T02:51:59.914Z,2026-03-07T02:51:59.914Z
+cust_043,Demo Customer 043,customer.043@demo.test,+1-555-1043,143 Example Street,Mockford,Canada,3,3208.98,2026-01-16T20:34:09.293Z,2026-01-29T20:34:09.293Z
+cust_044,Demo Customer 044,customer.044@mail.test,+1-555-1044,144 Example Street,Sampleton,United States,3,620.04,2026-04-02T12:28:11.467Z,2026-04-12T12:28:11.467Z
+cust_045,Demo Customer 045,customer.045@example.com,+1-555-1045,145 Example Street,Mockford,Australia,3,2277.57,2025-12-31T01:47:50.752Z,2026-01-04T01:47:50.752Z
+cust_046,Demo Customer 046,customer.046@demo.test,+1-555-1046,146 Example Street,Faketown,United States,3,2177.63,2026-04-26T21:47:58.483Z,2026-05-09T21:47:58.483Z
+cust_047,Demo Customer 047,customer.047@mail.test,+1-555-1047,147 Example Street,Preview Bay,United States,5,4024.61,2026-01-11T07:16:57.152Z,2026-01-26T07:16:57.152Z
+cust_048,Demo Customer 048,customer.048@example.com,+1-555-1048,148 Example Street,Faketown,United Kingdom,6,2666.11,2026-05-07T19:40:00.799Z,2026-06-03T19:40:00.799Z
+cust_049,Demo Customer 049,customer.049@demo.test,+1-555-1049,149 Example Street,Demoburg,United States,2,2180.95,2026-04-10T03:48:31.652Z,2026-05-03T03:48:31.652Z
+cust_050,Demo Customer 050,customer.050@mail.test,+1-555-1050,150 Example Street,Mockford,United Kingdom,2,1024.43,2026-05-12T14:50:13.018Z,2026-05-13T14:50:13.018Z
+cust_051,Demo Customer 051,customer.051@example.com,+1-555-1051,151 Example Street,Fixture Falls,United Kingdom,5,2427.58,2026-04-16T17:15:18.423Z,2026-04-24T17:15:18.423Z
+cust_052,Demo Customer 052,customer.052@demo.test,+1-555-1052,152 Example Street,Preview Bay,Canada,4,3143.80,2026-02-02T02:33:37.006Z,2026-02-11T02:33:37.006Z
+cust_053,Demo Customer 053,customer.053@mail.test,+1-555-1053,153 Example Street,Mockford,Australia,5,2112.70,2026-02-23T07:37:35.154Z,2026-03-09T07:37:35.154Z
+cust_054,Demo Customer 054,customer.054@example.com,+1-555-1054,154 Example Street,Mockford,Canada,2,1235.54,2026-03-10T12:06:14.397Z,2026-04-05T12:06:14.397Z
+cust_055,Demo Customer 055,customer.055@demo.test,+1-555-1055,155 Example Street,Preview Bay,United States,2,823.99,2026-01-07T17:05:05.548Z,2026-02-04T17:05:05.548Z
+cust_056,Demo Customer 056,customer.056@mail.test,+1-555-1056,156 Example Street,Demoburg,Australia,0,0.00,2026-01-01T19:16:59.090Z,2026-01-06T19:16:59.090Z
+cust_057,Demo Customer 057,customer.057@example.com,+1-555-1057,157 Example Street,Testville,Australia,2,1043.10,2026-05-04T14:58:51.824Z,2026-05-05T14:58:51.824Z
+cust_058,Demo Customer 058,customer.058@demo.test,+1-555-1058,158 Example Street,Demoburg,United States,1,0.00,2026-05-02T11:59:29.750Z,2026-05-12T11:59:29.750Z
+cust_059,Demo Customer 059,customer.059@mail.test,+1-555-1059,159 Example Street,Faketown,Canada,0,0.00,2025-12-21T15:53:07.217Z,2025-12-28T15:53:07.217Z
+cust_060,Demo Customer 060,customer.060@example.com,+1-555-1060,160 Example Street,Preview Bay,Australia,2,2185.51,2026-04-06T16:44:02.307Z,2026-04-13T16:44:02.307Z
+cust_061,Demo Customer 061,customer.061@demo.test,+1-555-1061,161 Example Street,Fixture Falls,United Kingdom,5,1811.05,2026-05-29T14:37:08.478Z,2026-06-08T12:56:24.555Z
+cust_062,Demo Customer 062,customer.062@mail.test,+1-555-1062,162 Example Street,Sampleton,United Kingdom,1,1212.10,2025-12-28T14:09:22.456Z,2026-01-12T14:09:22.456Z
+cust_063,Demo Customer 063,customer.063@example.com,+1-555-1063,163 Example Street,Demoburg,United States,5,3303.74,2026-01-05T02:17:08.373Z,2026-02-01T02:17:08.373Z
+cust_064,Demo Customer 064,customer.064@demo.test,+1-555-1064,164 Example Street,Faketown,United States,4,2295.25,2026-03-20T07:34:38.159Z,2026-03-28T07:34:38.159Z
+cust_065,Demo Customer 065,customer.065@mail.test,+1-555-1065,165 Example Street,Preview Bay,Australia,1,669.43,2026-04-11T15:18:08.183Z,2026-04-22T15:18:08.183Z
+cust_066,Demo Customer 066,customer.066@example.com,+1-555-1066,166 Example Street,Demoburg,Australia,3,2340.02,2026-01-15T04:31:12.143Z,2026-02-07T04:31:12.143Z
+cust_067,Demo Customer 067,customer.067@demo.test,+1-555-1067,167 Example Street,Testville,Canada,2,407.21,2026-02-18T01:25:50.206Z,2026-03-11T01:25:50.206Z
+cust_068,Demo Customer 068,customer.068@mail.test,+1-555-1068,168 Example Street,Mockford,United Kingdom,3,3373.84,2026-05-29T07:14:34.401Z,2026-06-08T12:56:24.555Z
+cust_069,Demo Customer 069,customer.069@example.com,+1-555-1069,169 Example Street,Seed City,Canada,2,0.00,2026-04-08T06:48:30.256Z,2026-04-19T06:48:30.256Z
+cust_070,Demo Customer 070,customer.070@demo.test,+1-555-1070,170 Example Street,Preview Bay,Australia,7,3180.56,2026-01-29T12:16:14.691Z,2026-02-20T12:16:14.691Z
+cust_071,Demo Customer 071,customer.071@mail.test,+1-555-1071,171 Example Street,Fixture Falls,Canada,2,756.09,2025-12-29T11:58:50.159Z,2026-01-03T11:58:50.159Z
+cust_072,Demo Customer 072,customer.072@example.com,+1-555-1072,172 Example Street,Fixture Falls,United States,5,2266.72,2026-02-14T18:55:35.037Z,2026-03-13T18:55:35.037Z
+cust_073,Demo Customer 073,customer.073@demo.test,+1-555-1073,173 Example Street,Testville,Canada,4,2253.67,2026-02-18T16:55:50.262Z,2026-02-28T16:55:50.262Z
+cust_074,Demo Customer 074,customer.074@mail.test,+1-555-1074,174 Example Street,Fixture Falls,United States,3,0.00,2025-12-16T22:51:42.228Z,2025-12-17T22:51:42.228Z
+cust_075,Demo Customer 075,customer.075@example.com,+1-555-1075,175 Example Street,Fixture Falls,Australia,5,2534.07,2025-12-13T15:06:41.923Z,2025-12-27T15:06:41.923Z
+cust_076,Demo Customer 076,customer.076@demo.test,+1-555-1076,176 Example Street,Sampleton,Australia,5,3758.56,2026-05-30T18:35:20.320Z,2026-06-05T18:35:20.320Z
+cust_077,Demo Customer 077,customer.077@mail.test,+1-555-1077,177 Example Street,Seed City,Canada,3,1452.79,2026-02-03T00:28:40.018Z,2026-02-17T00:28:40.018Z
+cust_078,Demo Customer 078,customer.078@example.com,+1-555-1078,178 Example Street,Testville,Australia,4,1417.87,2026-04-24T11:00:43.133Z,2026-04-27T11:00:43.133Z
+cust_079,Demo Customer 079,customer.079@demo.test,+1-555-1079,179 Example Street,Mockford,Australia,6,4242.45,2026-01-31T07:30:55.439Z,2026-02-02T07:30:55.439Z
+cust_080,Demo Customer 080,customer.080@mail.test,+1-555-1080,180 Example Street,Mockford,Canada,3,3804.20,2026-02-13T11:57:26.755Z,2026-02-27T11:57:26.755Z
+cust_081,Demo Customer 081,customer.081@example.com,+1-555-1081,181 Example Street,Fixture Falls,Canada,7,6483.00,2026-05-06T16:16:27.591Z,2026-05-16T16:16:27.591Z
+cust_082,Demo Customer 082,customer.082@demo.test,+1-555-1082,182 Example Street,Testville,United States,3,2326.06,2026-01-30T21:42:22.036Z,2026-01-31T21:42:22.036Z
+cust_083,Demo Customer 083,customer.083@mail.test,+1-555-1083,183 Example Street,Faketown,United Kingdom,3,0.00,2026-03-27T10:23:56.898Z,2026-04-20T10:23:56.898Z
+cust_084,Demo Customer 084,customer.084@example.com,+1-555-1084,184 Example Street,Preview Bay,Australia,3,1904.11,2026-06-03T19:31:27.095Z,2026-06-08T12:56:24.556Z
+cust_085,Demo Customer 085,customer.085@demo.test,+1-555-1085,185 Example Street,Testville,United States,2,1546.61,2026-02-16T20:09:37.297Z,2026-03-06T20:09:37.297Z
+cust_086,Demo Customer 086,customer.086@mail.test,+1-555-1086,186 Example Street,Faketown,Australia,1,0.00,2026-01-22T11:11:39.815Z,2026-02-02T11:11:39.815Z
+cust_087,Demo Customer 087,customer.087@example.com,+1-555-1087,187 Example Street,Fixture Falls,Australia,5,2133.91,2026-01-13T06:29:08.742Z,2026-01-24T06:29:08.742Z
+cust_088,Demo Customer 088,customer.088@demo.test,+1-555-1088,188 Example Street,Preview Bay,United Kingdom,1,333.04,2026-05-10T13:32:50.344Z,2026-05-13T13:32:50.344Z
+cust_089,Demo Customer 089,customer.089@mail.test,+1-555-1089,189 Example Street,Fixture Falls,United States,3,2903.95,2026-03-24T17:59:29.702Z,2026-04-18T17:59:29.702Z
+cust_090,Demo Customer 090,customer.090@example.com,+1-555-1090,190 Example Street,Testville,Canada,3,2380.63,2026-05-28T23:59:33.598Z,2026-06-08T12:56:24.556Z
+cust_091,Demo Customer 091,customer.091@demo.test,+1-555-1091,191 Example Street,Fixture Falls,Canada,1,0.00,2026-06-06T21:00:49.662Z,2026-06-08T12:56:24.556Z
+cust_092,Demo Customer 092,customer.092@mail.test,+1-555-1092,192 Example Street,Demoburg,United Kingdom,2,1654.84,2026-05-06T23:03:01.756Z,2026-05-22T23:03:01.756Z
+cust_093,Demo Customer 093,customer.093@example.com,+1-555-1093,193 Example Street,Sampleton,Canada,3,1767.31,2026-01-06T02:38:21.622Z,2026-01-18T02:38:21.622Z
+cust_094,Demo Customer 094,customer.094@demo.test,+1-555-1094,194 Example Street,Preview Bay,United States,3,1849.94,2026-03-13T09:52:56.765Z,2026-03-28T09:52:56.765Z
+cust_095,Demo Customer 095,customer.095@mail.test,+1-555-1095,195 Example Street,Demoburg,United Kingdom,3,1400.39,2026-03-25T10:44:14.599Z,2026-03-31T10:44:14.599Z
+cust_096,Demo Customer 096,customer.096@example.com,+1-555-1096,196 Example Street,Seed City,Australia,3,2485.81,2026-03-29T22:49:22.836Z,2026-04-18T22:49:22.836Z
+cust_097,Demo Customer 097,customer.097@demo.test,+1-555-1097,197 Example Street,Mockford,United Kingdom,2,2019.10,2025-12-24T10:59:26.125Z,2025-12-30T10:59:26.125Z
+cust_098,Demo Customer 098,customer.098@mail.test,+1-555-1098,198 Example Street,Mockford,Australia,3,2001.09,2025-12-09T00:54:38.945Z,2026-01-06T00:54:38.945Z
+cust_099,Demo Customer 099,customer.099@example.com,+1-555-1099,199 Example Street,Faketown,United States,1,295.05,2026-02-11T16:55:34.746Z,2026-02-26T16:55:34.746Z
+cust_100,Demo Customer 100,customer.100@demo.test,+1-555-1100,200 Example Street,Fixture Falls,Canada,1,357.54,2026-05-06T14:25:11.336Z,2026-05-25T14:25:11.336Z

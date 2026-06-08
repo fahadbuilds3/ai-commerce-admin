@@ -21,8 +21,9 @@ export const createProduct = asyncHandler(async (req, res, next) => {
       message: "Product created successfully",
     });
   } catch (err) {
+    console.error("[CREATE PRODUCT] Error:", err);
     next(
-      new ApiError(400, err.message || "Failed to create product")
+      new ApiError(400, "Failed to create product")
     );
   }
 });
@@ -37,8 +38,9 @@ export const getProducts = asyncHandler(async (req, res, next) => {
       products,
     });
   } catch (err) {
+    console.error("[GET PRODUCTS] Error:", err);
     next(
-      new ApiError(500, err.message || "Failed to fetch products")
+      new ApiError(500, "Failed to fetch products")
     );
   }
 });
@@ -59,41 +61,24 @@ export const getProductById = asyncHandler(async (req, res, next) => {
       product,
     });
   } catch (err) {
+    console.error("[GET PRODUCT] Error:", err);
     next(
-      new ApiError(500, err.message || "Failed to fetch product")
+      new ApiError(500, "Failed to fetch product")
     );
   }
 });
 
 /**
- * UPDATE PRODUCT CONTROLLER (FormData-compatible, debug logs, image-safe)
+ * UPDATE PRODUCT CONTROLLER (FormData-compatible, image-safe)
  * Handles both cases:
  * - With new image: Accepts multipart FormData, uploads/sets new image.
  * - Without image: Keeps existing imageUrl.
- * All fields validated, clear error messages, logs body/file/payload.
+ * All fields validated with clear error messages.
  * Req body: FormData, keys: name, description, price, stock, sku, category, slug, (optional image file).
  */
 export const updateProduct = asyncHandler(async (req, res, next) => {
   try {
     const id = req.params.id;
-
-    // Log incoming form data (excluding raw file buffer)
-    const logObj = {
-      fields: { ...req.body },
-      file: req.file
-        ? {
-            fieldname: req.file.fieldname,
-            originalname: req.file.originalname,
-            mimetype: req.file.mimetype,
-            size: req.file.size,
-            // omit buffer
-          }
-        : null,
-    };
-    console.log(`[UPDATE PRODUCT] id=${id} | req.body=`, logObj.fields);
-    if (logObj.file) {
-      console.log(`[UPDATE PRODUCT] Received file:`, logObj.file);
-    }
 
     // 1. Retrieve the current product to keep current image if none sent
     const existingProduct = await getProductByIdService(id);
@@ -160,9 +145,6 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
       }
     });
 
-    // Debug: Logging what will be sent to prisma
-    console.log(`[UPDATE PRODUCT] Prisma payload:`, updatePayload);
-
     // 5. Perform update via service
     const updatedProduct = await updateProductService(id, updatePayload);
 
@@ -183,22 +165,19 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
     }
     if (err.name === "PrismaClientKnownRequestError") {
       return next(
-        new ApiError(400, "Failed to update product (Prisma error): " + err.message)
+        new ApiError(400, "Failed to update product")
       );
     }
     next(
-      new ApiError(400, err.message || "Failed to update product")
+      new ApiError(400, "Failed to update product")
     );
   }
 });
 
-// DELETE PRODUCT CONTROLLER (DEBUGGED & PRODUCTION-READY)
+// DELETE PRODUCT CONTROLLER
 export const deleteProduct = asyncHandler(async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    // Temporary logging for debugging
-    console.log(`[DELETE PRODUCT] Received id:`, id);
 
     // Check if id is present and a string/number
     if (!id) {
@@ -231,11 +210,11 @@ export const deleteProduct = asyncHandler(async (req, res, next) => {
     // General Prisma error
     if (err.name === "PrismaClientKnownRequestError") {
       return next(
-        new ApiError(400, "Failed to delete product (Prisma error): " + err.message)
+        new ApiError(400, "Failed to delete product")
       );
     }
     next(
-      new ApiError(400, err.message || "Failed to delete product")
+      new ApiError(400, "Failed to delete product")
     );
   }
 });

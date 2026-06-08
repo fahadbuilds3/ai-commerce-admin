@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../config/prisma.js";
 import { ApiError } from "../utils/ApiError.js";
-
-const prisma = new PrismaClient();
 
 /**
  * Helper to get date boundaries
@@ -29,12 +27,12 @@ export const getAnalyticsOverview = async () => {
       prisma.order.count({
         where: { createdAt: { gte: thirtyDaysAgo } },
       }),
-      prisma.user.count({
-        where: { role: "ADMIN", createdAt: { gte: thirtyDaysAgo } }, // Assuming customers are standard users or we count all non-admins? The schema has role=ADMIN as default. Let's just count all users for now.
+      prisma.customer.count({
+        where: { createdAt: { gte: thirtyDaysAgo } },
       }),
     ]);
 
-    const totalCustomersCount = await prisma.user.count();
+    const totalCustomersCount = await prisma.customer.count();
 
     // Get previous month metrics for growth calculation
     const [prevRevenue, prevOrders, prevCustomers] = await Promise.all([
@@ -48,7 +46,7 @@ export const getAnalyticsOverview = async () => {
       prisma.order.count({
         where: { createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } },
       }),
-      prisma.user.count({
+      prisma.customer.count({
         where: { createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } },
       }),
     ]);
@@ -199,9 +197,9 @@ export const getOrderAnalytics = async () => {
 export const getCustomerAnalytics = async () => {
   try {
     const data = [];
-    let runningTotal = await prisma.user.count({
+    let runningTotal = await prisma.customer.count({
         where: {
-            createdAt: { lt: getPastDate(150) } // Count older users
+            createdAt: { lt: getPastDate(150) }
         }
     });
 
@@ -214,7 +212,7 @@ export const getCustomerAnalytics = async () => {
       end.setMonth(end.getMonth() + 1, 0);
       end.setHours(23, 59, 59, 999);
 
-      const count = await prisma.user.count({
+      const count = await prisma.customer.count({
         where: { createdAt: { gte: start, lte: end } },
       });
       
@@ -266,15 +264,15 @@ export const getTopProductsAnalytics = async () => {
         take: 5,
         orderBy: { createdAt: "desc" },
         include: {
-            user: { select: { name: true, email: true } }
+            customer: { select: { name: true, email: true } }
         }
     });
 
     const formattedRecentOrders = recentOrders.map((o) => ({
         id: o.id,
         orderNumber: o.orderNumber,
-        customerName: o.user?.name || 'Guest',
-        customerEmail: o.user?.email || 'N/A',
+        customerName: o.customer?.name || 'Guest',
+        customerEmail: o.customer?.email || 'N/A',
         total: parseFloat(o.totalAmount),
         status: o.status,
         date: o.createdAt

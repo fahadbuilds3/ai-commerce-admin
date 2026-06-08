@@ -23,26 +23,32 @@ export const renameConversation = asyncHandler(async (req, res) => {
   if (!conversationId) throw new ApiError(400, "Invalid conversation id");
   if (!title) throw new ApiError(400, "`title` must be a non-empty string");
 
-  try {
-    const updated = await prisma.conversation.update({
-      where: { id: conversationId },
-      data: { title },
-      select: { id: true, title: true, updatedAt: true },
-    });
+  const result = await prisma.conversation.updateMany({
+    where: { id: conversationId, userId: req.user.id },
+    data: { title },
+  });
 
-    res.status(200).json({
-      success: true,
-      conversation: {
-        id: updated.id,
-        title: updated.title,
-        updatedAt: updated.updatedAt,
-      },
-    });
-  } catch (err) {
-    // Prisma throws if record not found; map defensively.
-    if (err?.code === "P2025") throw new ApiError(404, "Conversation not found");
-    throw err;
+  if (result.count === 0) {
+    throw new ApiError(404, "Conversation not found");
   }
+
+  const updated = await prisma.conversation.findFirst({
+    where: { id: conversationId, userId: req.user.id },
+    select: { id: true, title: true, updatedAt: true },
+  });
+
+  if (!updated) {
+    throw new ApiError(404, "Conversation not found");
+  }
+
+  res.status(200).json({
+    success: true,
+    conversation: {
+      id: updated.id,
+      title: updated.title,
+      updatedAt: updated.updatedAt,
+    },
+  });
 });
 
 export const deleteConversation = asyncHandler(async (req, res) => {
@@ -50,17 +56,13 @@ export const deleteConversation = asyncHandler(async (req, res) => {
 
   if (!conversationId) throw new ApiError(400, "Invalid conversation id");
 
-  // If conversation doesn't exist, treat as 204 so UI can be resilient.
-  const existing = await prisma.conversation.findUnique({
-    where: { id: conversationId },
-    select: { id: true },
+  const deleted = await prisma.conversation.deleteMany({
+    where: { id: conversationId, userId: req.user.id },
   });
 
-  if (!existing) {
-    return res.status(204).send();
+  if (deleted.count === 0) {
+    throw new ApiError(404, "Conversation not found");
   }
-
-  await prisma.conversation.delete({ where: { id: conversationId } });
 
   res.status(200).json({ success: true, deletedId: conversationId });
 });

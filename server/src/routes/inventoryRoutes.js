@@ -7,16 +7,20 @@ import {
   deleteInventory,
 } from "../controllers/inventoryController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoles from "../middleware/authorize.js";
 
 const router = express.Router();
+const requireAdminOrManager = authorizeRoles("ADMIN", "MANAGER");
 
-// All inventory routes are protected and require ADMIN or MANAGER role
+// All inventory routes require authentication.
 router.use(authMiddleware);
-// router.use(authorize("ADMIN", "MANAGER"));
 router.get("/", authMiddleware, getInventory);
 router.route("/").get(getInventory);
 router.route("/stats").get(getInventoryStats);
-router.route("/:id/stock").patch(adjustStock);
-router.route("/:id").put(updateInventory).delete(deleteInventory);
+router.route("/:id/stock").patch(requireAdminOrManager, adjustStock);
+router
+  .route("/:id")
+  .put(requireAdminOrManager, updateInventory)
+  .delete(requireAdminOrManager, deleteInventory);
 
 export default router;

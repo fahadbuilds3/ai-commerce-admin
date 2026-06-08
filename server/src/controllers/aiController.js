@@ -25,9 +25,10 @@ function composePromptWithContexts({
   const maxTotalChars = 3500;
   const parts = [];
 
-  // Recommended order: analytics first, then inventory.
+  // Context order: analytics, inventory, orders, then the user request.
   if (analyticsContext) parts.push(analyticsContext);
   if (inventoryContext) parts.push(inventoryContext);
+  if (ordersContext) parts.push(ordersContext);
 
   if (!parts.length) return safeUserMessage;
 
@@ -57,18 +58,46 @@ function normalizeTitle(value) {
   return v.length ? v : null;
 }
 
+function validateMessageLength(message) {
+  if (typeof message === "string" && message.length > 10000) {
+    throw new ApiError(400, "Message too long");
+  }
+}
+
+function logAiRequestDebug(routeName, req, conversationId) {
+  console.info("[AI DEBUG] request", {
+    routeName,
+    userExists: Boolean(req?.user),
+    userId: req?.user?.id ?? null,
+    conversationId: normalizeConversationId(conversationId),
+    groqApiKeyExists: Boolean(process.env.GROQ_API_KEY?.trim()),
+  });
+}
+
+function logAiErrorDebug(routeName, err) {
+  console.error("[AI DEBUG] error", {
+    routeName,
+    message: err?.message,
+    stack: err?.stack,
+    code: err?.code,
+    status: err?.statusCode ?? err?.status,
+  });
+}
+
 
 // @desc    AI chat response (Groq via OpenAI-compatible SDK)
 // @route   POST /api/ai/chat
-// @access  Public (for now)
+// @access  Private
 export const chat = asyncHandler(async (req, res) => {
-  console.log("[AI CONTROLLER] Request received");
-
   const body = req?.body;
   const rawMessage = body?.message;
   const rawConversationId = body?.conversationId;
+  const userId = req?.user?.id;
+
+  logAiRequestDebug("POST /api/ai/chat", req, rawConversationId);
 
   const message = typeof rawMessage === "string" ? rawMessage.trim() : "";
+  validateMessageLength(message);
 
   if (!message) {
     throw new ApiError(400, "`message` must be a non-empty string");
@@ -95,7 +124,6 @@ export const chat = asyncHandler(async (req, res) => {
       typeof reply === "string" && reply.trim().length > 0 ? reply.trim() : "";
 
     if (!safeReply) {
-      console.log("[AI CONTROLLER] Sending empty reply fallback");
       return res.status(200).json({
         success: true,
         reply: "I’m having trouble generating a reply right now. Please try again.",
@@ -108,17 +136,19 @@ export const chat = asyncHandler(async (req, res) => {
 
     const { conversationId } = await ensureConversationAndAppendMessages({
       conversationId: rawConversationId,
+      userId,
       message,
       reply: safeReply,
     });
 
-    console.log("[AI CONTROLLER] Sending success response");
     res.status(200).json({
       success: true,
       reply: safeReply,
       conversationId,
     });
   } catch (err) {
+    logAiErrorDebug("POST /api/ai/chat", err);
+
     // Defensive: never leak internals/provider errors.
     if (err?.code === "MISSING_GROQ_API_KEY") {
       throw new ApiError(500, "AI service is not configured. Please contact support.");
@@ -128,11 +158,15 @@ export const chat = asyncHandler(async (req, res) => {
       throw new ApiError(400, "`message` must be a non-empty string");
     }
 
-    if (err?.code === "INVALID_CONVERSATION_ID") {
-      throw new ApiError(400, "Invalid `conversationId`");
+    if (err?.code === "CONVERSATION_NOT_FOUND") {
+      throw new ApiError(404, "Conversation not found");
     }
 
-    if (err?.code === "DB_WRITE_FAILED" || err?.code === "EMPTY_REPLY") {
+    if (
+      err?.code === "DB_WRITE_FAILED" ||
+      err?.code === "EMPTY_REPLY" ||
+      err?.code === "MISSING_USER_ID"
+    ) {
       throw new ApiError(500, "Failed to persist conversation");
     }
 
@@ -143,16 +177,42 @@ export const chat = asyncHandler(async (req, res) => {
 
 // @desc    Stream AI chat response (SSE)
 // @route   POST /api/ai/chat/stream
-// @access  Public (for now)
+// @access  Private
 export const chatStream = asyncHandler(async (req, res) => {
   const body = req?.body;
   const rawMessage = body?.message;
   const rawConversationId = body?.conversationId;
+  const userId = req?.user?.id;
+
+  logAiRequestDebug("POST /api/ai/chat/stream", req, rawConversationId);
 
   const message = typeof rawMessage === "string" ? rawMessage.trim() : "";
+  validateMessageLength(message);
 
   if (!message) {
     throw new ApiError(400, "`message` must be a non-empty string");
+  }
+
+  let conversationId = null;
+
+  try {
+    const ensured = await ensureConversationAndAppendUserMessage({
+      conversationId: rawConversationId,
+      userId,
+      message,
+    });
+    conversationId = ensured.conversationId;
+  } catch (err) {
+    if (err?.code === "CONVERSATION_NOT_FOUND") {
+      throw new ApiError(404, "Conversation not found");
+    }
+
+    if (err?.code === "EMPTY_MESSAGE") {
+      throw new ApiError(400, "`message` must be a non-empty string");
+    }
+
+    logAiErrorDebug("POST /api/ai/chat/stream:persist", err);
+    throw new ApiError(500, "Failed to persist conversation");
   }
 
   // SSE headers
@@ -180,17 +240,9 @@ export const chatStream = asyncHandler(async (req, res) => {
     }
   });
 
-  let conversationId = null;
   let assistantText = "";
 
   try {
-    // Persist USER immediately (before any AI stream)
-    const ensured = await ensureConversationAndAppendUserMessage({
-      conversationId: rawConversationId,
-      message,
-    });
-    conversationId = ensured.conversationId;
-
     // Tell client we have a conversationId for UI consistency.
     res.write(`event: conversationId\ndata: ${JSON.stringify({ conversationId })}\n\n`);
 
@@ -227,11 +279,13 @@ export const chatStream = asyncHandler(async (req, res) => {
     // Defensive: if nothing streamed, still complete safely without persisting assistant.
     const safeAssistant = assistantText.trim();
     if (!clientDisconnected && hasSentAnyToken && safeAssistant) {
-      await appendAssistantMessage({ conversationId, reply: safeAssistant });
+      await appendAssistantMessage({ conversationId, userId, reply: safeAssistant });
     }
 
     res.write(`event: done\ndata: ${JSON.stringify({ success: true })}\n\n`);
   } catch (err) {
+    logAiErrorDebug("POST /api/ai/chat/stream", err);
+
     // Provider errors / aborts / timeouts
     if (clientDisconnected || err?.name === "AbortError") {
       // Do not persist assistant on interruption.
@@ -268,93 +322,109 @@ export const chatStream = asyncHandler(async (req, res) => {
 
 // @desc    List persisted conversations
 // @route   GET /api/ai/conversations
-// @access  Public (for now)
+// @access  Private
 export const getConversations = asyncHandler(async (req, res) => {
-  const conversations = await prisma.conversation.findMany({
-    orderBy: { updatedAt: "desc" },
-    select: {
-      id: true,
-      title: true,
-      updatedAt: true,
-      createdAt: true,
-      messages: {
-        orderBy: { createdAt: "desc" },
-        take: 1,
-        select: { content: true },
+  logAiRequestDebug("GET /api/ai/conversations", req, null);
+
+  try {
+    const conversations = await prisma.conversation.findMany({
+      where: { userId: req.user.id },
+      orderBy: { updatedAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        updatedAt: true,
+        createdAt: true,
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: { content: true },
+        },
       },
-    },
-  });
+    });
 
 
-  const payload = (conversations ?? []).map((c) => {
-    const latest = c?.messages?.[0];
-    const latestContent = typeof latest?.content === "string" ? latest.content : null;
-    const latestPreview = latestContent ? latestContent.trim().slice(0, 140) : null;
+    const payload = (conversations ?? []).map((c) => {
+      const latest = c?.messages?.[0];
+      const latestContent = typeof latest?.content === "string" ? latest.content : null;
+      const latestPreview = latestContent ? latestContent.trim().slice(0, 140) : null;
 
-    return {
-      id: c?.id,
-      title: normalizeTitle(c?.title),
-      updatedAt: c?.updatedAt,
-      createdAt: c?.createdAt,
-      latestMessagePreview: latestPreview,
-    };
-  });
+      return {
+        id: c?.id,
+        title: normalizeTitle(c?.title),
+        updatedAt: c?.updatedAt,
+        createdAt: c?.createdAt,
+        latestMessagePreview: latestPreview,
+      };
+    });
 
 
 
-  res.status(200).json({
-    success: true,
-    conversations: payload,
-  });
+    res.status(200).json({
+      success: true,
+      conversations: payload,
+    });
+  } catch (err) {
+    logAiErrorDebug("GET /api/ai/conversations", err);
+    throw new ApiError(500, "Failed to load conversations");
+  }
 });
 
 // @desc    Load a conversation with ordered messages
 // @route   GET /api/ai/conversations/:id
-// @access  Public (for now)
+// @access  Private
 export const getConversationById = asyncHandler(async (req, res) => {
   const conversationId = normalizeConversationId(req?.params?.id);
+
+  logAiRequestDebug("GET /api/ai/conversations/:id", req, conversationId);
 
   if (!conversationId) {
     throw new ApiError(400, "Invalid conversation id");
   }
 
-  const conversation = await prisma.conversation.findUnique({
-    where: { id: conversationId },
-    select: {
-      id: true,
-      title: true,
-      updatedAt: true,
-      createdAt: true,
-      messages: {
-        orderBy: { createdAt: "asc" },
-        select: {
-          id: true,
-          role: true,
-          content: true,
-          createdAt: true,
+  try {
+    const conversation = await prisma.conversation.findFirst({
+      where: { id: conversationId, userId: req.user.id },
+      select: {
+        id: true,
+        title: true,
+        updatedAt: true,
+        createdAt: true,
+        messages: {
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            role: true,
+            content: true,
+            createdAt: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  if (!conversation) {
-    throw new ApiError(404, "Conversation not found");
+    if (!conversation) {
+      throw new ApiError(404, "Conversation not found");
+    }
+
+    res.status(200).json({
+      success: true,
+      conversation: {
+        id: conversation.id,
+        title: normalizeTitle(conversation.title),
+        createdAt: conversation.createdAt,
+        updatedAt: conversation.updatedAt,
+      },
+      messages: (conversation.messages ?? []).map((m) => ({
+        id: m.id,
+        role: m.role,
+        content: typeof m.content === "string" ? m.content : "",
+        createdAt: m.createdAt,
+      })),
+    });
+  } catch (err) {
+    if (err instanceof ApiError) throw err;
+    logAiErrorDebug("GET /api/ai/conversations/:id", err);
+    throw new ApiError(500, "Failed to load conversation");
   }
-
-  res.status(200).json({
-    success: true,
-    conversation: {
-      id: conversation.id,
-      title: normalizeTitle(conversation.title),
-      createdAt: conversation.createdAt,
-      updatedAt: conversation.updatedAt,
-    },
-    messages: (conversation.messages ?? []).map((m) => ({
-      id: m.id,
-      role: m.role,
-      content: typeof m.content === "string" ? m.content : "",
-      createdAt: m.createdAt,
-    })),
-  });
 });
 

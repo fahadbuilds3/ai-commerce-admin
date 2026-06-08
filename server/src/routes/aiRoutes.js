@@ -11,9 +11,11 @@ import {
   renameConversation,
   deleteConversation,
 } from "../controllers/conversationController.js";
+import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+router.use(protect);
 
 // POST /api/ai/chat
 router.post("/chat", chat);

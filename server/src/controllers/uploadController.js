@@ -22,10 +22,7 @@ export const uploadImage = [
   upload.single("image"),
   asyncHandler(async (req, res) => {
     try {
-      // Log req.file for debugging
-      console.log("[/api/upload] req.file:", req.file);
       if (!req.file || !req.file.buffer) {
-        console.warn("[/api/upload] No file uploaded.");
         return res.status(400).json({
           success: false,
           message: "No file uploaded.",
@@ -51,12 +48,8 @@ export const uploadImage = [
         stream.end(req.file.buffer);
       });
 
-      // Log Cloudinary upload result
-      console.log("[/api/upload] Cloudinary result:", uploaded);
-
       if (!uploaded || !uploaded.secure_url) {
         return res.status(500).json({
-          success: false,
           message: "Upload failed.",
         });
       }
@@ -66,11 +59,9 @@ export const uploadImage = [
         imageUrl: uploaded.secure_url,
       });
     } catch (error) {
-      // Log errors thrown
       console.error("[/api/upload] Error:", error);
       return res.status(500).json({
-        success: false,
-        message: error.message || "An unexpected error occurred during upload.",
+        message: "Internal server error",
       });
     }
   }),

@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import apiClient from "../../api/axios";
 
-const API_BASE = "/api";
-
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -357,8 +355,8 @@ export default function DashboardHome() {
     setError(null);
 
     const [ordersResult, customersResult, productsResult] = await Promise.allSettled([
-      fetch(`${API_BASE}/orders`).then((response) => response.json()),
-      fetch(`${API_BASE}/customers`).then((response) => response.json()),
+      apiClient.get("/orders").then((response) => response.data),
+      apiClient.get("/customers").then((response) => response.data),
       apiClient.get("/products").then((response) => response.data),
     ]);
 

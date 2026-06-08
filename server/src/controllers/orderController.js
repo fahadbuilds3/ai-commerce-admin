@@ -1,14 +1,13 @@
-ord// controllers/orderController.js
+// controllers/orderController.js
 
-// Assumes you have prisma client initialized and exported from prisma.js
-import prisma from '../prisma';
+import prisma from "../config/prisma.js";
 
 // Service layer for clean separation of business logic
 const orderService = {
   async getOrders() {
-    return prisma.order.findMany({
+    const orders = await prisma.order.findMany({
       include: {
-        user: {
+        customer: {
           select: {
             id: true,
             name: true,
@@ -25,13 +24,14 @@ const orderService = {
         createdAt: 'desc'
       }
     });
+    return orders.map(formatOrderCustomerAliases);
   },
 
   async getOrderById(id) {
-    return prisma.order.findUnique({
+    const order = await prisma.order.findUnique({
       where: { id },
       include: {
-        user: {
+        customer: {
           select: {
             id: true,
             name: true,
@@ -45,14 +45,15 @@ const orderService = {
         }
       }
     });
+    return formatOrderCustomerAliases(order);
   },
 
   async updateOrderStatus(id, status) {
-    return prisma.order.update({
+    const order = await prisma.order.update({
       where: { id },
       data: { status },
       include: {
-        user: {
+        customer: {
           select: {
             id: true,
             name: true,
@@ -66,6 +67,7 @@ const orderService = {
         }
       }
     });
+    return formatOrderCustomerAliases(order);
   },
 
   async deleteOrder(id) {
@@ -92,11 +94,7 @@ const orderService = {
 
 export const getOrders = async (req, res) => {
   try {
-    console.log("GET ORDERS HIT");
-
     const orders = await orderService.getOrders();
-
-    console.log("ORDERS:", orders);
 
     return res.status(200).json(orders);
 
@@ -104,11 +102,19 @@ export const getOrders = async (req, res) => {
     console.error("GET ORDERS ERROR:", error);
 
     return res.status(500).json({
-      message: "Failed to fetch orders",
-      error: error.message,
+      message: "Internal server error",
     });
   }
 };
+
+function formatOrderCustomerAliases(order) {
+  if (!order) return order;
+  return {
+    ...order,
+    customer: order.customer ?? null,
+    user: order.customer ?? null,
+  };
+}
 
 export const getOrderById = async (req, res, next) => {
   try {
