@@ -9,7 +9,7 @@ const InventoryStats = ({ stats, loading }) => {
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className="h-28 rounded-2xl bg-zinc-900 border border-zinc-800"
+            className="surface-card h-28 animate-pulse"
           ></div>
         ))}
       </div>
@@ -35,22 +35,22 @@ const InventoryStats = ({ stats, loading }) => {
       <StatCard
         title="In Stock"
         value={inStock.toLocaleString()}
-        icon={<Package size={20} className="text-emerald-400" />}
+        icon={<Package size={20} className="text-emerald-600 dark:text-emerald-400" />}
       />
       <StatCard
         title="Low Stock"
         value={lowStock.toLocaleString()}
-        icon={<AlertTriangle size={20} className="text-amber-400" />}
+        icon={<AlertTriangle size={20} className="text-amber-600 dark:text-amber-400" />}
       />
       <StatCard
         title="Out of Stock"
         value={outOfStock.toLocaleString()}
-        icon={<XCircle size={20} className="text-red-400" />}
+        icon={<XCircle size={20} className="text-red-600 dark:text-red-400" />}
       />
       <StatCard
         title="Inventory Value"
         value={`$${inventoryValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-        icon={<DollarSign size={20} className="text-indigo-400" />}
+        icon={<DollarSign size={20} className="text-indigo-600 dark:text-indigo-400" />}
       />
     </div>
   );

@@ -109,7 +109,7 @@ export default function AiAssistantPage() {
   const suggestions = useMemo(
     () => [
       "Draft a welcome email for new customers",
-      "Summarize yesterday’s sales performance",
+      "Summarize yesterday's sales performance",
       "Help me write a product description for Eco Bottle",
       "Create an order follow-up message",
     ],
@@ -340,14 +340,14 @@ export default function AiAssistantPage() {
   };
 
   const sidebarContent = (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 shadow-sm p-4">
+    <div className="surface-card p-4">
       <div className="flex items-center gap-2">
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-2 text-indigo-300">
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-2 text-blue-700 dark:border-slate-700 dark:bg-slate-800 dark:text-indigo-300">
           <Clock3 className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-zinc-100">Conversation history</p>
-          <p className="text-xs text-zinc-500">
+          <p className="text-sm font-semibold text-slate-950 dark:text-white">Conversation history</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {historyLoading
               ? "Loading…"
               : conversationList?.length
@@ -370,7 +370,7 @@ export default function AiAssistantPage() {
             setMessages([]);
             setInput("");
           }}
-          className="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-xs font-semibold text-zinc-100 hover:bg-zinc-900/55 hover:border-zinc-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          className="btn btn-secondary h-9 shrink-0 px-3 text-xs"
           disabled={loading}
         >
           New Chat
@@ -378,7 +378,7 @@ export default function AiAssistantPage() {
       </div>
 
       {historyError ? (
-        <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 px-3 py-3 text-sm text-red-200">
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-200">
           {historyError}
         </div>
       ) : null}
@@ -388,10 +388,10 @@ export default function AiAssistantPage() {
           Array.from({ length: 6 }).map((_, idx) => (
             <div
               key={idx}
-              className="rounded-xl border border-zinc-800 bg-zinc-900/40 px-3 py-2"
+            className="surface-subtle px-3 py-2"
             >
-              <div className="h-3 w-3/4 animate-pulse rounded bg-zinc-800" />
-              <div className="mt-2 h-2 w-1/2 animate-pulse rounded bg-zinc-800" />
+              <div className="h-3 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+              <div className="mt-2 h-2 w-1/2 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
             </div>
           ))
         ) : (conversationList ?? []).length ? (
@@ -409,8 +409,8 @@ export default function AiAssistantPage() {
                   className={
                     "w-full rounded-xl border transition overflow-hidden " +
                     (isActive
-                      ? "border-indigo-500/30 bg-indigo-500/10"
-                      : "border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900/55 hover:border-zinc-700")
+                      ? "border-blue-200 bg-blue-50 dark:border-indigo-500/30 dark:bg-indigo-500/10"
+                      : "border-slate-200 bg-white hover:border-blue-200 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-800/40 dark:hover:border-slate-600 dark:hover:bg-slate-800")
                   }
                 >
                   <button
@@ -449,7 +449,7 @@ export default function AiAssistantPage() {
                       // Close drawer after selection on mobile/tablet
                       setHistoryOpen(false);
                     }}
-                    className="group w-full px-3 py-2 text-left"
+                    className="group w-full rounded-xl px-3 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 dark:focus-visible:ring-blue-400/30"
                     aria-current={isActive ? "page" : undefined}
                   >
                     <div className="min-w-0">
@@ -495,16 +495,16 @@ export default function AiAssistantPage() {
                                   })();
                                 }
                               }}
-                              className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-1.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                              className="control-input h-9 rounded-lg"
                             />
                           </div>
                         ) : (
-                          <p className="truncate text-sm font-semibold text-zinc-100">
+                          <p className="truncate text-sm font-semibold text-slate-950 dark:text-white">
                             {title}
                           </p>
                         )}
 
-                        <span className="shrink-0 text-[11px] text-zinc-400">
+                        <span className="shrink-0 text-[11px] text-slate-500 dark:text-slate-400">
                           {formatRelativeTime(c?.updatedAt)}
                         </span>
 
@@ -546,7 +546,7 @@ export default function AiAssistantPage() {
                                   })();
                                 }}
                                 aria-label="Save rename"
-                                className="rounded-lg border border-indigo-500/25 bg-indigo-500/10 p-1 text-indigo-200 hover:bg-indigo-500/15 hover:border-indigo-500/35 transition disabled:opacity-60"
+                                className="btn btn-primary h-8 rounded-lg px-2 text-xs"
                                 disabled={renameSaving || loading}
                               >
                                 Save
@@ -559,7 +559,7 @@ export default function AiAssistantPage() {
                                   setRenameDraft("");
                                 }}
                                 aria-label="Cancel rename"
-                                className="rounded-lg border border-zinc-800 bg-zinc-950/30 p-1 text-zinc-200 hover:bg-zinc-900 hover:border-zinc-700 transition"
+                                className="btn btn-secondary h-8 rounded-lg px-2 text-xs"
                                 disabled={renameSaving}
                               >
                                 Cancel
@@ -575,7 +575,7 @@ export default function AiAssistantPage() {
                                   setRenameDraft(title);
                                 }}
                                 aria-label="Rename conversation"
-                                className="rounded-lg border border-zinc-800 bg-zinc-950/30 p-1 text-zinc-200 hover:bg-zinc-900 hover:border-zinc-700 transition disabled:opacity-60"
+                                className="icon-button h-8 w-8"
                                 disabled={loading}
                               >
                                 <PencilLine size={14} />
@@ -587,7 +587,7 @@ export default function AiAssistantPage() {
                                   setPendingDeleteId(c?.id);
                                 }}
                                 aria-label="Delete conversation"
-                                className="rounded-lg border border-zinc-800 bg-zinc-950/30 p-1 text-zinc-200 hover:bg-zinc-900 hover:border-zinc-700 transition disabled:opacity-60"
+                                className="icon-button icon-button-danger h-8 w-8"
                                 disabled={loading}
                               >
                                 <Trash2 size={14} />
@@ -599,7 +599,7 @@ export default function AiAssistantPage() {
 
                       {isDeleting ? (
                         <div className="mt-1 flex items-center justify-between gap-2">
-                          <p className="text-[12px] text-rose-200">
+                          <p className="text-[12px] text-red-600 dark:text-rose-200">
                             Delete this conversation?
                           </p>
                           <div className="flex items-center gap-2 shrink-0">
@@ -630,7 +630,7 @@ export default function AiAssistantPage() {
                                   }
                                 })();
                               }}
-                              className="rounded-lg bg-rose-500/15 border border-rose-500/30 px-3 py-1 text-[12px] font-semibold text-rose-200 hover:bg-rose-500/20 transition disabled:opacity-60"
+                              className="btn btn-danger h-8 rounded-lg px-3 text-[12px]"
                               disabled={deleteSaving || loading}
                             >
                               {deleteSaving ? "Deleting…" : "Delete"}
@@ -641,7 +641,7 @@ export default function AiAssistantPage() {
                                 e.stopPropagation();
                                 setPendingDeleteId(null);
                               }}
-                              className="rounded-lg border border-zinc-800 bg-zinc-950/30 px-3 py-1 text-[12px] font-semibold text-zinc-200 hover:bg-zinc-900 hover:border-zinc-700 transition"
+                              className="btn btn-secondary h-8 rounded-lg px-3 text-[12px]"
                               disabled={deleteSaving}
                             >
                               Cancel
@@ -649,11 +649,11 @@ export default function AiAssistantPage() {
                           </div>
                         </div>
                       ) : preview ? (
-                        <p className="mt-1 truncate text-xs text-zinc-400">
+                        <p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">
                           {preview}
                         </p>
                       ) : (
-                        <p className="mt-1 text-xs text-zinc-500">No messages</p>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">No messages</p>
                       )}
                     </div>
                   </button>
@@ -664,7 +664,7 @@ export default function AiAssistantPage() {
 
           </div>
         ) : (
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 px-3 py-4 text-sm text-zinc-400">
+          <div className="surface-subtle px-3 py-4 text-sm text-slate-500 dark:text-slate-400">
             Start a conversation to see it appear here.
           </div>
         )}
@@ -675,7 +675,7 @@ export default function AiAssistantPage() {
   const QuickActionsPanel = (
     <div className="mt-4 w-full max-w-xl">
       <div className="flex items-center justify-between gap-3 mb-2">
-        <div className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+        <div className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Quick Actions
         </div>
 
@@ -684,7 +684,7 @@ export default function AiAssistantPage() {
           type="button"
           onClick={() => setActionsCollapsed((v) => !v)}
           className={
-            "lg:hidden shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/40 px-3 py-1.5 text-xs font-semibold text-zinc-100 hover:bg-zinc-900/60 hover:border-zinc-700 transition disabled:opacity-60"
+            "btn btn-secondary h-9 shrink-0 px-3 text-xs lg:hidden"
           }
           disabled={loading || streaming}
           aria-expanded={!actionsCollapsed}
@@ -710,8 +710,8 @@ export default function AiAssistantPage() {
           {quickActionCategories.map((cat) => (
             <div key={cat.category}>
               <div className="mb-1 flex items-center justify-between">
-                <div className="text-sm font-semibold text-zinc-100">{cat.category}</div>
-                <div className="text-[11px] text-zinc-500">
+                <div className="text-sm font-semibold text-slate-950 dark:text-white">{cat.category}</div>
+                <div className="text-[11px] text-slate-500 dark:text-slate-400">
                   {(cat.templates?.length ?? 0) + (cat.suggestions?.length ?? 0)} actions
                 </div>
               </div>
@@ -723,17 +723,17 @@ export default function AiAssistantPage() {
                     type="button"
                     onClick={() => insertPromptTemplate(t?.prompt)}
                     disabled={loading || streaming}
-                    className="min-w-0 text-left rounded-xl border border-zinc-800 bg-zinc-900/30 px-3 py-2 hover:bg-zinc-900/50 hover:border-zinc-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="btn-secondary min-w-0 rounded-xl border px-3 py-2 text-left shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:ring-blue-400/30"
                   >
                     <div className="flex items-start gap-2">
-                      <div className="rounded-lg bg-indigo-500/10 border border-indigo-500/20 p-1 shrink-0">
-                        <Sparkles className="h-4 w-4 text-indigo-300" />
+                      <div className="shrink-0 rounded-lg border border-blue-200 bg-blue-50 p-1 dark:border-indigo-500/20 dark:bg-indigo-500/10">
+                        <Sparkles className="h-4 w-4 text-blue-700 dark:text-indigo-300" />
                       </div>
                       <div className="min-w-0">
-                        <div className="text-sm font-medium text-zinc-100 truncate">
+                        <div className="truncate text-sm font-medium text-slate-950 dark:text-white">
                           {t?.title}
                         </div>
-                        <div className="mt-0.5 text-xs text-zinc-400 line-clamp-3 break-words">
+                        <div className="mt-0.5 line-clamp-2 text-xs text-slate-500 dark:text-slate-400 break-words">
                           {t?.prompt}
                         </div>
                       </div>
@@ -747,13 +747,13 @@ export default function AiAssistantPage() {
                     type="button"
                     onClick={() => appendSuggestion(s)}
                     disabled={loading || streaming}
-                    className="text-left rounded-xl border border-zinc-800 bg-zinc-900/30 px-3 py-2 hover:bg-zinc-900/50 hover:border-zinc-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="btn-secondary rounded-xl border px-3 py-2 text-left shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:ring-blue-400/30"
                   >
                     <div className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-emerald-300" />
-                      <span className="text-sm font-medium text-zinc-100">Use prompt</span>
+                      <Sparkles className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
+                      <span className="text-sm font-medium text-slate-950 dark:text-white">Use prompt</span>
                     </div>
-                    <div className="mt-1 text-xs text-zinc-400 line-clamp-2 break-words">
+                    <div className="mt-1 line-clamp-2 text-xs text-slate-500 dark:text-slate-400 break-words">
                       {s}
                     </div>
                   </button>
@@ -767,29 +767,29 @@ export default function AiAssistantPage() {
   );
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-5.5rem)] sm:h-[calc(100dvh-6.5rem)] lg:h-[calc(100dvh-6rem)] w-full min-w-0 overflow-hidden">
-      <div className="hidden sm:block mb-3 sm:mb-5 shrink-0">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100">
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden">
+      <div className="mb-3 hidden shrink-0 sm:mb-5 sm:block">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
           AI Assistant
         </h1>
-        <p className="mt-1 max-w-2xl text-sm text-zinc-400">
-          Chat with a mock AI assistant UI. This shell is frontend-only—no backend calls yet.
+        <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
+          Your ecommerce operations assistant for inventory, orders, analytics, and customer workflows.
         </p>
       </div>
 
 
       {/* Mobile/tablet history drawer + desktop fixed sidebar */}
-      <div className="relative flex-1 min-h-0">
+      <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
         {/* Backdrop */}
         {historyOpen ? (
           <div
-            className="fixed inset-0 z-40 bg-zinc-950/60 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm dark:bg-slate-900/60"
             onClick={() => setHistoryOpen(false)}
             aria-hidden="true"
           />
         ) : null}
 
-        <div className="h-full grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-3 sm:gap-4 lg:gap-6 min-w-0 overflow-hidden">
+        <div className="grid h-full min-h-0 min-w-0 grid-cols-1 gap-3 overflow-hidden sm:gap-4 lg:grid-cols-[320px_1fr] lg:gap-6">
           {/* Desktop sidebar */}
           <aside className="hidden lg:flex flex-col min-w-0 h-full overflow-y-auto">
             {sidebarContent}
@@ -809,17 +809,17 @@ export default function AiAssistantPage() {
             <div className="h-full flex flex-col min-w-0">
               <div className="px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-2 text-indigo-300">
+                  <div className="rounded-xl border border-blue-200 bg-blue-50 p-2 text-blue-700 dark:border-slate-700 dark:bg-slate-800 dark:text-indigo-300">
                     <History className="h-4 w-4" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-zinc-100">History</p>
+                    <p className="text-sm font-semibold text-slate-950 dark:text-white">History</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setHistoryOpen(false)}
-                  className="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/40 p-2 text-zinc-200 hover:bg-zinc-900/60 hover:border-zinc-700 transition"
+                  className="icon-button shrink-0 rounded-xl"
                   aria-label="Close history"
                 >
                   <X className="h-4 w-4" />
@@ -833,18 +833,18 @@ export default function AiAssistantPage() {
           </aside>
 
           {/* Chat panel */}
-          <section className="flex flex-col h-full rounded-2xl border border-zinc-800/60 bg-zinc-950 shadow-sm min-w-0 overflow-hidden">
+          <section className="surface-card flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
             {/* Top bar with mobile history button */}
-            <div className="shrink-0 flex items-center justify-between gap-3 px-3 py-2 sm:py-3 border-b border-zinc-800/70 z-10 bg-zinc-950/90 backdrop-blur">
+            <div className="z-10 flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 bg-white/95 px-3 py-2 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 sm:py-3">
               <div className="min-w-0 flex-1">
-                  <div className="text-sm sm:text-[13px] font-semibold text-zinc-100 truncate">AI Assistant</div>
+                  <div className="truncate text-sm font-semibold text-slate-950 dark:text-white sm:text-[13px]">AI Assistant</div>
               </div>
 
 
               <button
                 type="button"
                 onClick={() => setHistoryOpen(true)}
-                className="lg:hidden inline-flex items-center gap-2 rounded-xl border border-indigo-500/20 bg-indigo-500/10 px-3 py-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-500/15 hover:border-indigo-500/30 transition disabled:opacity-60"
+                className="btn btn-secondary px-3 lg:hidden"
                 disabled={loading}
               >
                 <History className="h-4 w-4" />
@@ -852,24 +852,27 @@ export default function AiAssistantPage() {
               </button>
             </div>
 
-            <div className="flex-1 flex flex-col min-w-0 min-h-0">
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
               {/* Scrollable message area (single overflow-y container) */}
-              <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 sm:px-5 overflow-x-hidden overscroll-contain">
+              <div
+                ref={chatScrollRef}
+                className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-4 py-3 sm:px-5"
+              >
                 {!hasMessages ? (
 
 
                   <div className="flex flex-col items-center justify-center text-center h-full px-2">
-                    <div className="rounded-2xl border border-zinc-800/70 bg-zinc-900/30 p-4">
+                    <div className="surface-panel p-4">
                       <div className="flex items-center justify-center">
-                        <div className="rounded-2xl bg-indigo-500/10 border border-indigo-500/20 p-2.5 text-indigo-300">
+                        <div className="rounded-2xl border border-blue-200 bg-blue-50 p-2.5 text-blue-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-300">
                           <Bot className="h-5 w-5" />
                         </div>
                       </div>
-                      <h2 className="mt-3 text-base font-semibold text-zinc-100">
+                      <h2 className="mt-3 text-base font-semibold text-slate-950 dark:text-white">
                         Ask anything about your business
                       </h2>
-                      <p className="mt-1.5 max-w-md text-sm text-zinc-500">
-                        Start with a suggestion below—messages will appear here after you send.
+                      <p className="mt-1.5 max-w-md text-sm text-slate-500 dark:text-slate-400">
+                        Start with a suggestion below; messages will appear here after you send.
                       </p>
                     </div>
 
@@ -891,11 +894,11 @@ export default function AiAssistantPage() {
                           <div
                             className={
                               isUser
-                                ? "max-w-[85%] sm:max-w-[75%] rounded-2xl border border-indigo-500/25 bg-indigo-500/10 px-4 py-3 min-w-0"
-                                : "max-w-[85%] sm:max-w-[75%] rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 min-w-0"
+                                ? "max-w-[85%] sm:max-w-[75%] rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 min-w-0 dark:border-indigo-500/25 dark:bg-indigo-500/10"
+                                : "max-w-[85%] sm:max-w-[75%] rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 min-w-0 dark:border-slate-700 dark:bg-slate-800/40"
                             }
                           >
-                            <div className="text-sm leading-relaxed text-zinc-100 whitespace-pre-wrap break-words overflow-hidden">
+                            <div className="overflow-hidden whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-900 dark:text-white">
                               {isUser ? content : <AiMarkdownMessage content={content} />}
                             </div>
 
@@ -903,8 +906,8 @@ export default function AiAssistantPage() {
                               <div
                                 className={
                                   isUser
-                                    ? "mt-2 flex items-center justify-end gap-2 text-[11px] text-indigo-200/70"
-                                    : "mt-2 flex items-center justify-start gap-2 text-[11px] text-zinc-400"
+                                    ? "mt-2 flex items-center justify-end gap-2 text-[11px] text-blue-700/70 dark:text-indigo-200/70"
+                                    : "mt-2 flex items-center justify-start gap-2 text-[11px] text-slate-500 dark:text-slate-400"
                                 }
                               >
                                 <Clock3 className="h-3.5 w-3.5" />
@@ -918,34 +921,33 @@ export default function AiAssistantPage() {
 
                     {loading ? (
                       <div className="flex justify-start">
-                        <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+                        <div className="max-w-[85%] rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/40 sm:max-w-[75%]">
                           <div className="flex items-center gap-2">
-                            <div className="rounded-full bg-emerald-400/10 border border-emerald-400/20 p-1">
-                              <Bot className="h-4 w-4 text-emerald-300" />
+                            <div className="rounded-full border border-emerald-200 bg-emerald-50 p-1 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+                              <Bot className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                             </div>
-                            <div className="text-sm text-zinc-200">Thinking…</div>
+                            <div className="text-sm text-slate-700 dark:text-slate-200">Thinking…</div>
                           </div>
-                          <div className="mt-2 h-2 w-32 animate-pulse rounded bg-zinc-800/80" />
+                          <div className="mt-2 h-2 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-700/80" />
                         </div>
                       </div>
                     ) : null}
                   </div>
                 )}
 
-                <div ref={chatScrollRef} />
               </div>
 
               {/* Fixed input at bottom (inside panel) */}
-              <div className="shrink-0 border-t border-zinc-800 bg-zinc-950/80 px-3 sm:px-4 py-3 pb-[env(safe-area-inset-bottom)]">
+              <div className="sticky bottom-0 z-10 shrink-0 border-t border-slate-100 bg-white/95 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur dark:border-slate-700 dark:bg-slate-900/95 sm:px-4">
 
                 <form
-                  className="flex items-end gap-3 min-w-0"
+                  className="flex min-w-0 items-start gap-2 sm:gap-3"
                   onSubmit={(e) => {
                     e.preventDefault();
                     void onSubmit();
                   }}
                 >
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <label className="sr-only" htmlFor="ai-assistant-input">
                       Message
                     </label>
@@ -957,10 +959,10 @@ export default function AiAssistantPage() {
                         const clipped = next.slice(0, 6000);
                         setInput(clipped);
                       }}
-                      placeholder="Ask a question…"
+                      placeholder="Ask a question..."
                       disabled={loading}
                       rows={1}
-                      className="w-full min-w-0 resize-none rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 disabled:opacity-60"
+                      className="control-textarea block min-h-[46px] min-w-0 resize-none rounded-2xl px-4 py-3 leading-5"
                       onKeyDown={(e) => {
                         if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
                           e.preventDefault();
@@ -968,7 +970,7 @@ export default function AiAssistantPage() {
                         }
                       }}
                     />
-                    <div className="mt-2 flex items-center justify-between text-[11px] text-zinc-500">
+                    <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
                       <span>
                         {safeTrim(input).length > 0
                           ? `${safeTrim(input).length} chars`
@@ -981,7 +983,7 @@ export default function AiAssistantPage() {
                   <button
                     type="submit"
                     disabled={loading || !safeTrim(input)}
-                    className="inline-flex h-[46px] items-center justify-center gap-2 rounded-2xl border border-indigo-500/25 bg-indigo-500/10 px-4 text-sm font-semibold text-indigo-200 transition hover:bg-indigo-500/15 hover:border-indigo-500/30 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/30"
+                    className="btn btn-primary h-[46px] w-[46px] shrink-0 rounded-2xl px-0 sm:w-auto sm:px-4"
                   >
                     <Send className="h-4 w-4" />
                     <span className="hidden sm:inline">Send</span>

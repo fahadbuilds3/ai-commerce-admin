@@ -45,7 +45,7 @@ function Brand({ compact = false }) {
           strokeLinejoin="round"
         />
       </svg>
-      <span className="truncate text-xl font-semibold tracking-tight text-white">
+      <span className="truncate text-xl font-semibold tracking-tight text-content-primary">
         AIC Admin
       </span>
     </div>
@@ -57,17 +57,19 @@ function NavItem({ label, icon: Icon, to, active, onNavigate }) {
     <button
       type="button"
       className={clsx(
-        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200",
+        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 dark:focus-visible:ring-blue-400/30",
         active
-          ? "bg-zinc-800 text-white shadow-sm"
-          : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+          ? "bg-surface-secondary text-content-primary shadow-sm"
+          : "text-content-secondary hover:bg-hover hover:text-content-primary"
       )}
       aria-current={active ? "page" : undefined}
       onClick={() => onNavigate(to)}
     >
       <Icon
         size={19}
-        className={clsx(active ? "text-indigo-400" : "text-zinc-500")}
+        className={clsx(
+          active ? "text-blue-700 dark:text-indigo-400" : "text-content-muted"
+        )}
       />
       <span className="truncate">{label}</span>
     </button>
@@ -100,13 +102,13 @@ function SidebarContent({ onNavigate, onLogout }) {
       <button
         type="button"
         onClick={onLogout}
-        className="mt-6 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-red-300"
+        className="mt-6 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-content-muted transition-colors hover:bg-hover hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/25 dark:hover:text-red-300"
       >
-        <LogOut size={19} className="text-red-400" />
+        <LogOut size={19} className="text-red-600 dark:text-red-400" />
         <span>Logout</span>
       </button>
 
-      <footer className="mt-auto pt-8 text-xs text-zinc-700">
+      <footer className="mt-auto pt-8 text-xs text-content-muted">
         &copy; {new Date().getFullYear()} AI Commerce
       </footer>
     </>
@@ -130,7 +132,7 @@ const Sidebar = ({ mobileOpen = false, onMobileClose }) => {
 
   return (
     <>
-      <aside className="hidden min-h-screen w-64 shrink-0 flex-col border-r border-zinc-900 bg-zinc-950 px-5 py-6 lg:flex">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col overflow-y-auto border-r border-line bg-surface px-5 py-6 lg:flex">
         <SidebarContent onNavigate={handleNav} onLogout={handleLogout} />
       </aside>
 
@@ -144,7 +146,7 @@ const Sidebar = ({ mobileOpen = false, onMobileClose }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm dark:bg-black/60 lg:hidden"
               onClick={onMobileClose}
             />
             <motion.aside
@@ -152,13 +154,13 @@ const Sidebar = ({ mobileOpen = false, onMobileClose }) => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 330, damping: 35 }}
-              className="fixed inset-y-0 left-0 z-50 flex w-72 max-w-[88vw] flex-col border-r border-zinc-900 bg-zinc-950 px-5 py-6 shadow-2xl lg:hidden"
+              className="fixed inset-y-0 left-0 z-50 flex w-72 max-w-[88vw] flex-col border-r border-line bg-surface px-5 py-6 shadow-2xl lg:hidden"
               role="dialog"
               aria-modal="true"
             >
               <button
                 type="button"
-                className="absolute right-4 top-4 rounded-lg p-2 text-zinc-400 transition hover:bg-zinc-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="icon-button absolute right-4 top-4"
                 onClick={onMobileClose}
                 aria-label="Close sidebar"
               >

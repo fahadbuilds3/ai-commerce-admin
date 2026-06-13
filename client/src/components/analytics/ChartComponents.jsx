@@ -12,14 +12,14 @@ function classNames(...classes) {
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3 shadow-xl">
-        <p className="mb-2 text-sm font-medium text-zinc-300">{label}</p>
+      <div className="surface-panel p-3 shadow-lg">
+        <p className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">{label}</p>
         <div className="space-y-1">
           {payload.map((entry, index) => (
              <div key={index} className="flex items-center gap-2">
                <div className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color || entry.payload.fill }} />
-               <span className="text-sm text-zinc-400">{entry.name}:</span>
-               <span className="text-sm font-medium text-zinc-200">
+               <span className="text-sm text-slate-500 dark:text-slate-400">{entry.name}:</span>
+               <span className="text-sm font-medium text-slate-900 dark:text-slate-200">
                   {entry.name.toLowerCase().includes('revenue') || entry.name.toLowerCase().includes('sales') || entry.name.toLowerCase().includes('target')
                     ? `$${entry.value}` 
                     : entry.value}
@@ -36,16 +36,16 @@ const CustomTooltip = ({ active, payload, label }) => {
 export const ChartWrapper = ({ loading, data, emptyMessage = "No data available", children, height = "h-72" }) => {
   if (loading) {
     return (
-      <div className={classNames("flex w-full items-center justify-center rounded-xl bg-zinc-900/50", height)}>
-         <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+      <div className={classNames("surface-subtle flex w-full items-center justify-center", height)}>
+         <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
       </div>
     );
   }
 
   if (!data || data.length === 0) {
     return (
-      <div className={classNames("flex w-full items-center justify-center rounded-xl border border-zinc-900 bg-zinc-900/50", height)}>
-         <p className="text-sm text-zinc-500">{emptyMessage}</p>
+      <div className={classNames("surface-subtle flex w-full items-center justify-center", height)}>
+         <p className="text-sm text-slate-500 dark:text-slate-400">{emptyMessage}</p>
       </div>
     );
   }

@@ -66,7 +66,7 @@ const Login = () => {
               required
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-3 rounded-xl bg-zinc-800 focus:bg-zinc-800 focus:ring-2 focus:ring-indigo-500 text-white placeholder-zinc-500 outline-none font-medium transition"
+              className="control-input h-12 px-4 font-medium"
               placeholder="your@email.com"
             />
           </div>
@@ -87,16 +87,14 @@ const Login = () => {
               minLength={6}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-3 rounded-xl bg-zinc-800 focus:bg-zinc-800 focus:ring-2 focus:ring-indigo-500 text-white placeholder-zinc-500 outline-none font-medium transition"
+              className="control-input h-12 px-4 font-medium"
               placeholder="Password"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className={`w-full mt-1 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 transition text-white text-lg font-bold tracking-tight shadow-xl ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className="btn btn-primary mt-1 h-12 w-full text-base"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2 justify-center">

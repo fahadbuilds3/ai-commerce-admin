@@ -22,10 +22,10 @@ const InventoryDetailsModal = ({ isOpen, onClose, item }) => {
 
 
   const renderStatusBadge = (status) => {
-    let color = "bg-zinc-800 text-zinc-300 border-zinc-700";
-    if (status === "In Stock") color = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-    if (status === "Low Stock") color = "bg-amber-500/10 text-amber-400 border-amber-500/20";
-    if (status === "Out of Stock") color = "bg-red-500/10 text-red-400 border-red-500/20";
+    let color = "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600";
+    if (status === "In Stock") color = "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20";
+    if (status === "Low Stock") color = "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20";
+    if (status === "Out of Stock") color = "bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20";
 
     return (
       <span className={`px-3 py-1 text-xs font-medium rounded-full border ${color}`}>
@@ -44,23 +44,23 @@ const InventoryDetailsModal = ({ isOpen, onClose, item }) => {
         tabIndex={-1}
       ></div>
 
-      <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-800/80 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
 
         
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-zinc-800/80">
+        <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-600 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-400">
               <Package size={20} />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-zinc-100">Inventory Details</h2>
-              <p className="text-xs text-zinc-400">View product stock and value information</p>
+              <h2 className="text-lg font-semibold text-slate-950 dark:text-white">Inventory Details</h2>
+              <p className="text-xs text-slate-600 dark:text-slate-400">View product stock and value information</p>
             </div>
           </div>
           <button
             onClick={() => onClose?.()}
-            className="p-2 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-xl transition-colors"
+            className="icon-button rounded-xl"
           >
             <X size={20} />
           </button>
@@ -69,23 +69,23 @@ const InventoryDetailsModal = ({ isOpen, onClose, item }) => {
 
         {/* Body */}
         <div className="p-6 space-y-6">
-          <div className="flex items-start gap-4 pb-6 border-b border-zinc-800/80">
+          <div className="flex items-start gap-4 pb-6 border-b border-slate-200 dark:border-slate-700">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={product?.name || "Product image"}
-                className="w-20 h-20 rounded-xl object-cover bg-zinc-800 border border-zinc-700/50"
+                className="w-20 h-20 rounded-xl object-cover bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
               />
             ) : (
-              <div className="w-20 h-20 rounded-xl bg-zinc-800/50 flex items-center justify-center border border-zinc-700/50 text-zinc-600">
+              <div className="w-20 h-20 rounded-xl bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center border border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500">
                 <Package size={32} />
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-medium text-zinc-100 truncate">
+              <h3 className="text-lg font-medium text-slate-950 dark:text-white truncate">
                 {product?.name || "Unknown Product"}
               </h3>
-              <p className="text-sm text-zinc-400 mt-1 flex items-center gap-2">
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 flex items-center gap-2">
                 <Hash size={14} /> SKU: {product?.sku || "N/A"}
               </p>
               <div className="mt-3">
@@ -95,43 +95,43 @@ const InventoryDetailsModal = ({ isOpen, onClose, item }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
-              <p className="text-xs text-zinc-500 flex items-center gap-1.5 mb-1">
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+              <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mb-1">
                 <Archive size={14} /> Current Stock
               </p>
-              <p className="text-lg font-semibold text-zinc-200">{item?.stock || 0} units</p>
+              <p className="text-lg font-semibold text-slate-900 dark:text-slate-200">{item?.stock || 0} units</p>
             </div>
             
-            <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
-              <p className="text-xs text-zinc-500 flex items-center gap-1.5 mb-1">
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+              <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mb-1">
                 <Tag size={14} /> Category
               </p>
-              <p className="text-sm font-medium text-zinc-300 truncate">
+              <p className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
                 {product?.category || "Uncategorized"}
               </p>
             </div>
 
-            <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
-              <p className="text-xs text-zinc-500 flex items-center gap-1.5 mb-1">
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+              <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mb-1">
                 <DollarSign size={14} /> Unit Price
               </p>
-              <p className="text-sm font-medium text-zinc-300">
+              <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 ${price.toFixed(2)}
               </p>
             </div>
 
-            <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
-              <p className="text-xs text-zinc-500 flex items-center gap-1.5 mb-1">
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+              <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mb-1">
                 <DollarSign size={14} /> Total Value
               </p>
-              <p className="text-sm font-medium text-zinc-300">
+              <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 ${value.toFixed(2)}
               </p>
             </div>
           </div>
           
           {item?.updatedAt && (
-            <div className="text-xs text-zinc-500 flex items-center gap-1.5 justify-end">
+            <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 justify-end">
               <Calendar size={14} />
               Last updated: {new Date(item.updatedAt).toLocaleString()}
             </div>
@@ -139,10 +139,10 @@ const InventoryDetailsModal = ({ isOpen, onClose, item }) => {
         </div>
 
         {/* Footer */}
-        <div className="p-5 border-t border-zinc-800/80 bg-zinc-950/50 flex justify-end">
+        <div className="p-5 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex justify-end">
           <button
             onClick={() => onClose?.()}
-            className="px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium rounded-xl transition-colors"
+            className="btn btn-secondary px-5"
           >
             Close
           </button>

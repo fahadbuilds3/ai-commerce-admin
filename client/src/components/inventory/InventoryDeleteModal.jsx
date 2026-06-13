@@ -45,14 +45,14 @@ const InventoryDeleteModal = ({ isOpen, onClose, item, onSuccess }) => {
         onClick={!loading ? () => onClose?.() : undefined}
       ></div>
       
-      <div className="relative w-full max-w-sm bg-zinc-900 border border-zinc-800/80 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header */}
         <div className="flex items-center justify-between p-5 pb-0">
           <button 
             onClick={!loading ? onClose : undefined}
             disabled={loading}
-            className="absolute right-4 top-4 p-2 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-xl transition-colors disabled:opacity-50"
+            className="icon-button absolute right-4 top-4 rounded-xl"
           >
             <X size={20} />
           </button>
@@ -63,23 +63,23 @@ const InventoryDeleteModal = ({ isOpen, onClose, item, onSuccess }) => {
           <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 mb-4">
             <AlertTriangle size={32} />
           </div>
-          <h2 className="text-xl font-semibold text-zinc-100 mb-2">Delete Inventory Item?</h2>
-          <p className="text-sm text-zinc-400 mb-6">
-            Are you sure you want to delete <span className="font-semibold text-zinc-200">"{product?.name}"</span>? This action cannot be undone.
+          <h2 className="text-xl font-semibold text-slate-950 dark:text-white mb-2">Delete Inventory Item?</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            Are you sure you want to delete <span className="font-semibold text-slate-900 dark:text-slate-200">"{product?.name}"</span>? This action cannot be undone.
           </p>
           
           <div className="flex items-center gap-3 w-full">
             <button
               onClick={onClose}
               disabled={loading}
-              className="flex-1 px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium rounded-xl transition-colors disabled:opacity-50"
+              className="btn btn-secondary flex-1 px-5"
             >
               Cancel
             </button>
             <button
               onClick={handleDelete}
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-red-500/20 disabled:opacity-50"
+              className="btn btn-danger flex-1 px-5"
             >
               {loading ? <Loader size={16} className="animate-spin" /> : <Trash2 size={16} />}
               Delete

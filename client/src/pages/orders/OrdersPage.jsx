@@ -228,12 +228,12 @@ class OrdersErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div className="w-full px-0 md:px-8 py-4 md:py-8 min-h-[90vh]">
-          <div className="rounded-xl border border-red-900/70 bg-red-950/30 p-6 text-red-200">
+          <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700 dark:border-red-900/70 dark:bg-red-950/30 dark:text-red-200">
             <div className="flex items-center gap-3">
               <AlertTriangle className="h-5 w-5" />
               <h2 className="text-base font-semibold">Orders could not render</h2>
             </div>
-            <p className="mt-2 text-sm text-red-200/80">
+            <p className="mt-2 text-sm text-red-600 dark:text-red-200/80">
               Refresh the page and try again. Malformed order data was handled before it could break the dashboard.
             </p>
           </div>
@@ -248,22 +248,22 @@ class OrdersErrorBoundary extends Component {
 function StatusBadge({ status, type = "order" }) {
   const normalized = normalizeStatus(status);
   const orderStyles = {
-    PENDING: "border-amber-500/25 bg-amber-500/10 text-amber-200",
-    PROCESSING: "border-sky-500/25 bg-sky-500/10 text-sky-200",
-    SHIPPED: "border-indigo-500/25 bg-indigo-500/10 text-indigo-200",
-    DELIVERED: "border-emerald-500/25 bg-emerald-500/10 text-emerald-200",
-    CANCELLED: "border-red-500/25 bg-red-500/10 text-red-200",
-    PAID: "border-emerald-500/25 bg-emerald-500/10 text-emerald-200",
-    REFUNDED: "border-violet-500/25 bg-violet-500/10 text-violet-200",
-    FAILED: "border-red-500/25 bg-red-500/10 text-red-200",
-    UNKNOWN: "border-zinc-700 bg-zinc-800/70 text-zinc-300",
+    PENDING: "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-200",
+    PROCESSING: "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-sky-200",
+    SHIPPED: "border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-200",
+    DELIVERED: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-200",
+    CANCELLED: "border-red-200 bg-red-50 text-red-700 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-200",
+    PAID: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-200",
+    REFUNDED: "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-500/25 dark:bg-violet-500/10 dark:text-violet-200",
+    FAILED: "border-red-200 bg-red-50 text-red-700 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-200",
+    UNKNOWN: "border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300",
   };
   const paymentStyles = {
-    PENDING: "border-amber-500/25 bg-amber-500/10 text-amber-200",
-    PAID: "border-emerald-500/25 bg-emerald-500/10 text-emerald-200",
-    REFUNDED: "border-violet-500/25 bg-violet-500/10 text-violet-200",
-    FAILED: "border-red-500/25 bg-red-500/10 text-red-200",
-    UNKNOWN: "border-zinc-700 bg-zinc-800/70 text-zinc-300",
+    PENDING: "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-200",
+    PAID: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-200",
+    REFUNDED: "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-500/25 dark:bg-violet-500/10 dark:text-violet-200",
+    FAILED: "border-red-200 bg-red-50 text-red-700 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-200",
+    UNKNOWN: "border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300",
   };
   const styles = type === "payment" ? paymentStyles : orderStyles;
 
@@ -288,7 +288,7 @@ function IconButton({ children, label, className, disabled, ...props }) {
       title={label}
       disabled={disabled}
       className={classNames(
-        "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-300 transition hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:pointer-events-none disabled:opacity-50",
+        "icon-button",
         className
       )}
       {...props}
@@ -300,18 +300,18 @@ function IconButton({ children, label, className, disabled, ...props }) {
 
 function SelectControl({ label, icon: Icon, value, onChange, children, disabled }) {
   return (
-    <label className="flex min-w-0 flex-col gap-1.5 text-xs font-medium text-zinc-400">
+    <label className="flex min-w-0 flex-col gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-400">
       <span>{label}</span>
       <span className="relative">
         {Icon && (
-          <Icon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <Icon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
         )}
         <select
           value={value}
           onChange={(event) => onChange(event.target.value)}
           disabled={disabled}
           className={classNames(
-            "h-10 w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 pr-8 text-sm text-zinc-200 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60",
+            "control-select pr-8",
             Icon ? "pl-9" : "pl-3"
           )}
         >
@@ -324,18 +324,18 @@ function SelectControl({ label, icon: Icon, value, onChange, children, disabled 
 
 function StatCard({ label, value, loading, tone = "default" }) {
   const tones = {
-    default: "text-zinc-100",
-    emerald: "text-emerald-300",
-    amber: "text-amber-300",
-    red: "text-red-300",
-    sky: "text-sky-300",
+    default: "text-slate-950 dark:text-white",
+    emerald: "text-emerald-700 dark:text-emerald-300",
+    amber: "text-amber-700 dark:text-amber-300",
+    red: "text-red-700 dark:text-red-300",
+    sky: "text-sky-700 dark:text-sky-300",
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 shadow-sm">
-      <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">{label}</p>
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-sm">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
       {loading ? (
-        <div className="mt-3 h-7 w-20 animate-pulse rounded-lg bg-zinc-800" />
+        <div className="mt-3 h-7 w-20 animate-pulse rounded-lg bg-slate-100 dark:bg-slate-800" />
       ) : (
         <p className={classNames("mt-2 text-xl font-semibold", tones[tone])}>{value}</p>
       )}
@@ -373,14 +373,14 @@ function OrdersStats({ orders, loading }) {
 
 function FilterChip({ label, value, onClear }) {
   return (
-    <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300">
+    <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300">
       <span className="truncate">
-        <span className="text-zinc-500">{label}:</span> {value}
+        <span className="text-slate-500 dark:text-slate-400">{label}:</span> {value}
       </span>
       <button
         type="button"
         onClick={onClear}
-        className="rounded-full text-zinc-500 transition hover:text-zinc-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        className="rounded-full text-slate-500 transition hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 dark:text-slate-400 dark:hover:text-white"
         aria-label={`Clear ${label}`}
       >
         <X className="h-3.5 w-3.5" />
@@ -403,18 +403,18 @@ function OrdersToolbar({
   loading,
 }) {
   return (
-    <div className="mb-5 rounded-xl border border-zinc-800 bg-zinc-950 p-3 shadow-sm">
+    <div className="mb-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3 shadow-sm">
       <div className="grid gap-3 xl:grid-cols-[minmax(240px,1fr)_180px_180px_180px_auto] xl:items-end">
-        <label className="flex min-w-0 flex-col gap-1.5 text-xs font-medium text-zinc-400">
+        <label className="flex min-w-0 flex-col gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-400">
           <span>Search orders</span>
           <span className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
             <input
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               disabled={loading}
-              className="h-10 w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 pl-9 pr-3 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+              className="control-input pl-9"
               placeholder="Search ID, name, or email"
               autoComplete="off"
               spellCheck={false}
@@ -464,7 +464,7 @@ function OrdersToolbar({
           type="button"
           onClick={onClearFilters}
           disabled={!hasFilters || loading}
-          className="h-10 rounded-xl border border-zinc-800 bg-zinc-900 px-4 text-sm font-medium text-zinc-300 transition hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-40"
+          className="btn btn-secondary"
         >
           Clear filters
         </button>
@@ -475,23 +475,23 @@ function OrdersToolbar({
 
 function TableSkeleton({ rows = PAGE_SIZE }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm">
       <div className="min-w-[980px]">
-        <div className="grid grid-cols-[1.15fr_1.55fr_1fr_1fr_1.25fr_1fr_0.9fr] gap-4 border-b border-zinc-800 bg-zinc-900/70 px-4 py-3">
+        <div className="grid grid-cols-[1.15fr_1.55fr_1fr_1fr_1.25fr_1fr_0.9fr] gap-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-4 py-3">
           {Array.from({ length: 7 }).map((_, index) => (
-            <div key={index} className="h-3 animate-pulse rounded bg-zinc-800" />
+            <div key={index} className="h-3 animate-pulse rounded bg-slate-100 dark:bg-slate-800" />
           ))}
         </div>
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div
             key={rowIndex}
-            className="grid grid-cols-[1.15fr_1.55fr_1fr_1fr_1.25fr_1fr_0.9fr] gap-4 border-b border-zinc-900 px-4 py-4 last:border-b-0"
+            className="grid grid-cols-[1.15fr_1.55fr_1fr_1fr_1.25fr_1fr_0.9fr] gap-4 border-b border-slate-100 dark:border-slate-800 px-4 py-4 last:border-b-0"
           >
             {Array.from({ length: 7 }).map((_, cellIndex) => (
               <div
                 key={cellIndex}
                 className={classNames(
-                  "h-4 animate-pulse rounded bg-zinc-900",
+                  "h-4 animate-pulse rounded bg-slate-50 dark:bg-slate-800",
                   cellIndex === 1 ? "w-full" : "w-3/4"
                 )}
               />
@@ -505,14 +505,14 @@ function TableSkeleton({ rows = PAGE_SIZE }) {
 
 function EmptyState({ filtered }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-6 py-16 text-center shadow-sm">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-500">
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-6 py-16 text-center shadow-sm">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
         <PackageOpen className="h-7 w-7" />
       </div>
-      <h2 className="mt-5 text-lg font-semibold text-zinc-100">
+      <h2 className="mt-5 text-lg font-semibold text-slate-950 dark:text-white">
         {filtered ? "No matching orders" : "No orders yet"}
       </h2>
-      <p className="mx-auto mt-2 max-w-md text-sm text-zinc-500">
+      <p className="mx-auto mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
         {filtered
           ? "Adjust your search or filters to find the orders you are looking for."
           : "Orders will appear here as soon as customers begin checking out."}
@@ -523,18 +523,18 @@ function EmptyState({ filtered }) {
 
 function ErrorState({ message, onRetry }) {
   return (
-    <div className="rounded-xl border border-red-900/70 bg-red-950/20 px-6 py-14 text-center shadow-sm">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-red-900/70 bg-red-950/70 text-red-300">
+    <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-14 text-center shadow-sm dark:border-red-900/70 dark:bg-red-950/20">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-red-200 bg-red-100 text-red-600 dark:border-red-900/70 dark:bg-red-950/70 dark:text-red-300">
         <AlertTriangle className="h-7 w-7" />
       </div>
-      <h2 className="mt-5 text-lg font-semibold text-red-100">Unable to load orders</h2>
-      <p className="mx-auto mt-2 max-w-md text-sm text-red-200/75">
+      <h2 className="mt-5 text-lg font-semibold text-red-700 dark:text-red-100">Unable to load orders</h2>
+      <p className="mx-auto mt-2 max-w-md text-sm text-red-600 dark:text-red-200/75">
         {message || "The orders endpoint did not return a usable response."}
       </p>
       <button
         type="button"
         onClick={onRetry}
-        className="mt-6 inline-flex items-center gap-2 rounded-xl border border-red-800 bg-red-950 px-4 py-2 text-sm font-medium text-red-100 transition hover:bg-red-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+        className="btn btn-danger mt-6"
       >
         <RefreshCw className="h-4 w-4" />
         Retry
@@ -549,11 +549,11 @@ function Pagination({ currentPage, pageCount, totalCount, pageSize, onPageChange
   const pages = getPageNumbers(currentPage, pageCount);
 
   return (
-    <div className="flex flex-col gap-3 border-t border-zinc-900 bg-zinc-950 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-xs text-zinc-500">
-        Showing <span className="text-zinc-300">{start}</span> to{" "}
-        <span className="text-zinc-300">{end}</span> of{" "}
-        <span className="text-zinc-300">{totalCount}</span> orders
+    <div className="flex flex-col gap-3 border-t border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-800/50 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-xs text-slate-500 dark:text-slate-400">
+        Showing <span className="text-slate-700 dark:text-slate-300">{start}</span> to{" "}
+        <span className="text-slate-700 dark:text-slate-300">{end}</span> of{" "}
+        <span className="text-slate-700 dark:text-slate-300">{totalCount}</span> orders
       </p>
 
       <div className="flex items-center justify-between gap-2 sm:justify-end">
@@ -573,7 +573,7 @@ function Pagination({ currentPage, pageCount, totalCount, pageSize, onPageChange
         <div className="hidden items-center gap-1 sm:flex">
           {pages.map((page, index) =>
             page === "ellipsis" ? (
-              <span key={`ellipsis-${index}`} className="px-2 text-sm text-zinc-600">
+              <span key={`ellipsis-${index}`} className="px-2 text-sm text-slate-400 dark:text-slate-500">
                 ...
               </span>
             ) : (
@@ -582,10 +582,10 @@ function Pagination({ currentPage, pageCount, totalCount, pageSize, onPageChange
                 type="button"
                 onClick={() => onPageChange(page)}
                 className={classNames(
-                  "h-9 min-w-9 rounded-lg border px-3 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500",
+                  "pagination-button",
                   page === currentPage
-                    ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-200"
-                    : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100"
+                    ? "pagination-button-active"
+                    : ""
                 )}
               >
                 {page}
@@ -594,7 +594,7 @@ function Pagination({ currentPage, pageCount, totalCount, pageSize, onPageChange
           )}
         </div>
 
-        <span className="text-xs text-zinc-500 sm:hidden">
+        <span className="text-xs text-slate-500 dark:text-slate-400 sm:hidden">
           Page {currentPage} of {pageCount}
         </span>
 
@@ -628,7 +628,7 @@ function StatusSelect({ order, onStatusChange, updating }) {
           value={status}
           disabled={updating}
           onChange={(event) => onStatusChange(order, event.target.value)}
-          className="h-8 rounded-lg border border-zinc-800 bg-zinc-900 px-2 pr-7 text-xs font-medium text-zinc-200 outline-none transition hover:border-zinc-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+          className="control-select h-8 rounded-lg px-2 pr-7 text-xs font-medium"
           aria-label={`Update status for ${getOrderReference(order)}`}
         >
           {ORDER_STATUSES.map((option) => (
@@ -638,7 +638,7 @@ function StatusSelect({ order, onStatusChange, updating }) {
           ))}
         </select>
         {updating && (
-          <Loader2 className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 animate-spin text-zinc-400" />
+          <Loader2 className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 animate-spin text-slate-600 dark:text-slate-400" />
         )}
       </div>
     </div>
@@ -647,18 +647,18 @@ function StatusSelect({ order, onStatusChange, updating }) {
 
 function OrdersTable({ orders, page, pageCount, totalCount, onPageChange, onView, onDelete, onStatusChange, updatingOrderId }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[1040px] border-separate border-spacing-0 text-sm">
-          <thead className="sticky top-0 z-10 bg-zinc-950/95 backdrop-blur">
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-wide text-zinc-500">
-              <th className="border-b border-zinc-800 px-4 py-3 font-semibold">Order ID</th>
-              <th className="border-b border-zinc-800 px-4 py-3 font-semibold">Customer</th>
-              <th className="border-b border-zinc-800 px-4 py-3 text-right font-semibold">Total</th>
-              <th className="border-b border-zinc-800 px-4 py-3 font-semibold">Payment Status</th>
-              <th className="border-b border-zinc-800 px-4 py-3 font-semibold">Order Status</th>
-              <th className="border-b border-zinc-800 px-4 py-3 font-semibold">Date</th>
-              <th className="border-b border-zinc-800 px-4 py-3 text-right font-semibold">Actions</th>
+    <div className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+      <div className="max-w-full overflow-x-auto overscroll-x-contain">
+        <table className="w-full min-w-[1120px] table-fixed border-separate border-spacing-0 text-sm">
+          <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800/70">
+            <tr className="text-left text-xs uppercase tracking-[0.06em] text-slate-600 dark:text-slate-300">
+              <th className="w-[170px] border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Order ID</th>
+              <th className="w-[240px] border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Customer</th>
+              <th className="w-[120px] border-b border-slate-200 px-4 py-3 text-right font-semibold dark:border-slate-700">Total</th>
+              <th className="w-[150px] border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Payment Status</th>
+              <th className="w-[220px] border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Order Status</th>
+              <th className="w-[140px] border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Date</th>
+              <th className="w-[110px] border-b border-slate-200 px-4 py-3 text-right font-semibold dark:border-slate-700">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -671,51 +671,51 @@ function OrdersTable({ orders, page, pageCount, totalCount, onPageChange, onView
               return (
                 <tr
                   key={id}
-                  className="group border-b border-zinc-900 transition hover:bg-zinc-900/60 odd:bg-zinc-950 even:bg-zinc-950/70"
+                  className="group border-b border-slate-100 transition-colors hover:bg-slate-50 odd:bg-white even:bg-slate-50/60 dark:border-slate-800 dark:hover:bg-slate-800/60 dark:odd:bg-slate-900 dark:even:bg-slate-900/70"
                 >
-                  <td className="border-b border-zinc-900 px-4 py-4 align-middle">
-                    <div className="max-w-[160px]">
-                      <p className="font-medium text-zinc-100">{getOrderReference(order)}</p>
-                      <p className="truncate font-mono text-xs text-zinc-500" title={id}>
+                  <td className="border-b border-slate-100 px-4 py-3.5 align-middle dark:border-slate-800">
+                    <div className="min-w-0 max-w-[160px]">
+                      <p className="truncate font-medium text-slate-800 dark:text-slate-200" title={getOrderReference(order)}>{getOrderReference(order)}</p>
+                      <p className="truncate font-mono text-xs text-slate-500 dark:text-slate-400" title={id}>
                         {id}
                       </p>
                     </div>
                   </td>
-                  <td className="border-b border-zinc-900 px-4 py-4 align-middle">
+                  <td className="border-b border-slate-100 px-4 py-3.5 align-middle dark:border-slate-800">
                     <div className="min-w-0">
-                      <p className="max-w-[220px] truncate font-medium text-zinc-100" title={customerName}>
+                      <p className="max-w-[220px] truncate font-medium text-slate-950 dark:text-white" title={customerName}>
                         {customerName}
                       </p>
-                      <p className="max-w-[220px] truncate text-xs text-zinc-500" title={customerEmail}>
+                      <p className="max-w-[220px] truncate text-xs text-slate-500 dark:text-slate-400" title={customerEmail}>
                         {customerEmail}
                       </p>
                     </div>
                   </td>
-                  <td className="border-b border-zinc-900 px-4 py-4 text-right font-semibold text-emerald-300">
+                  <td className="whitespace-nowrap border-b border-slate-100 px-4 py-3.5 text-right align-middle font-semibold text-emerald-700 dark:border-slate-800 dark:text-emerald-300">
                     {formatCurrency(getOrderTotal(order))}
                   </td>
-                  <td className="border-b border-zinc-900 px-4 py-4">
+                  <td className="whitespace-nowrap border-b border-slate-100 px-4 py-3.5 align-middle dark:border-slate-800">
                     <StatusBadge status={order?.paymentStatus} type="payment" />
                   </td>
-                  <td className="border-b border-zinc-900 px-4 py-4">
+                  <td className="whitespace-nowrap border-b border-slate-100 px-4 py-3.5 align-middle dark:border-slate-800">
                     <StatusSelect
                       order={order}
                       onStatusChange={onStatusChange}
                       updating={String(updatingOrderId ?? "") === orderId}
                     />
                   </td>
-                  <td className="border-b border-zinc-900 px-4 py-4 text-zinc-300">
+                  <td className="whitespace-nowrap border-b border-slate-100 px-4 py-3.5 align-middle text-slate-600 dark:border-slate-800 dark:text-slate-300">
                     <span title={formatDate(order, "PPP p")}>{formatDate(order)}</span>
                   </td>
-                  <td className="border-b border-zinc-900 px-4 py-4">
-                    <div className="flex justify-end gap-2">
+                  <td className="whitespace-nowrap border-b border-slate-100 px-4 py-3.5 align-middle dark:border-slate-800">
+                    <div className="flex items-center justify-end gap-2">
                       <IconButton label="View order" onClick={() => onView(order)}>
                         <Eye className="h-4 w-4" />
                       </IconButton>
                       <IconButton
                         label="Delete order"
                         onClick={() => onDelete(order)}
-                        className="text-red-300 hover:border-red-900 hover:bg-red-950/70 hover:text-red-100"
+                        className="icon-button-danger"
                       >
                         <Trash2 className="h-4 w-4" />
                       </IconButton>
@@ -746,20 +746,20 @@ function OrdersMobileCards({ orders, onView, onDelete, onStatusChange, updatingO
         const id = getOrderIdentity(order);
         const orderId = String(order?.id ?? "");
         return (
-          <div key={id} className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 shadow-sm">
+          <div key={id} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-sm">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="font-medium text-zinc-100">{getOrderReference(order)}</p>
-                <p className="truncate font-mono text-xs text-zinc-500" title={id}>
+                <p className="font-medium text-slate-950 dark:text-white">{getOrderReference(order)}</p>
+                <p className="truncate font-mono text-xs text-slate-500 dark:text-slate-400" title={id}>
                   {id}
                 </p>
               </div>
-              <p className="shrink-0 text-right font-semibold text-emerald-300">{formatCurrency(getOrderTotal(order))}</p>
+              <p className="shrink-0 text-right font-semibold text-emerald-700 dark:text-emerald-300">{formatCurrency(getOrderTotal(order))}</p>
             </div>
 
             <div className="mt-4 min-w-0">
-              <p className="truncate font-medium text-zinc-100">{getCustomerName(order)}</p>
-              <p className="truncate text-xs text-zinc-500">{getCustomerEmail(order)}</p>
+              <p className="truncate font-medium text-slate-950 dark:text-white">{getCustomerName(order)}</p>
+              <p className="truncate text-xs text-slate-500 dark:text-slate-400">{getCustomerEmail(order)}</p>
             </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -771,8 +771,8 @@ function OrdersMobileCards({ orders, onView, onDelete, onStatusChange, updatingO
               />
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-zinc-900 pt-3">
-              <span className="text-xs text-zinc-500">{formatDate(order, "MMM d, yyyy")}</span>
+            <div className="mt-4 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-3">
+              <span className="text-xs text-slate-500 dark:text-slate-400">{formatDate(order, "MMM d, yyyy")}</span>
               <div className="flex gap-2">
                 <IconButton label="View order" onClick={() => onView(order)}>
                   <Eye className="h-4 w-4" />
@@ -780,7 +780,7 @@ function OrdersMobileCards({ orders, onView, onDelete, onStatusChange, updatingO
                 <IconButton
                   label="Delete order"
                   onClick={() => onDelete(order)}
-                  className="text-red-300 hover:border-red-900 hover:bg-red-950/70 hover:text-red-100"
+                  className="icon-button-danger"
                 >
                   <Trash2 className="h-4 w-4" />
                 </IconButton>
@@ -799,7 +799,7 @@ function ProductThumbnail({ item }) {
       <img
         src={item.imageUrl}
         alt=""
-        className="h-11 w-11 rounded-lg border border-zinc-800 object-cover"
+        className="h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-700 object-cover"
         loading="lazy"
         onError={(event) => {
           event.currentTarget.style.display = "none";
@@ -809,7 +809,7 @@ function ProductThumbnail({ item }) {
   }
 
   return (
-    <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-500">
+    <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
       <PackageOpen className="h-5 w-5" />
     </div>
   );
@@ -853,16 +853,16 @@ function OrderDetailsModal({ order, open, onClose, onStatusChange, updating }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
             transition={{ duration: 0.18 }}
-            className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-xl border border-zinc-800 bg-zinc-950 shadow-2xl sm:rounded-xl"
+            className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl sm:rounded-xl"
           >
-            <div className="sticky top-0 z-10 border-b border-zinc-800 bg-zinc-950/95 px-4 py-4 backdrop-blur sm:px-6">
+            <div className="sticky top-0 z-10 border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 px-4 py-4 backdrop-blur sm:px-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Order details</p>
-                  <h2 id="order-details-title" className="mt-1 truncate text-xl font-semibold text-zinc-100">
+                  <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Order details</p>
+                  <h2 id="order-details-title" className="mt-1 truncate text-xl font-semibold text-slate-950 dark:text-white">
                     {getOrderReference(order)}
                   </h2>
-                  <p className="mt-1 truncate font-mono text-xs text-zinc-500" title={getOrderIdentity(order)}>
+                  <p className="mt-1 truncate font-mono text-xs text-slate-500 dark:text-slate-400" title={getOrderIdentity(order)}>
                     {getOrderIdentity(order)}
                   </p>
                 </div>
@@ -870,7 +870,7 @@ function OrderDetailsModal({ order, open, onClose, onStatusChange, updating }) {
                   ref={closeButtonRef}
                   type="button"
                   onClick={onClose}
-                  className="rounded-lg border border-zinc-800 bg-zinc-900 p-2 text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="icon-button"
                   aria-label="Close order details"
                 >
                   <X className="h-5 w-5" />
@@ -880,45 +880,45 @@ function OrderDetailsModal({ order, open, onClose, onStatusChange, updating }) {
 
             <div className="overflow-y-auto px-4 py-5 sm:px-6">
               <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-                <section className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-                  <h3 className="text-sm font-semibold text-zinc-100">Customer</h3>
+                <section className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-4">
+                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white">Customer</h3>
                   <div className="mt-4 space-y-3">
                     <div>
-                      <p className="text-xs text-zinc-500">Name</p>
-                      <p className="mt-1 text-sm font-medium text-zinc-100">{getCustomerName(order)}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Name</p>
+                      <p className="mt-1 text-sm font-medium text-slate-950 dark:text-white">{getCustomerName(order)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500">Email</p>
-                      <p className="mt-1 break-all text-sm text-zinc-300">{getCustomerEmail(order)}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Email</p>
+                      <p className="mt-1 break-all text-sm text-slate-700 dark:text-slate-300">{getCustomerEmail(order)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500">Order date</p>
-                      <p className="mt-1 text-sm text-zinc-300">{formatDate(order, "PPP p")}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Order date</p>
+                      <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{formatDate(order, "PPP p")}</p>
                     </div>
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-                  <h3 className="text-sm font-semibold text-zinc-100">Status</h3>
+                <section className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-4">
+                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white">Status</h3>
                   <div className="mt-4 space-y-4">
                     <div>
-                      <p className="mb-2 text-xs text-zinc-500">Payment status</p>
+                      <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">Payment status</p>
                       <StatusBadge status={order?.paymentStatus} type="payment" />
                     </div>
                     <div>
-                      <p className="mb-2 text-xs text-zinc-500">Order status</p>
+                      <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">Order status</p>
                       <StatusSelect order={order} onStatusChange={onStatusChange} updating={updating} />
                     </div>
                   </div>
                 </section>
               </div>
 
-              <section className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900/40">
-                <div className="border-b border-zinc-800 px-4 py-3">
-                  <h3 className="text-sm font-semibold text-zinc-100">Items</h3>
+              <section className="mt-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                <div className="border-b border-slate-200 dark:border-slate-700 px-4 py-3">
+                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white">Items</h3>
                 </div>
                 {items.length === 0 ? (
-                  <div className="px-4 py-10 text-center text-sm text-zinc-500">No items were returned for this order.</div>
+                  <div className="px-4 py-10 text-center text-sm text-slate-500 dark:text-slate-400">No items were returned for this order.</div>
                 ) : (
                   <div className="divide-y divide-zinc-800">
                     {items.map((item) => (
@@ -926,22 +926,22 @@ function OrderDetailsModal({ order, open, onClose, onStatusChange, updating }) {
                         <div className="flex min-w-0 items-center gap-3">
                           <ProductThumbnail item={item} />
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-medium text-zinc-100">{item.name}</p>
-                            <p className="mt-1 truncate text-xs text-zinc-500">{item.sku}</p>
+                            <p className="truncate text-sm font-medium text-slate-950 dark:text-white">{item.name}</p>
+                            <p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{item.sku}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-3 text-right text-sm sm:min-w-[260px]">
                           <div>
-                            <p className="text-xs text-zinc-500">Qty</p>
-                            <p className="mt-1 text-zinc-200">{item.quantity}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Qty</p>
+                            <p className="mt-1 text-slate-900 dark:text-slate-200">{item.quantity}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-zinc-500">Price</p>
-                            <p className="mt-1 text-zinc-200">{formatCurrency(item.price)}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Price</p>
+                            <p className="mt-1 text-slate-900 dark:text-slate-200">{formatCurrency(item.price)}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-zinc-500">Subtotal</p>
-                            <p className="mt-1 font-medium text-emerald-300">{formatCurrency(item.subtotal)}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Subtotal</p>
+                            <p className="mt-1 font-medium text-emerald-700 dark:text-emerald-300">{formatCurrency(item.subtotal)}</p>
                           </div>
                         </div>
                       </div>
@@ -950,15 +950,15 @@ function OrderDetailsModal({ order, open, onClose, onStatusChange, updating }) {
                 )}
               </section>
 
-              <section className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+              <section className="mt-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-4">
                 <div className="ml-auto max-w-sm space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-zinc-500">Subtotal</span>
-                    <span className="text-zinc-200">{formatCurrency(itemSubtotal)}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
+                    <span className="text-slate-900 dark:text-slate-200">{formatCurrency(itemSubtotal)}</span>
                   </div>
-                  <div className="flex justify-between border-t border-zinc-800 pt-3 text-base font-semibold">
-                    <span className="text-zinc-100">Total</span>
-                    <span className="text-emerald-300">{formatCurrency(total)}</span>
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-3 text-base font-semibold">
+                    <span className="text-slate-950 dark:text-white">Total</span>
+                    <span className="text-emerald-700 dark:text-emerald-300">{formatCurrency(total)}</span>
                   </div>
                 </div>
               </section>
@@ -1001,18 +1001,18 @@ function DeleteOrderModal({ order, open, deleting, onClose, onConfirm }) {
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
-            className="w-full max-w-md rounded-xl border border-red-900/70 bg-zinc-950 p-5 shadow-2xl"
+            className="w-full max-w-md rounded-xl border border-red-900/70 bg-white dark:bg-slate-900 p-5 shadow-2xl"
           >
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-900 bg-red-950 text-red-300">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div className="min-w-0">
-                <h2 id="delete-order-title" className="text-lg font-semibold text-zinc-100">
+                <h2 id="delete-order-title" className="text-lg font-semibold text-slate-950 dark:text-white">
                   Delete order
                 </h2>
-                <p className="mt-2 text-sm leading-6 text-zinc-400">
-                  This will permanently delete <span className="font-medium text-zinc-200">{getOrderReference(order)}</span> and
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                  This will permanently delete <span className="font-medium text-slate-900 dark:text-slate-200">{getOrderReference(order)}</span> and
                   its line items. This action cannot be undone.
                 </p>
               </div>
@@ -1023,7 +1023,7 @@ function DeleteOrderModal({ order, open, deleting, onClose, onConfirm }) {
                 type="button"
                 onClick={onClose}
                 disabled={deleting}
-                className="rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn btn-secondary"
               >
                 Cancel
               </button>
@@ -1031,7 +1031,7 @@ function DeleteOrderModal({ order, open, deleting, onClose, onConfirm }) {
                 type="button"
                 onClick={onConfirm}
                 disabled={deleting}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-800 bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="btn btn-danger"
               >
                 {deleting && <Loader2 className="h-4 w-4 animate-spin" />}
                 Delete order
@@ -1274,8 +1274,8 @@ function OrdersPageContent() {
 
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-100 md:text-3xl">Orders</h1>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-3xl">Orders</h1>
+          <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
             Review orders, update fulfillment status, and manage customer purchases.
           </p>
         </div>
@@ -1283,7 +1283,7 @@ function OrdersPageContent() {
           type="button"
           onClick={() => setReloadKey((key) => key + 1)}
           disabled={loading}
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-4 text-sm font-medium text-zinc-300 transition hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className="btn btn-secondary"
         >
           <RefreshCw className={classNames("h-4 w-4", loading && "animate-spin")} />
           Refresh
@@ -1355,7 +1355,7 @@ function OrdersPageContent() {
               onStatusChange={handleStatusChange}
               updatingOrderId={updatingOrderId}
             />
-            <div className="mt-4 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
+            <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
               <Pagination
                 currentPage={visiblePage}
                 pageCount={pageCount}

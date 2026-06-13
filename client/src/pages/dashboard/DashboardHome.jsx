@@ -64,14 +64,14 @@ function normalizeStatus(status) {
 function StatusBadge({ status }) {
   const normalized = normalizeStatus(status);
   const styles = {
-    PAID: "border-emerald-500/25 bg-emerald-500/10 text-emerald-200",
-    PENDING: "border-amber-500/25 bg-amber-500/10 text-amber-200",
-    PROCESSING: "border-sky-500/25 bg-sky-500/10 text-sky-200",
-    SHIPPED: "border-indigo-500/25 bg-indigo-500/10 text-indigo-200",
-    DELIVERED: "border-emerald-500/25 bg-emerald-500/10 text-emerald-200",
-    CANCELLED: "border-red-500/25 bg-red-500/10 text-red-200",
-    REFUNDED: "border-violet-500/25 bg-violet-500/10 text-violet-200",
-    UNKNOWN: "border-zinc-700 bg-zinc-800/70 text-zinc-300",
+    PAID: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-200",
+    PENDING: "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-200",
+    PROCESSING: "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-sky-200",
+    SHIPPED: "border-blue-200 bg-blue-50 text-blue-700 dark:border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-200",
+    DELIVERED: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-200",
+    CANCELLED: "border-red-200 bg-red-50 text-red-700 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-200",
+    REFUNDED: "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-500/25 dark:bg-violet-500/10 dark:text-violet-200",
+    UNKNOWN: "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-600 dark:bg-slate-700/70 dark:text-slate-300",
   };
 
   return (
@@ -88,42 +88,42 @@ function StatusBadge({ status }) {
 
 function KpiCard({ icon: Icon, label, value, detail, loading, tone = "zinc" }) {
   const toneMap = {
-    emerald: "text-emerald-300 bg-emerald-500/10 border-emerald-500/20",
-    sky: "text-sky-300 bg-sky-500/10 border-sky-500/20",
-    amber: "text-amber-300 bg-amber-500/10 border-amber-500/20",
-    violet: "text-violet-300 bg-violet-500/10 border-violet-500/20",
-    zinc: "text-zinc-300 bg-zinc-900 border-zinc-800",
+    emerald: "text-emerald-700 bg-emerald-50 border-emerald-200 dark:text-emerald-300 dark:bg-emerald-500/10 dark:border-emerald-500/20",
+    sky: "text-sky-700 bg-sky-50 border-sky-200 dark:text-sky-300 dark:bg-sky-500/10 dark:border-sky-500/20",
+    amber: "text-amber-700 bg-amber-50 border-amber-200 dark:text-amber-300 dark:bg-amber-500/10 dark:border-amber-500/20",
+    violet: "text-violet-700 bg-violet-50 border-violet-200 dark:text-violet-300 dark:bg-violet-500/10 dark:border-violet-500/20",
+    zinc: "text-slate-600 bg-slate-50 border-slate-200 dark:text-slate-300 dark:bg-slate-800 dark:border-slate-700",
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4 shadow-sm transition hover:border-zinc-700"
+      className="surface-card p-4 transition-colors hover:border-slate-300 dark:hover:border-slate-600"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">{label}</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
           {loading ? (
-            <div className="mt-3 h-8 w-24 animate-pulse rounded-lg bg-zinc-800" />
+            <div className="mt-3 h-8 w-24 animate-pulse rounded-lg bg-slate-100 dark:bg-slate-700" />
           ) : (
-            <p className="mt-2 text-2xl font-semibold tracking-tight text-zinc-100">{value}</p>
+            <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">{value}</p>
           )}
         </div>
         <div className={classNames("rounded-xl border p-2.5", toneMap[tone])}>
           <Icon className="h-5 w-5" />
         </div>
       </div>
-      <p className="mt-4 text-sm text-zinc-500">{loading ? "Syncing live data..." : detail}</p>
+      <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">{loading ? "Syncing live data..." : detail}</p>
     </motion.div>
   );
 }
 
 function Panel({ title, action, children, className }) {
   return (
-    <section className={classNames("rounded-2xl border border-zinc-800 bg-zinc-950 shadow-sm", className)}>
-      <div className="flex items-center justify-between gap-3 border-b border-zinc-800 px-4 py-3">
-        <h2 className="text-sm font-semibold text-zinc-100">{title}</h2>
+    <section className={classNames("surface-card", className)}>
+      <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 dark:border-slate-700">
+        <h2 className="text-sm font-semibold text-slate-950 dark:text-white">{title}</h2>
         {action}
       </div>
       {children}
@@ -138,9 +138,9 @@ function RevenueBars({ data, loading }) {
     <Panel title="Sales analytics" className="lg:col-span-2">
       <div className="p-4">
         {loading ? (
-          <div className="h-72 animate-pulse rounded-xl bg-zinc-900" />
+          <div className="h-72 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
         ) : (
-          <div className="flex h-72 items-end gap-2 overflow-hidden rounded-xl border border-zinc-900 bg-zinc-900/50 p-4">
+          <div className="surface-subtle flex h-72 items-end gap-2 overflow-hidden p-4">
             {data.map((item) => (
               <div key={item.label} className="flex min-w-0 flex-1 flex-col items-center gap-2">
                 <div className="flex h-52 w-full items-end">
@@ -152,7 +152,7 @@ function RevenueBars({ data, loading }) {
                     title={`${item.label}: ${formatCurrency(item.revenue)}`}
                   />
                 </div>
-                <span className="truncate text-[10px] text-zinc-600 sm:text-xs">{item.label}</span>
+                <span className="truncate text-[10px] text-slate-500 dark:text-slate-500 sm:text-xs">{item.label}</span>
               </div>
             ))}
           </div>
@@ -167,19 +167,19 @@ function RecentOrders({ orders, loading }) {
     <Panel
       title="Recent orders"
       action={
-        <Link to="/orders" className="inline-flex items-center gap-1 text-xs font-medium text-emerald-300 hover:text-emerald-200">
+        <Link to="/orders" className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 hover:text-blue-800 dark:text-emerald-300 dark:hover:text-emerald-200">
           View all <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       }
     >
-      <div className="overflow-x-auto">
+      <div className="max-w-full overflow-x-auto overscroll-x-contain">
         <table className="w-full min-w-[560px] text-sm">
-          <thead>
-            <tr className="text-left text-xs uppercase tracking-wide text-zinc-500">
-              <th className="px-4 py-3 font-medium">Order</th>
-              <th className="px-4 py-3 font-medium">Customer</th>
-              <th className="px-4 py-3 font-medium">Status</th>
-              <th className="px-4 py-3 text-right font-medium">Total</th>
+          <thead className="bg-slate-50 dark:bg-slate-800/70">
+            <tr className="text-left text-xs uppercase tracking-[0.06em] text-slate-600 dark:text-slate-300">
+              <th className="border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Order</th>
+              <th className="border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Customer</th>
+              <th className="border-b border-slate-200 px-4 py-3 font-semibold dark:border-slate-700">Status</th>
+              <th className="border-b border-slate-200 px-4 py-3 text-right font-semibold dark:border-slate-700">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -187,28 +187,28 @@ function RecentOrders({ orders, loading }) {
               ? Array.from({ length: 5 }).map((_, index) => (
                   <tr key={index}>
                     <td colSpan={4} className="px-4 py-3">
-                      <div className="h-5 animate-pulse rounded bg-zinc-900" />
+                      <div className="h-5 animate-pulse rounded bg-slate-100 dark:bg-slate-800" />
                     </td>
                   </tr>
                 ))
               : orders.length === 0
               ? (
                 <tr>
-                  <td colSpan={4} className="px-4 py-10 text-center text-sm text-zinc-500">
+                  <td colSpan={4} className="px-4 py-10 text-center text-sm text-slate-500 dark:text-slate-400">
                     No orders yet.
                   </td>
                 </tr>
               )
               : orders.map((order) => (
-                <tr key={order.id} className="border-t border-zinc-900 hover:bg-zinc-900/60">
-                  <td className="px-4 py-3 font-medium text-zinc-100">
+                <tr key={order.id} className="border-t border-slate-100 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/60">
+                  <td className="whitespace-nowrap px-4 py-3 font-medium text-slate-800 dark:text-slate-200">
                     #{order.orderNumber ?? String(order.id).slice(-8)}
                   </td>
-                  <td className="px-4 py-3 text-zinc-400">{getCustomerName(order)}</td>
-                  <td className="px-4 py-3">
+                  <td className="max-w-[180px] truncate px-4 py-3 text-slate-600 dark:text-slate-400" title={getCustomerName(order)}>{getCustomerName(order)}</td>
+                  <td className="whitespace-nowrap px-4 py-3">
                     <StatusBadge status={order.status} />
                   </td>
-                  <td className="px-4 py-3 text-right font-semibold text-emerald-300">
+                  <td className="whitespace-nowrap px-4 py-3 text-right font-semibold text-emerald-700 dark:text-emerald-300">
                     {formatCurrency(getOrderTotal(order))}
                   </td>
                 </tr>
@@ -225,7 +225,7 @@ function TopProducts({ products, loading }) {
     <Panel
       title="Top products"
       action={
-        <Link to="/products" className="inline-flex items-center gap-1 text-xs font-medium text-emerald-300 hover:text-emerald-200">
+        <Link to="/products" className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 hover:text-blue-800 dark:text-emerald-300 dark:hover:text-emerald-200">
           Manage <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       }
@@ -233,28 +233,28 @@ function TopProducts({ products, loading }) {
       <div className="space-y-3 p-4">
         {loading
           ? Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="h-12 animate-pulse rounded-xl bg-zinc-900" />
+              <div key={index} className="h-12 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
             ))
           : products.length === 0
           ? (
-            <p className="py-8 text-center text-sm text-zinc-500">No products found.</p>
+            <p className="py-8 text-center text-sm text-slate-500 dark:text-slate-400">No products found.</p>
           )
           : products.map((product) => (
-            <div key={product.id} className="flex items-center justify-between gap-3 rounded-xl border border-zinc-900 bg-zinc-900/40 p-3">
+            <div key={product.id} className="surface-subtle flex items-center justify-between gap-3 p-3 transition-colors hover:border-slate-200 hover:bg-white dark:hover:border-slate-600 dark:hover:bg-slate-700">
               <div className="flex min-w-0 items-center gap-3">
                 {product.imageUrl ? (
-                  <img src={product.imageUrl} alt="" className="h-10 w-10 rounded-lg border border-zinc-800 object-cover" />
+                  <img src={product.imageUrl} alt="" className="h-10 w-10 rounded-lg border border-slate-200 object-cover dark:border-slate-700" />
                 ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-500">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
                     <Package className="h-4 w-4" />
                   </div>
                 )}
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-zinc-100">{product.name || "Untitled product"}</p>
-                  <p className="text-xs text-zinc-500">{product.stock ?? 0} in stock</p>
+                  <p className="truncate text-sm font-medium text-slate-950 dark:text-white">{product.name || "Untitled product"}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{product.stock ?? 0} in stock</p>
                 </div>
               </div>
-              <p className="shrink-0 text-sm font-semibold text-zinc-200">{formatCurrency(product.price)}</p>
+              <p className="shrink-0 text-sm font-semibold text-slate-700 dark:text-slate-200">{formatCurrency(product.price)}</p>
             </div>
           ))}
       </div>
@@ -292,20 +292,20 @@ function ActivityFeed({ orders, products, customers, loading }) {
       <div className="space-y-3 p-4">
         {loading
           ? Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="h-12 animate-pulse rounded-xl bg-zinc-900" />
+              <div key={index} className="h-12 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
             ))
           : activity.length === 0
           ? (
-            <p className="py-8 text-center text-sm text-zinc-500">No recent activity.</p>
+            <p className="py-8 text-center text-sm text-slate-500 dark:text-slate-400">No recent activity.</p>
           )
           : activity.map((item) => (
-            <div key={item.id} className="flex gap-3 rounded-xl border border-zinc-900 bg-zinc-900/40 p-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400">
+            <div key={item.id} className="surface-subtle flex gap-3 p-3 transition-colors hover:border-slate-200 hover:bg-white dark:hover:border-slate-600 dark:hover:bg-slate-700">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
                 <item.icon className="h-4 w-4" />
               </div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-medium text-zinc-100">{item.title}</p>
-                <p className="mt-0.5 truncate text-xs text-zinc-500">{item.detail}</p>
+                <p className="truncate text-sm font-medium text-slate-950 dark:text-white">{item.title}</p>
+                <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">{item.detail}</p>
               </div>
             </div>
           ))}
@@ -328,13 +328,13 @@ function QuickActions() {
           <Link
             key={label}
             to={to}
-            className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm font-medium text-zinc-200 transition hover:border-zinc-700 hover:bg-zinc-800"
+            className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-700"
           >
             <span className="inline-flex items-center gap-2">
-              <Icon className="h-4 w-4 text-emerald-300" />
+              <Icon className="h-4 w-4 text-blue-700 dark:text-emerald-300" />
               {label}
             </span>
-            <ArrowRight className="h-4 w-4 text-zinc-500" />
+            <ArrowRight className="h-4 w-4 text-slate-400 dark:text-slate-400" />
           </Link>
         ))}
       </div>
@@ -419,8 +419,8 @@ export default function DashboardHome() {
     <div className="w-full min-w-0 overflow-x-hidden">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-100 md:text-3xl">Dashboard</h1>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-3xl">Dashboard</h1>
+          <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
             Live ecommerce performance across revenue, orders, customers, and inventory.
           </p>
         </div>
@@ -428,7 +428,7 @@ export default function DashboardHome() {
           type="button"
           onClick={() => setReloadKey((key) => key + 1)}
           disabled={loading}
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-4 text-sm font-medium text-zinc-300 transition hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className="btn btn-secondary"
         >
           <RefreshCw className={classNames("h-4 w-4", loading && "animate-spin")} />
           Refresh
@@ -436,7 +436,7 @@ export default function DashboardHome() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200">
           {error}
         </div>
       )}
@@ -489,19 +489,19 @@ export default function DashboardHome() {
         <TopProducts products={analytics.topProducts} loading={loading} />
       </div>
 
-      <div className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-950 p-4 shadow-sm">
+      <div className="surface-card mt-5 p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2.5 text-emerald-300">
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
               <TrendingUp className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-zinc-100">Store health</h2>
-              <p className="text-sm text-zinc-500">Your admin data is synced across active modules.</p>
+              <h2 className="text-sm font-semibold text-slate-950 dark:text-white">Store health</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Your admin data is synced across active modules.</p>
             </div>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300">
-            <Zap className="h-3.5 w-3.5 text-emerald-300" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <Zap className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
             Production workspace
           </div>
         </div>

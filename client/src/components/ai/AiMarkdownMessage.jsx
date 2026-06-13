@@ -43,7 +43,7 @@ function CopyButton({ code, className }) {
       onClick={onCopy}
       className={
         className ||
-        "shrink-0 rounded-lg border border-zinc-800 bg-zinc-900/40 px-2.5 py-1 text-[11px] font-semibold text-zinc-200 hover:bg-zinc-900/70 hover:border-zinc-700 transition"
+        "btn btn-secondary h-8 shrink-0 rounded-lg px-2.5 text-[11px]"
       }
       aria-label="Copy code"
       title="Copy code"
@@ -57,7 +57,7 @@ export default function AiMarkdownMessage({ content }) {
   const value = useMemo(() => safeString(content), [content]);
 
   return (
-    <div className="text-sm leading-relaxed text-zinc-100 break-words">
+    <div className="break-words text-sm leading-relaxed text-slate-900 dark:text-slate-100">
       <ReactMarkdown
         // Defensive: disable raw HTML injection
         skipHtml={true}
@@ -76,7 +76,7 @@ export default function AiMarkdownMessage({ content }) {
           a: ({ node, ...props }) => (
             <a
               {...props}
-              className="text-indigo-300 hover:text-indigo-200 underline underline-offset-2"
+              className="text-indigo-700 underline underline-offset-2 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
               target="_blank"
               rel="noreferrer"
             />
@@ -87,7 +87,7 @@ export default function AiMarkdownMessage({ content }) {
               return (
                 <code
                   {...props}
-                  className="px-1.5 py-0.5 rounded bg-zinc-900/60 border border-zinc-800 text-[0.95em] text-indigo-200"
+                  className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[0.95em] text-indigo-700 dark:border-slate-700 dark:bg-slate-800 dark:text-indigo-200"
                 >
                   {children}
                 </code>
@@ -105,7 +105,7 @@ export default function AiMarkdownMessage({ content }) {
               <div className="not-prose mt-2 mb-2">
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <div className="min-w-0">
-                    <span className="text-[11px] font-semibold text-zinc-400">
+                    <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
                       {language ? language : "code"}
                     </span>
                   </div>
@@ -113,7 +113,7 @@ export default function AiMarkdownMessage({ content }) {
                 </div>
                 <pre
                   className={
-                    "overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/70 p-3 text-[12px] leading-snug"
+                    "overflow-x-auto rounded-xl border border-slate-200 bg-slate-950 p-3 text-[12px] leading-snug text-slate-100 dark:border-slate-700"
                   }
                 >
                   <code className={className} {...props}>
@@ -156,7 +156,7 @@ export default function AiMarkdownMessage({ content }) {
           hr: ({ node, ...props }) => (
             <hr
               {...props}
-              className="my-3 border-zinc-800"
+              className="my-3 border-slate-200 dark:border-slate-700"
             />
           ),
         }}

@@ -17,7 +17,7 @@ function formatCurrency(value) {
 }
 
 const Skeleton = () => (
-  <motion.div className="h-48 sm:h-56 w-full bg-zinc-800/60 rounded-lg animate-pulse" />
+  <motion.div className="h-48 sm:h-56 w-full bg-slate-100 dark:bg-slate-800/60 rounded-lg animate-pulse" />
 );
 
 export default function RevenueChart({ data = [], loading, error, onRetry }) {
@@ -25,8 +25,8 @@ export default function RevenueChart({ data = [], loading, error, onRetry }) {
 
   if (loading) {
     return (
-      <div className="bg-zinc-900/80 rounded-xl border border-zinc-800 shadow p-4 sm:p-5">
-        <h3 className="font-bold text-zinc-200 mb-4 text-base sm:text-lg">
+      <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 shadow p-4 sm:p-5">
+        <h3 className="font-bold text-slate-900 dark:text-slate-200 mb-4 text-base sm:text-lg">
           Revenue by Month
         </h3>
         <Skeleton />
@@ -36,15 +36,15 @@ export default function RevenueChart({ data = [], loading, error, onRetry }) {
 
   if (error) {
     return (
-      <motion.div className="bg-zinc-900/80 rounded-xl border border-zinc-800 shadow p-4 sm:p-5">
-        <h3 className="font-bold text-zinc-200 mb-2">Revenue by Month</h3>
-        <p className="text-rose-400 text-sm py-8 text-center">
+      <motion.div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 shadow p-4 sm:p-5">
+        <h3 className="font-bold text-slate-900 dark:text-slate-200 mb-2">Revenue by Month</h3>
+        <p className="py-8 text-center text-sm text-rose-600 dark:text-rose-400">
           Failed to load chart.{" "}
           {onRetry && (
             <button
               type="button"
               onClick={onRetry}
-              className="text-cyan-400 hover:underline ml-1"
+              className="btn btn-ghost ml-1 h-8 px-2 text-cyan-700 dark:text-cyan-400"
             >
               Retry
             </button>
@@ -56,9 +56,9 @@ export default function RevenueChart({ data = [], loading, error, onRetry }) {
 
   if (!data.length) {
     return (
-      <div className="bg-zinc-900/80 rounded-xl border border-zinc-800 shadow p-4 sm:p-5">
-        <h3 className="font-bold text-zinc-200 mb-2">Revenue by Month</h3>
-        <p className="text-zinc-500 text-sm py-12 text-center">
+      <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 shadow p-4 sm:p-5">
+        <h3 className="font-bold text-slate-900 dark:text-slate-200 mb-2">Revenue by Month</h3>
+        <p className="text-slate-500 dark:text-slate-400 text-sm py-12 text-center">
           No sales data yet.
         </p>
       </div>
@@ -66,8 +66,8 @@ export default function RevenueChart({ data = [], loading, error, onRetry }) {
   }
 
   return (
-    <div className="bg-zinc-900/80 rounded-xl border border-zinc-800 shadow p-4 sm:p-5">
-      <h3 className="font-bold text-zinc-200 mb-4 tracking-tight text-base sm:text-lg">
+    <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 shadow p-4 sm:p-5">
+      <h3 className="font-bold text-slate-900 dark:text-slate-200 mb-4 tracking-tight text-base sm:text-lg">
         Revenue by Month
       </h3>
       <div className="flex items-end gap-1 sm:gap-2 h-48 sm:h-56">
@@ -83,14 +83,14 @@ export default function RevenueChart({ data = [], loading, error, onRetry }) {
               className="flex flex-col items-center flex-1 min-w-0 h-full justify-end group"
               title={`${formatMonthLabel(point.month)}: ${formatCurrency(revenue)}`}
             >
-              <span className="text-[10px] sm:text-xs text-zinc-500 mb-1 opacity-0 group-hover:opacity-100 transition truncate max-w-full">
+              <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mb-1 opacity-0 group-hover:opacity-100 transition truncate max-w-full">
                 {formatCurrency(revenue)}
               </span>
               <div
                 className="w-full rounded-t-md bg-gradient-to-t from-cyan-700 to-cyan-400/90 min-h-[2px]"
                 style={{ height: `${heightPct}%` }}
               />
-              <span className="text-[10px] sm:text-xs text-zinc-500 mt-2 truncate w-full text-center">
+              <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-2 truncate w-full text-center">
                 {formatMonthLabel(point.month)}
               </span>
             </motion.div>

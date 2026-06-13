@@ -162,7 +162,7 @@ function ImageDropzone({
     <div>
       <label
         htmlFor="product-image-upload"
-        className="block text-zinc-300 mb-1 text-sm font-medium"
+        className="block text-slate-700 dark:text-slate-300 mb-1 text-sm font-medium"
       >
         Product Image
       </label>
@@ -173,9 +173,9 @@ function ImageDropzone({
               ? "border-emerald-400 bg-emerald-900/10"
               : error
               ? "border-red-500"
-              : "border-zinc-700"
+              : "border-slate-300 dark:border-slate-600"
           }
-          bg-zinc-800 hover:border-emerald-400 transition cursor-pointer min-h-[144px]`}
+          bg-slate-100 dark:bg-slate-800 hover:border-emerald-400 transition cursor-pointer min-h-[144px]`}
         tabIndex={0}
         aria-disabled={disabled}
         onClick={openFileDialog}
@@ -214,7 +214,7 @@ function ImageDropzone({
             <img
               src={previewUrl}
               alt="Product"
-              className="object-contain rounded-lg max-h-40 bg-zinc-900 border border-zinc-700 w-full max-w-[220px] mx-auto"
+              className="object-contain rounded-lg max-h-40 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 w-full max-w-[220px] mx-auto"
             />
             <button
               type="button"
@@ -223,7 +223,7 @@ function ImageDropzone({
                 e.stopPropagation();
                 handleRemoveImage();
               }}
-              className="flex items-center mt-3 gap-1 px-2 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-400 text-xs font-semibold hover:text-red-400 hover:border-red-400 transition"
+              className="btn btn-danger mt-3 h-8 rounded-lg px-2 text-xs"
               tabIndex={0}
               disabled={disabled || uploading}
             >
@@ -233,11 +233,11 @@ function ImageDropzone({
           </div>
         ) : (
           <div className="flex flex-col items-center">
-            <ImageIcon className="w-10 h-10 mb-2 text-zinc-500/80" />
-            <div className="text-zinc-400 text-sm font-medium mb-1 text-center select-none">
-              Drag and drop, or <span className="text-emerald-400 underline">browse</span> to upload
+            <ImageIcon className="w-10 h-10 mb-2 text-slate-500 dark:text-slate-400/80" />
+            <div className="text-slate-600 dark:text-slate-400 text-sm font-medium mb-1 text-center select-none">
+              Drag and drop, or <span className="text-emerald-700 underline dark:text-emerald-400">browse</span> to upload
             </div>
-            <div className="text-zinc-500 text-xs select-none">
+            <div className="text-slate-500 dark:text-slate-400 text-xs select-none">
               PNG, JPG, WebP, GIF supported. 5MB max.
             </div>
           </div>
@@ -251,7 +251,7 @@ function ImageDropzone({
                 style={{ width: `${uploadProgress ?? 0}%` }}
               />
             </div>
-            <div className="text-xs text-zinc-400 text-center mt-1 flex items-center justify-center gap-1">
+            <div className="text-xs text-slate-600 dark:text-slate-400 text-center mt-1 flex items-center justify-center gap-1">
               <Loader2 className="animate-spin w-4 h-4" />
               Uploading&hellip; {uploadProgress ?? 0}%
             </div>
@@ -429,8 +429,8 @@ const ProductModal = ({
         <motion.div
           className={`
             relative z-[102]
-            bg-zinc-900
-            border border-zinc-800
+            bg-white dark:bg-slate-900
+            border border-slate-200 dark:border-slate-700
             shadow-2xl
             rounded-t-2xl sm:rounded-xl
             flex flex-col
@@ -454,7 +454,7 @@ const ProductModal = ({
         >
           <button
             onClick={handleClose}
-            className="absolute top-2.5 right-3 sm:top-4 sm:right-5 text-zinc-500 hover:text-zinc-300 transition"
+            className="icon-button absolute right-3 top-2.5 sm:right-5 sm:top-4"
             aria-label="Close"
             type="button"
             tabIndex={0}
@@ -467,10 +467,10 @@ const ProductModal = ({
                           sm:max-h-[82vh] max-h-[calc(98dvh-24px)]
                           pr-1 touch-pan-y">
             <div className="flex-shrink-0">
-              <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-zinc-100">
+              <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-slate-950 dark:text-white">
                 {isEditMode ? "Edit Product" : "Create Product"}
               </h2>
-              <p className="text-zinc-400 mb-4 sm:mb-6 text-sm">
+              <p className="text-slate-600 dark:text-slate-400 mb-4 sm:mb-6 text-sm">
                 {isEditMode
                   ? "Update details for this product."
                   : "Fill out the details of your new product."}
@@ -482,7 +482,7 @@ const ProductModal = ({
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                    className="block text-slate-700 dark:text-slate-300 mb-1 text-[15px] font-medium"
                   >
                     Name<span className="ml-1 text-red-500">*</span>
                   </label>
@@ -492,11 +492,10 @@ const ProductModal = ({
                     type="text"
                     autoFocus
                     disabled={loading || submitting || (uploadProgress !== null)}
-                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                    className={`control-input mt-1 rounded-lg text-base
                       ${errors.name && touched.name
                         ? "border-red-500 focus:border-red-500"
-                        : "border-zinc-700 focus:border-emerald-500"}
-                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                        : ""}`}
                     value={form.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -513,7 +512,7 @@ const ProductModal = ({
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                    className="block text-slate-700 dark:text-slate-300 mb-1 text-[15px] font-medium"
                   >
                     Description
                   </label>
@@ -522,7 +521,7 @@ const ProductModal = ({
                     name="description"
                     rows="3"
                     disabled={loading || submitting || (uploadProgress !== null)}
-                    className="mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-100 focus:border-emerald-500 focus:ring-0 placeholder-zinc-500 transition text-base resize-none"
+                    className="control-textarea mt-1 resize-none rounded-lg text-base"
                     value={form.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -533,7 +532,7 @@ const ProductModal = ({
                 <div>
                   <label
                     htmlFor="price"
-                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                    className="block text-slate-700 dark:text-slate-300 mb-1 text-[15px] font-medium"
                   >
                     Price ($)<span className="ml-1 text-red-500">*</span>
                   </label>
@@ -544,11 +543,10 @@ const ProductModal = ({
                     step="0.01"
                     min="0"
                     disabled={loading || submitting || (uploadProgress !== null)}
-                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                    className={`control-input mt-1 rounded-lg text-base
                       ${errors.price && touched.price
                         ? "border-red-500 focus:border-red-500"
-                        : "border-zinc-700 focus:border-emerald-500"}
-                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                        : ""}`}
                     value={form.price}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -562,7 +560,7 @@ const ProductModal = ({
                 <div>
                   <label
                     htmlFor="stock"
-                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                    className="block text-slate-700 dark:text-slate-300 mb-1 text-[15px] font-medium"
                   >
                     Stock<span className="ml-1 text-red-500">*</span>
                   </label>
@@ -572,11 +570,10 @@ const ProductModal = ({
                     type="number"
                     min="0"
                     disabled={loading || submitting || (uploadProgress !== null)}
-                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                    className={`control-input mt-1 rounded-lg text-base
                       ${errors.stock && touched.stock
                         ? "border-red-500 focus:border-red-500"
-                        : "border-zinc-700 focus:border-emerald-500"}
-                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                        : ""}`}
                     value={form.stock}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -590,7 +587,7 @@ const ProductModal = ({
                 <div>
                   <label
                     htmlFor="sku"
-                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                    className="block text-slate-700 dark:text-slate-300 mb-1 text-[15px] font-medium"
                   >
                     SKU<span className="ml-1 text-red-500">*</span>
                   </label>
@@ -599,11 +596,10 @@ const ProductModal = ({
                     name="sku"
                     type="text"
                     disabled={loading || submitting || (uploadProgress !== null)}
-                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                    className={`control-input mt-1 rounded-lg text-base
                       ${errors.sku && touched.sku
                         ? "border-red-500 focus:border-red-500"
-                        : "border-zinc-700 focus:border-emerald-500"}
-                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                        : ""}`}
                     value={form.sku}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -617,7 +613,7 @@ const ProductModal = ({
                 <div>
                   <label
                     htmlFor="category"
-                    className="block text-zinc-300 mb-1 text-[15px] font-medium"
+                    className="block text-slate-700 dark:text-slate-300 mb-1 text-[15px] font-medium"
                   >
                     Category<span className="ml-1 text-red-500">*</span>
                   </label>
@@ -626,11 +622,10 @@ const ProductModal = ({
                     name="category"
                     type="text"
                     disabled={loading || submitting || (uploadProgress !== null)}
-                    className={`mt-1 w-full px-3 py-2.5 rounded-lg bg-zinc-800 border
+                    className={`control-input mt-1 rounded-lg text-base
                       ${errors.category && touched.category
                         ? "border-red-500 focus:border-red-500"
-                        : "border-zinc-700 focus:border-emerald-500"}
-                      text-zinc-100 focus:ring-0 placeholder-zinc-500 transition text-base`}
+                        : ""}`}
                     value={form.category}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -655,7 +650,7 @@ const ProductModal = ({
               <div className="flex items-center justify-end mt-6 sm:mt-7 gap-2 sm:gap-3 pb-1 sm:pb-0">
                 <button
                   type="button"
-                  className="px-4 py-2 rounded-lg text-zinc-300 bg-zinc-800 hover:bg-zinc-700 focus:outline-none border border-zinc-600 transition font-semibold disabled:opacity-60"
+                  className="btn btn-secondary rounded-lg"
                   onClick={handleClose}
                   disabled={loading || submitting || uploadProgress !== null}
                 >
@@ -663,7 +658,7 @@ const ProductModal = ({
                 </button>
                 <button
                   type="submit"
-                  className="relative px-5 py-2 rounded-lg font-semibold text-zinc-100 bg-emerald-600 hover:bg-emerald-500 focus:outline-none transition disabled:opacity-50 flex items-center gap-2"
+                  className="btn btn-primary relative rounded-lg px-5"
                   disabled={loading || submitting || uploadProgress !== null}
                 >
                   {(loading || submitting || uploadProgress !== null) && (
@@ -673,7 +668,7 @@ const ProductModal = ({
                 </button>
               </div>
               {submitAttempt > 0 && hasErrors && (
-                <div className="mt-3 sm:mt-4 text-xs text-red-400">
+                <div className="mt-3 text-xs text-red-600 dark:text-red-400 sm:mt-4">
                   Please fix the highlighted errors above and resubmit.
                 </div>
               )}

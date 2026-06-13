@@ -10,7 +10,7 @@ const ProductImage = React.memo(function ProductImage({ src, alt }) {
     /^https?:\/\/.*\.(jpeg|jpg|png|webp|gif|svg)(\?|#|$)/i.test(src.trim());
 
   const placeholder = (
-    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-md border border-zinc-800 bg-zinc-800 text-zinc-600 transition-colors min-w-[48px] min-h-[48px]">
+    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 transition-colors min-w-[48px] min-h-[48px]">
       <ImageOff className="w-5 h-5" aria-label="No image" />
     </div>
   );
@@ -28,7 +28,7 @@ const ProductImage = React.memo(function ProductImage({ src, alt }) {
       alt={alt || "Product image"}
       loading="lazy"
       decoding="async"
-      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-md border border-zinc-800 bg-zinc-900 transition group-hover:scale-105 group-hover:shadow-lg duration-150 ease-out"
+      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 transition group-hover:scale-105 group-hover:shadow-lg duration-150 ease-out"
       style={{ minWidth: 48, minHeight: 48 }}
       onError={e => {
         e.target.onerror = null;
@@ -87,7 +87,7 @@ const ProductTable = ({
         <th
           key={col.key}
           className={
-            "px-2 py-3 text-left text-xs sm:text-sm font-semibold tracking-wider text-zinc-400 uppercase bg-zinc-900 whitespace-nowrap" +
+            "border-b border-slate-200 bg-slate-50 px-3 py-3 text-left text-xs font-semibold uppercase tracking-[0.06em] text-slate-600 whitespace-nowrap dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300" +
             (mobileColumnKeys.includes(col.key) ? "" : " hidden md:table-cell")
           }
           scope="col"
@@ -102,46 +102,46 @@ const ProductTable = ({
   const renderProductRow = (product) => (
     <tr
       key={product.id}
-      className="transition-colors hover:bg-zinc-800/70 group"
+      className="group border-b border-slate-100 transition-colors last:border-b-0 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/60"
       tabIndex={0}
     >
       {/* Image */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 align-middle min-w-[56px]">
+      <td className="min-w-[64px] px-3 py-3 align-middle">
         <ProductImage src={product.imageUrl} alt={product.name} />
       </td>
       {/* Name + SKU */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 min-w-[115px] max-w-[15ch]">
-        <span className="font-medium text-zinc-100 leading-tight block break-words text-sm sm:text-base">
+      <td className="min-w-[220px] max-w-[280px] px-3 py-3 align-middle">
+        <span className="block truncate text-sm font-medium leading-tight text-slate-800 dark:text-slate-200" title={product.name}>
           {product.name}
         </span>
         {product.sku && (
-          <span className="text-xs text-zinc-500 truncate block">{product.sku}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 truncate block">{product.sku}</span>
         )}
       </td>
       {/* Category */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 min-w-[80px] max-w-[10ch] hidden md:table-cell">
-        <span className="inline-block bg-zinc-800 text-zinc-400 px-2 py-1 rounded text-xs max-w-[8rem] truncate">
+      <td className="hidden min-w-[130px] max-w-[160px] px-3 py-3 align-middle md:table-cell">
+        <span className="inline-block bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded text-xs max-w-[8rem] truncate">
           {product.category || "Uncategorized"}
         </span>
       </td>
       {/* Price */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 font-mono min-w-[68px] max-w-[10ch] text-sm">
+      <td className="min-w-[100px] whitespace-nowrap px-3 py-3 text-right align-middle text-sm font-semibold text-emerald-700 dark:text-emerald-300">
         ${Number(product.price).toFixed(2)}
       </td>
       {/* Stock */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 min-w-[40px] max-w-[8ch] hidden md:table-cell">
+      <td className="hidden min-w-[80px] whitespace-nowrap px-3 py-3 text-right align-middle md:table-cell">
         <span className="block font-medium">{product.stock}</span>
       </td>
       {/* Status */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 min-w-[54px] hidden md:table-cell">
+      <td className="hidden min-w-[120px] whitespace-nowrap px-3 py-3 align-middle md:table-cell">
         <InventoryBadge stock={product.stock} />
       </td>
       {/* Actions */}
-      <td className="px-2 py-2 sm:px-3 sm:py-3 min-w-[64px]">
-        <div className="flex flex-col xs:flex-row gap-2 items-start xs:items-center">
+      <td className="min-w-[110px] whitespace-nowrap px-3 py-3 align-middle">
+        <div className="flex items-center justify-end gap-2">
           <button
             type="button"
-            className="p-2 rounded-md bg-zinc-800 text-zinc-400 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors focus:ring-2 focus:ring-blue-600"
+            className="icon-button rounded-md"
             aria-label="Edit product"
             onClick={() => handleEditProduct(product)}
             tabIndex={0}
@@ -150,7 +150,7 @@ const ProductTable = ({
           </button>
           <button
             type="button"
-            className="p-2 rounded-md bg-zinc-800 text-zinc-400 hover:bg-red-600 hover:text-white focus:outline-none transition-colors focus:ring-2 focus:ring-red-600"
+            className="icon-button icon-button-danger rounded-md"
             aria-label="Delete product"
             onClick={() => handleDeleteProduct(product)}
             tabIndex={0}
@@ -163,13 +163,13 @@ const ProductTable = ({
   );
 
   return (
-    <div className="w-full bg-zinc-900 text-zinc-100 rounded-xl shadow-lg overflow-x-auto border border-zinc-800">
+    <div className="w-full min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-800 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
       {/* Add Product button (responsive alignment) */}
       {typeof onAdd === "function" && (
-        <div className="flex justify-end items-center px-3 py-3 sm:py-4 border-b border-zinc-800">
+        <div className="flex justify-end items-center px-3 py-3 sm:py-4 border-b border-slate-200 dark:border-slate-700">
           <button
             type="button"
-            className="flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition-colors text-sm sm:text-base"
+            className="btn btn-primary rounded-md px-3 sm:text-base"
             onClick={handleAddProduct}
             aria-label="Add Product"
             tabIndex={0}
@@ -181,16 +181,16 @@ const ProductTable = ({
         </div>
       )}
       {/* Responsive Table/Scroll Container */}
-      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-800">
-        <table className="min-w-[540px] w-full divide-y divide-zinc-800 text-sm sm:text-base">
+      <div className="max-w-full overflow-x-auto overscroll-x-contain">
+        <table className="w-full min-w-[860px] table-fixed text-sm">
           <thead>{renderTableHeader()}</thead>
           <tbody>
             {loading ? (
               <tr>
                 <td colSpan={columns.length}>
                   <div className="flex justify-center items-center py-12 sm:py-16">
-                    <Loader2 className="animate-spin w-7 h-7 sm:w-8 sm:h-8 text-zinc-400" />
-                    <span className="ml-3 text-zinc-400 font-medium text-base">
+                    <Loader2 className="animate-spin w-7 h-7 sm:w-8 sm:h-8 text-slate-600 dark:text-slate-400" />
+                    <span className="ml-3 text-slate-600 dark:text-slate-400 font-medium text-base">
                       Loading products...
                     </span>
                   </div>
@@ -201,16 +201,16 @@ const ProductTable = ({
             ) : (
               <tr>
                 <td colSpan={columns.length}>
-                  <div className="flex flex-col items-center justify-center py-20 sm:py-24 text-zinc-500 px-4">
+                  <div className="flex flex-col items-center justify-center py-20 sm:py-24 text-slate-500 dark:text-slate-400 px-4">
                     <ImageOff className="w-10 h-10 sm:w-12 sm:h-12 mb-3" />
                     <div className="text-base sm:text-lg font-semibold">{emptyMessage}</div>
-                    <div className="text-xs sm:text-sm mt-1 mb-2 text-zinc-400">
+                    <div className="text-xs sm:text-sm mt-1 mb-2 text-slate-600 dark:text-slate-400">
                       Add products to see them here.
                     </div>
                     {typeof onAdd === "function" && (
                       <button
                         type="button"
-                        className="mt-6 flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition-colors text-sm sm:text-base"
+                        className="btn btn-primary mt-6 rounded-md px-3 sm:text-base"
                         onClick={handleAddProduct}
                         aria-label="Add Product (empty)"
                         tabIndex={0}

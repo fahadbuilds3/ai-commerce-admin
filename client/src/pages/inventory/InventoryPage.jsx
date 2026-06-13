@@ -48,13 +48,13 @@ const InventoryPage = () => {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
-            <div className="p-2 bg-indigo-500/10 rounded-xl">
-              <Boxes className="text-indigo-400" size={24} />
+          <h1 className="flex items-center gap-3 text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+            <div className="rounded-xl border border-indigo-100 bg-indigo-50 p-2 dark:border-indigo-500/20 dark:bg-indigo-500/10">
+              <Boxes className="text-indigo-600 dark:text-indigo-300" size={24} />
             </div>
             Inventory Management
           </h1>
-          <p className="text-sm sm:text-base text-zinc-400 mt-2 max-w-2xl">
+          <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-300 sm:text-base">
             Monitor stock levels across all your products, track inventory value, and seamlessly adjust stock quantities.
           </p>
         </div>
@@ -62,14 +62,14 @@ const InventoryPage = () => {
 
       {/* Global Page Error */}
       {(error || statsError) && (
-        <div className="bg-red-950/30 border border-red-900/50 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between transition-all">
+        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-red-200 bg-red-50 p-4 transition-colors dark:border-red-900/60 dark:bg-red-950/30 sm:flex-row sm:items-center sm:p-5">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-900/30 rounded-full shrink-0">
-              <AlertCircle className="text-red-400" size={24} />
+            <div className="shrink-0 rounded-full bg-red-100 p-2 dark:bg-red-900/30">
+              <AlertCircle className="text-red-600 dark:text-red-400" size={24} />
             </div>
             <div>
-               <h3 className="font-semibold text-red-400 text-base">Data Fetch Error</h3>
-               <p className="text-sm mt-1 text-red-200/80">
+               <h3 className="text-base font-semibold text-red-700 dark:text-red-400">Data Fetch Error</h3>
+               <p className="mt-1 text-sm text-red-600 dark:text-red-200/80">
                  {error || statsError}
                </p>
             </div>
@@ -79,7 +79,7 @@ const InventoryPage = () => {
               if (error) retryFetch();
               if (statsError) retryStats();
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors whitespace-nowrap text-sm font-medium border border-red-500/20"
+            className="btn btn-danger h-9 whitespace-nowrap rounded-lg"
           >
             <RefreshCw size={16} />
             Retry
@@ -89,16 +89,16 @@ const InventoryPage = () => {
 
       {/* Alerts Section */}
       {hasAlerts && !statsLoading && !statsError && (
-        <div className="bg-red-950/30 border border-red-900/50 rounded-2xl p-4 sm:p-5 flex items-start gap-4 text-red-200 transition-all hover:bg-red-950/40">
-          <div className="p-2 bg-red-900/30 rounded-full shrink-0">
-            <AlertCircle className="text-red-400" size={24} />
+        <div className="flex items-start gap-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700 transition-colors hover:bg-red-100 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200 dark:hover:bg-red-950/40 sm:p-5">
+          <div className="shrink-0 rounded-full bg-red-100 p-2 dark:bg-red-900/30">
+            <AlertCircle className="text-red-600 dark:text-red-400" size={24} />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-red-400 text-base">Inventory Alerts</h3>
-            <p className="text-sm mt-1 text-red-200/80 leading-relaxed">
-              You have {stats?.outOfStock > 0 ? <span className="font-bold text-white bg-red-900/40 px-2 py-0.5 rounded-md mx-1">{stats.outOfStock} out of stock</span> : null}
+            <h3 className="text-base font-semibold text-red-700 dark:text-red-400">Inventory Alerts</h3>
+            <p className="mt-1 text-sm leading-relaxed text-red-600 dark:text-red-200/80">
+              You have {stats?.outOfStock > 0 ? <span className="mx-1 rounded-md bg-red-100 px-2 py-0.5 font-bold text-red-700 dark:bg-red-900/40 dark:text-white">{stats.outOfStock} out of stock</span> : null}
               {stats?.outOfStock > 0 && stats?.lowStock > 0 ? " and " : ""}
-              {stats?.lowStock > 0 ? <span className="font-bold text-white bg-amber-900/40 px-2 py-0.5 rounded-md mx-1">{stats.lowStock} low stock</span> : null} 
+              {stats?.lowStock > 0 ? <span className="mx-1 rounded-md bg-amber-100 px-2 py-0.5 font-bold text-amber-800 dark:bg-amber-900/40 dark:text-white">{stats.lowStock} low stock</span> : null}
               items. Please review your inventory and restock soon to prevent missed sales.
             </p>
           </div>
