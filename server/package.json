@@ -7,7 +7,8 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "generate:csv": "node scripts/generateSeedCsv.js",
-    "seed:csv": "node prisma/seedCsv.js"
+    "seed:csv": "node prisma/seedCsv.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
