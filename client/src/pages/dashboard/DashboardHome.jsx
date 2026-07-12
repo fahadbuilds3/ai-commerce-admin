@@ -131,36 +131,186 @@ function Panel({ title, action, children, className }) {
   );
 }
 
-function RevenueBars({ data, loading }) {
-  const maxRevenue = Math.max(...data.map((item) => item.revenue), 1);
+function RevenueBars({ data, loading, overview }) {
+  const [range, setRange] = useState("30d");
+
+  const rangeOptions = [
+    { value: "7d", label: "7 Days" },
+    { value: "30d", label: "30 Days" },
+    { value: "90d", label: "90 Days" },
+    { value: "1y", label: "1 Year" },
+  ];
+
+  const safeData = Array.isArray(data) ? data : [];
+  const maxRevenue = Math.max(...safeData.map((item) => item.revenue ?? 0), 1);
+
+  const totalRevenue = overview?.revenue ?? safeData.reduce((sum, x) => sum + (x?.revenue ?? 0), 0);
+  const totalOrders = overview?.ordersCount ?? 0;
+  const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+  // Since DashboardHome uses mock/derived data locally, we compute growth from revenueSeries deltas.
+  const series = safeData;
+  const prevRevenue = series.length >= 2 ? series[0]?.revenue ?? totalRevenue : totalRevenue;
+  const latestRevenue = series.length ? series[series.length - 1]?.revenue ?? totalRevenue : totalRevenue;
+  const growthPct = prevRevenue > 0 ? ((latestRevenue - prevRevenue) / prevRevenue) * 100 : 0;
+
+  const growthDir = growthPct >= 0 ? "up" : "down";
+  const growthLabel = `${Math.abs(growthPct).toFixed(1)}%`;
+
+  const exportCsv = () => {
+    try {
+      const rows = ["date,revenue"];
+      for (const p of safeData) {
+        const label = p?.label ?? "";
+        rows.push(`${JSON.stringify(label)},${p?.revenue ?? 0}`);
+      }
+      const csv = rows.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `sales-analytics-${range}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      // silent
+    }
+  };
 
   return (
-    <Panel title="Sales analytics" className="lg:col-span-2">
-      <div className="p-4">
-        {loading ? (
-          <div className="h-72 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
-        ) : (
-          <div className="surface-subtle flex h-72 items-end gap-2 overflow-hidden p-4">
-            {data.map((item) => (
-              <div key={item.label} className="flex min-w-0 flex-1 flex-col items-center gap-2">
-                <div className="flex h-52 w-full items-end">
-                  <div
-                    className="w-full rounded-t-md bg-gradient-to-t from-emerald-700 to-sky-400 transition-all hover:from-emerald-500 hover:to-sky-300"
-                    style={{
-                      height: `${Math.max(8, (item.revenue / maxRevenue) * 100)}%`,
-                    }}
-                    title={`${item.label}: ${formatCurrency(item.revenue)}`}
-                  />
-                </div>
-                <span className="truncate text-[10px] text-slate-500 dark:text-slate-500 sm:text-xs">{item.label}</span>
-              </div>
+    <section className="surface-card lg:col-span-2 h-[420px] sm:h-[440px] rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+        <div className="min-w-0">
+          <h3 className="text-sm font-semibold text-slate-950 dark:text-white">Sales Analytics</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Revenue performance with interactive time range</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <select
+            value={range}
+            onChange={(e) => setRange(e.target.value)}
+            className="control-select h-8 rounded-lg bg-slate-50 dark:bg-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700"
+            aria-label="Select time range"
+          >
+            {rangeOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
             ))}
+          </select>
+
+          <button type="button" onClick={exportCsv} className="btn btn-secondary h-8 px-3">
+            Export
+          </button>
+        </div>
+      </div>
+
+      {/* Metrics */}
+      <div className="px-4 pt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Metric
+            label="Total Revenue"
+            value={formatCurrency(totalRevenue)}
+            direction={growthDir}
+            pctLabel={growthLabel}
+          />
+          <Metric
+            label="Total Orders"
+            value={Number(totalOrders).toLocaleString()}
+            direction={growthDir}
+            pctLabel={growthLabel}
+          />
+          <Metric
+            label="Avg Order Value"
+            value={formatCurrency(avgOrderValue)}
+            direction={growthDir}
+            pctLabel={growthLabel}
+          />
+          <Metric
+            label="Growth"
+            value={`${growthDir === "up" ? "+" : "-"}${growthPct.toFixed(1)}%`}
+            direction={growthDir}
+            pctLabel={growthLabel}
+          />
+        </div>
+      </div>
+
+      {/* Chart */}
+      <div className="px-4 pb-4 pt-4 h-[calc(420px-120px)] sm:h-[calc(440px-120px)]">
+        {loading ? (
+          <div className="w-full h-full rounded-lg bg-slate-100 dark:bg-slate-800/60 animate-pulse" />
+        ) : (
+          <div className="h-full w-full rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-3">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-xs text-slate-500 dark:text-slate-400">Hover bars for details</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">{rangeOptions.find((x) => x.value === range)?.label}</div>
+            </div>
+
+            <div className="relative h-full w-full flex items-end gap-2">
+              {safeData.length ? (
+                safeData.map((item, idx) => {
+                  const revenue = item?.revenue ?? 0;
+                  const heightPct = Math.max((revenue / maxRevenue) * 100, revenue > 0 ? 2 : 0);
+                  return (
+
+
+                    <div
+                      key={item?.label ?? idx}
+                      className="flex flex-col items-center justify-end gap-2 flex-1 min-w-0"
+                      style={{ height: "100%" }}
+                    >
+                      <div className="relative w-full h-full flex items-end">
+                        <div
+                          className="w-full rounded-md bg-gradient-to-t from-emerald-500 via-cyan-400 to-sky-300 transition-transform duration-200 hover:scale-[1.01]"
+                          style={{ height: `${heightPct}%`, boxShadow: "0 10px 25px rgba(0,0,0,0.12)" }}
+                          title={`${item?.label ?? ""}: ${formatCurrency(revenue)}`}
+                        />
+                        {/* subtler grid line */}
+                        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,transparent_0%,rgba(148,163,184,0.25)_1px,transparent_1px)] bg-[length:100%_40px]" />
+                      </div>
+                      <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate w-full text-center">
+                        {item?.label ?? ""}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+                  No sales data available.
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
-    </Panel>
+    </section>
   );
 }
+
+function Metric({ label, value, direction, pctLabel }) {
+  const isUp = direction === "up";
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/40 px-3 py-2 overflow-hidden">
+      <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
+      <div className="mt-1 flex items-end justify-between gap-2">
+        <div className="text-lg font-semibold text-slate-950 dark:text-white tabular-nums truncate">{value}</div>
+        <div
+          className={
+            "flex items-center gap-1 text-[11px] font-semibold " +
+            (isUp ? "text-emerald-600 dark:text-emerald-300" : "text-rose-600 dark:text-rose-300")
+          }
+        >
+          <span aria-hidden="true">{isUp ? "↑" : "↓"}</span>
+          <span className="tabular-nums">{pctLabel}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 function RecentOrders({ orders, loading }) {
   return (

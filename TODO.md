@@ -1,7 +1,12 @@
-- [ ] Investigate frontend payload for login (email/password)
-- [ ] Add temporary debug logs in login endpoint to identify failure reason (user not found vs password mismatch vs token generation)
-- [ ] Verify Prisma schema field used for stored hash (User.password)
-- [ ] Fix imported CSV placeholder password hashes: detect invalid hashes and regenerate bcrypt hash for "admin123" then upsert into DB
-- [ ] Remove temporary debug logs
-- [ ] Ensure login works for admin.001@example.com / admin123
+- [ ] (Planned) Refactor Dashboard Sales Analytics UI to premium SaaS style per latest request.
+- [ ] Remove duplicate KPI cards inside Sales Analytics section.
+- [ ] Replace gradient bar chart with modern line/area chart (single accent color).
+- [ ] Reduce chart height ~35%.
+- [ ] Add Revenue, Growth %, and selected date range above chart.
+- [ ] Make Activity Feed more compact.
+- [ ] Add Recent Orders + Top Categories (donut) chart under the chart.
+- [ ] Ensure spacing/typography/responsiveness; preserve functionality.
+- [ ] Fix ESLint issues introduced during refactor.
+- [ ] Lint/build/test.
+- [ ] Commit and open PR.
 
