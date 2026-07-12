@@ -769,16 +769,13 @@ export default function AiAssistantPage() {
   return (
     <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden">
       <div className="mb-3 hidden shrink-0 sm:mb-5 sm:block">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-          AI Assistant
-        </h1>
         <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
           Your ecommerce operations assistant for inventory, orders, analytics, and customer workflows.
         </p>
       </div>
 
-
       {/* Mobile/tablet history drawer + desktop fixed sidebar */}
+
       <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
         {/* Backdrop */}
         {historyOpen ? (
@@ -835,10 +832,11 @@ export default function AiAssistantPage() {
           {/* Chat panel */}
           <section className="surface-card flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
             {/* Top bar with mobile history button */}
-            <div className="z-10 flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 bg-white/95 px-3 py-2 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 sm:py-3">
+      <div className="z-10 flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 bg-white/95 px-3 py-2 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 sm:py-3">
               <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-semibold text-slate-950 dark:text-white sm:text-[13px]">AI Assistant</div>
+                  <div className="truncate text-sm font-semibold text-slate-950 dark:text-white sm:text-[13px]">{" "}</div>
               </div>
+
 
 
               <button

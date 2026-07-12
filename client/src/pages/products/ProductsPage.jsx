@@ -987,12 +987,12 @@ export default function ProductsPage() {
 
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-3xl">Products</h1>
           <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
             Manage catalog items, stock levels, pricing, and storefront readiness.
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
+
           <button
             type="button"
             onClick={() => refetch()}

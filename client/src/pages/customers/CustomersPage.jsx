@@ -1027,12 +1027,12 @@ export default function CustomersPage() {
 
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-3xl">Customers</h1>
           <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
             Manage customer profiles, lifecycle status, and purchase history.
           </p>
         </div>
         <button
+
           type="button"
           onClick={() => setReloadKey((key) => key + 1)}
           disabled={loading}

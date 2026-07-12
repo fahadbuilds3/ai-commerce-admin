@@ -135,7 +135,6 @@ export default function AnalyticsPage() {
     <div className="w-full min-w-0 overflow-x-hidden space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-3xl">Analytics</h1>
           <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-300">
             Deep dive into your store's performance metrics and growth trends.
           </p>

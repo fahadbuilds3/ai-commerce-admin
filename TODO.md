@@ -1,10 +1,7 @@
-## TODO
-
-- [ ] Apply compact “chat-first” UX refinement pass to `client/src/pages/AiAssistantPage.jsx`:
-  - [ ] Quick Actions: reduce padding/height/spacing and make cards denser
-  - [ ] Chat: tighten empty state and message bubble padding; reduce vertical dominance
-  - [ ] Sidebar: reduce row/header visual weight; improve truncation hierarchy and spacing
-  - [ ] Layout rhythm: tighten panel/chat padding; reduce dead-space spacer
-  - [ ] Verify scope: only edit `client/src/pages/AiAssistantPage.jsx` (no backend/layout changes)
-- [ ] Run client lint/build and do quick manual checks (drawer/streaming/markdown/prompt insertion).
+- [ ] Investigate frontend payload for login (email/password)
+- [ ] Add temporary debug logs in login endpoint to identify failure reason (user not found vs password mismatch vs token generation)
+- [ ] Verify Prisma schema field used for stored hash (User.password)
+- [ ] Fix imported CSV placeholder password hashes: detect invalid hashes and regenerate bcrypt hash for "admin123" then upsert into DB
+- [ ] Remove temporary debug logs
+- [ ] Ensure login works for admin.001@example.com / admin123
 

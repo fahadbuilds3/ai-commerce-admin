@@ -57,21 +57,76 @@ export const login = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Email and password are required");
   }
 
+  // Temporary debug logs (remove after root cause is fixed)
+  const debug = {
+    email,
+    hasPassword: typeof password === "string" && password.length > 0,
+  };
+  console.log("[auth/login] request", debug);
+
   // Look up user by email
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
+    console.log("[auth/login] user not found", { email });
+    throw new ApiError(401, "Invalid credentials");
+  }
+  console.log("[auth/login] user found", { userId: user.id, email: user.email });
+
+  // Compare password
+  let passwordMatch = false;
+  try {
+    console.log("=== LOGIN DEBUG ===");
+    console.log("Email received:", email);
+
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    console.log("User:", user);
+    console.log("Stored hash:", user?.password);
+
+    // bcryptjs.compare returns true/false for passwordMatch
+    passwordMatch = await bcrypt.compare(password, user.password);
+
+    console.log("Password match:", passwordMatch);
+  } catch (err) {
+    console.log("[auth/login] bcrypt.compare threw", {
+      email,
+      err: err?.message,
+    });
+    throw err;
+  }
+
+  console.log("[auth/login] passwordMatch", { email, passwordMatch });
+  // Avoid leaking hash details in logs, but log basic validity hints
+  console.log("[auth/login] storedHashMeta", {
+    email,
+    hashLength: typeof user.password === "string" ? user.password.length : null,
+    hashPrefix: typeof user.password === "string" ? user.password.slice(0, 7) : null,
+  });
+
+
+  if (!passwordMatch) {
+    console.log("[auth/login] password mismatch", { email });
     throw new ApiError(401, "Invalid credentials");
   }
 
-  // Compare password
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) {
-    throw new ApiError(401, "Invalid credentials");
+  // Token generation
+  let token;
+  try {
+    token = generateToken(user.id);
+  } catch (err) {
+    console.log("[auth/login] token generation failed", {
+      email,
+      userId: user.id,
+      err: err?.message,
+    });
+    throw new ApiError(500, "Token generation failed");
   }
+
+  console.log("[auth/login] login success", { email, userId: user.id });
 
   res.status(200).json({
     success: true,
-    token: generateToken(user.id),
+    token,
     user: buildSafeUser(user),
   });
 });

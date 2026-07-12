@@ -2,7 +2,7 @@ import "./config/env.js";
 import app from "./app.js";
 import { ensureAdminUser } from "./seedAdmin.js";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Ensure the admin user exists after any DB reset/migration.
 // Keeps auth flow unchanged; only seeds when missing.

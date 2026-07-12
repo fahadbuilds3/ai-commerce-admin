@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Boxes, AlertCircle, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { AlertCircle, RefreshCw } from "lucide-react";
+
 import { useInventory } from "../../hooks/useInventory";
 import InventoryStats from "../../components/inventory/InventoryStats";
 import InventoryTable from "../../components/inventory/InventoryTable";
@@ -48,16 +50,11 @@ const InventoryPage = () => {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="flex items-center gap-3 text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
-            <div className="rounded-xl border border-indigo-100 bg-indigo-50 p-2 dark:border-indigo-500/20 dark:bg-indigo-500/10">
-              <Boxes className="text-indigo-600 dark:text-indigo-300" size={24} />
-            </div>
-            Inventory Management
-          </h1>
           <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-300 sm:text-base">
             Monitor stock levels across all your products, track inventory value, and seamlessly adjust stock quantities.
           </p>
         </div>
+
       </div>
 
       {/* Global Page Error */}
